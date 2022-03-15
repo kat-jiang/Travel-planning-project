@@ -31,11 +31,9 @@ def register():
 
     if user_exists:
         flash(f"{user_id} already exists!")
-        return redirect ("/")
 
     if email_exists:
         flash(f"{email} already exists!")
-        return redirect ("/")
     
     #create new user, add to db
     if user_exists is None and email_exists is None:
@@ -49,7 +47,8 @@ def register():
         db.session.commit()
 
         flash("Account created successfully!")
-        return redirect ("/")
+
+    return redirect ("/")
 
 
 @app.route("/login", methods=["POST"])
@@ -57,7 +56,7 @@ def login():
     """Process user login."""
     #retrieves information from log-in form
     user_id = request.form.get("username").lower()
-    password = request.form.get("password").rstrip()
+    password = request.form.get("password")
 
     # query db for user_id
     user = crud.get_user_by_id(user_id)
@@ -68,11 +67,11 @@ def login():
         return redirect('/')
 
     #if passwords match, set session to user_id, send user to user_page
-    if user.password == password: 
+    if user.password == password:
         session['user'] = user_id
         flash(f"Welcome, {user_id}!")
         return redirect (f"/user_page/{user_id}")
-    else: 
+    else:
         flash("Sorry, passwords do not match!")
         return redirect('/')
 
