@@ -40,6 +40,16 @@ class Trip(db.Model):
     users = db.relationship("User", secondary="users_trips", backref="trips")
     days = db.relationship("Day", backref="trip")
 
+    def to_dict(self):
+        """return data as dictionary"""
+        trip_dict = {'trip_id': self.trip_id,
+                    'trip_location': self.trip_location,
+                    'trip_name': self.trip_name,
+                    'start_date': self.start_date,
+                    'end_date': self.end_date
+        }
+        return trip_dict
+
     def __repr__(self):
         return f'<Trip trip_id={self.trip_id} trip_location={self.trip_location} trip_name={self.trip_name}>'
 

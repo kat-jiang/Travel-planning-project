@@ -22,6 +22,7 @@ def load_users():
     db.session.add_all([kat, brian, christine, nina])
     db.session.commit()
 
+
 if __name__ == "__main__":
     # os.system('dropdb travelplanner')
     # os.system('createdb travelplanner')

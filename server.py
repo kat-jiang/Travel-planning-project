@@ -1,9 +1,10 @@
 """Server for travel planning app."""
 
-from flask import (Flask, render_template, request, flash, session, redirect)
+from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db, db
 import crud
 from jinja2 import StrictUndefined
+from datetime import datetime, date
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -79,8 +80,51 @@ def login():
 @app.route('/user_page/<user_id>')
 def user_page(user_id):
     """Display user's trip page"""
+    user = crud.get_user_by_id(user_id)
 
-    return render_template('user_page.html')
+    trips = user.trips
+
+    return render_template('user_page.html', user=user, trips=trips)
+
+@app.route('/user_page/<user_id>/add-trip.json', methods=["POST"])
+def add_trip(user_id):
+    """Add trip to user's trip page"""
+
+    #retrieve trip info from form
+    trip_location = request.json.get("location")
+    trip_name = request.json.get("name")
+    start_date_str = request.json.get("start")
+    end_date_str = request.json.get("end")
+
+    #without ajax
+    # trip_location = request.form.get("location")
+    # trip_name = request.form.get("trip-name")
+    # start_date_str = request.form.get("trip-start")
+    # end_date_str = request.form.get("trip-end")
+
+    #convert date strings to datetime
+    start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+    end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+
+    #create trip and add to db
+    new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date)
+    db.session.add(new_trip)
+    db.session.commit()
+
+    #add trip to User in db
+    user = crud.get_user_by_id(user_id)
+    user.trips.append(new_trip)
+    db.session.commit()
+
+    #convert python object to dictionary
+    new_trip = new_trip.to_dict()
+
+    return jsonify(new_trip)
+    # return redirect(f'/user_page/{user_id}')
+
+
+
+
 
 
 

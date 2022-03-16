@@ -24,20 +24,23 @@ def get_user_by_email(email):
 
     return User.query.filter(User.email == email).first()
 
+def get_user_trips(user_id):
+    """Return list of user trips """
 
-def create_trip(trip_location, trip_name, start_date, end_date, longitude, latitude):
+    user = User.query.get(user_id)
+    
+    return user.trips
+
+def create_trip(trip_location, trip_name, start_date, end_date):
     """Create and return a new trip."""
 
     trip = Trip(trip_location=trip_location,
                 trip_name=trip_name,
-                longitude=longitude,
-                latitude=latitude,
                 start_date=start_date,
                 end_date=end_date)
-
+                # longitude=longitude,
+                # latitude=latitude,
     return trip
-
-# def create_user_trip(user, trip):
 
 
 

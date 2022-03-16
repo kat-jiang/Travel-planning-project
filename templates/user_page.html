@@ -1,5 +1,62 @@
 {% extends 'base.html' %}
 {% block title %}User Page{% endblock %}
 {% block body %}
-<p>User profile page</p>
+<p>{{ user.user_id }}'s profile page</p>
+<div class="container">
+
+  <form action="/user_page/{{ user.user_id }}/add-trip.json" method="POST" id="add-trip" class="form-floating">
+    <div class="row">
+
+      <div class="col-12 col-md-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="location" name="location" placeholder="Where are you going?" aria-label="Location">
+          <label for="floatingInputGrid">Location (city, state)</label>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <div class="form-floating">
+          <input type="text" class="form-control" id="trip-name" name="trip-name" placeholder="Name your trip" aria-label="Trip name">
+          <label for="floatingInputGrid">Trip Name</label>
+        </div>
+      </div>
+
+      <div class="col-5 col-md-2">
+        <div class="form-floating">
+          <input type="date" id="start-date" name="trip-start" class="form-control" placeholder="Start date" aria-label="Trip-start">
+          <label for="floatingInputGrid">Start Date</label>
+        </div>
+      </div>
+
+      <div class="col-5 col-md-2">
+        <div class="form-floating">
+          <input type="date" id="end-date" name="trip-end" class="form-control" placeholder="End date" aria-label="Trip-end">
+          <label for="floatingInputGrid">End Date</label>
+        </div>
+      </div>
+
+      <div class="col-2 col-md-1">
+        <input type="submit" class="btn btn-secondary" id="add-trip-btn" value="Add trip">
+      </div>
+
+    </div>
+  </form>
+
+  <div id="get-trips">
+    {% for trip in trips %}
+    <div>
+      <p>{{ trip.trip_name }}, 
+        {{ trip.trip_location }},
+        {{ trip.start_date }}, 
+        {{ trip.end_date }}
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+
+
+</div>
+<script>
+  const user_id = '{{ user.user_id }}';
+</script>
 {% endblock %}
