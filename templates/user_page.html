@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}User Page{% endblock %}
 {% block body %}
-<p>{{ user.user_id }}'s profile page</p>
-<div class="container">
+<input type="hidden" id="user_id" value="{{user.user_id}}">
 
-  <form action="/user_page/{{ user.user_id }}/add-trip.json" method="POST" id="add-trip" class="form-floating">
+<div class="container">
+  <h1>Ready to plan your next trip?</h1>
+  <form id="add-trip" class="form-floating">
     <div class="row">
 
       <div class="col-12 col-md-3">
@@ -41,22 +42,27 @@
 
     </div>
   </form>
+</div>
 
-  <div id="get-trips">
+<div class="container">
+
+  <div id="get-trips"class="d-flex flex-wrap">
     {% for trip in trips %}
-    <div>
-      <p>{{ trip.trip_name }}, 
-        {{ trip.trip_location }},
-        {{ trip.start_date }}, 
-        {{ trip.end_date }}
-      </p>
+    <div class="card col-md-3" id="trip-{{trip.trip_id}}" style="width: 18rem;">
+      <a href="/trip/{{trip.trip_id}}">
+        <div class="card-body">
+          <p class="card-text">
+            <h3>{{ trip.trip_name }}</h3>
+            <h4>{{ trip.trip_location }}</h4>
+            {{ trip.start_date.date() }} to {{ trip.end_date.date() }}
+          </p>
+        </div>
+      </a>
+        <button class="btn btn-secondary" id="delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
     </div>
     {% endfor %}
   </div>
 
-
 </div>
-<script>
-  const user_id = '{{ user.user_id }}';
-</script>
+
 {% endblock %}

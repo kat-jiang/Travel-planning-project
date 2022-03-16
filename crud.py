@@ -42,6 +42,10 @@ def create_trip(trip_location, trip_name, start_date, end_date):
                 # latitude=latitude,
     return trip
 
+def get_trip_by_id(trip_id):
+    """Return trip info by trip_id, else returns None"""
+    
+    return Trip.query.get(trip_id)
 
 
 if __name__ == '__main__':

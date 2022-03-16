@@ -24,10 +24,10 @@ def load_users():
 
 
 if __name__ == "__main__":
-    # os.system('dropdb travelplanner')
-    # os.system('createdb travelplanner')
+    os.system('dropdb travelplanner')
+    os.system('createdb travelplanner')
 
     connect_to_db(app)
     db.create_all()
 
-    # load_users()
+    load_users()

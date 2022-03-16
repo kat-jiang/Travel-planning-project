@@ -1,10 +1,11 @@
 """Server for travel planning app."""
 
+from datetime import datetime
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from model import connect_to_db, db
 import crud
 from jinja2 import StrictUndefined
-from datetime import datetime, date
+
 
 app = Flask(__name__)
 app.secret_key = "dev"
@@ -13,6 +14,11 @@ app.jinja_env.undefined = StrictUndefined
 @app.route("/")
 def homepage():
     """View homepage"""
+
+    user_id = session.get('user')
+    if user_id:
+        return redirect(f"/user_page/{user_id}")
+
     return render_template("homepage.html")
 
 @app.route("/register", methods=["POST"])
@@ -83,11 +89,11 @@ def user_page(user_id):
     user = crud.get_user_by_id(user_id)
 
     trips = user.trips
-
+    
     return render_template('user_page.html', user=user, trips=trips)
 
-@app.route('/user_page/<user_id>/add-trip.json', methods=["POST"])
-def add_trip(user_id):
+@app.route('/user_page/add-trip.json', methods=["POST"])
+def add_trip():
     """Add trip to user's trip page"""
 
     #retrieve trip info from form
@@ -95,6 +101,7 @@ def add_trip(user_id):
     trip_name = request.json.get("name")
     start_date_str = request.json.get("start")
     end_date_str = request.json.get("end")
+    user_id = request.json.get("user_id")
 
     #without ajax
     # trip_location = request.form.get("location")
@@ -110,7 +117,6 @@ def add_trip(user_id):
     new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date)
     db.session.add(new_trip)
     db.session.commit()
-
     #add trip to User in db
     user = crud.get_user_by_id(user_id)
     user.trips.append(new_trip)
@@ -120,9 +126,43 @@ def add_trip(user_id):
     new_trip = new_trip.to_dict()
 
     return jsonify(new_trip)
-    # return redirect(f'/user_page/{user_id}')
 
+@app.route('/delete-trip', methods=["POST"])
+def delete_trip():
+    """Delete a trip from user's trip page"""
 
+    trip_id = request.json.get('trip_id')
+    trip = crud.get_trip_by_id(trip_id)
+    db.session.delete(trip)
+    db.session.commit()
+
+    return "Trip has been deleted"
+
+@app.route('/trip/<trip_id>')
+def show_trip(trip_id):
+    """Show trip info about trip"""
+
+    trip = crud.get_trip_by_id(trip_id)
+
+    return render_template('trip.html', trip=trip)
+
+# @app.route('/trip/itinerary')
+# def show_trip_itinerary():
+#     """Show trip itinerary"""
+
+#     return render_template('trip.html')
+
+# @app.route('/trip/activities')
+# def show_trip_activities():
+#     """Show trip activities"""
+
+#     return render_template('trip.html')
+
+# @app.route('/trip/invite')
+# def invite_friends():
+#     """Invite friends into trip"""
+
+#     return render_template('trip.html')
 
 
 
