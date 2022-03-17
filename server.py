@@ -140,7 +140,7 @@ def delete_trip():
     """Delete a trip from user's trip page"""
 
     trip_id = request.json.get('trip_id')
-    #first delete childs
+    #first delete childs * will need to add one for activities later
     days = crud.get_all_days(trip_id)
     for day in days:
         db.session.delete(day)
@@ -153,7 +153,7 @@ def delete_trip():
     return "Trip has been deleted"
 
 @app.route('/trip/<trip_id>')
-def show_trip(trip_id):
+def display_trip_info(trip_id):
     """Show trip info about trip"""
 
     trip = crud.get_trip_by_id(trip_id)
@@ -161,7 +161,7 @@ def show_trip(trip_id):
     return render_template('trip.html', trip=trip)
 
 @app.route('/trip/<trip_id>/itinerary')
-def show_trip_itinerary(trip_id):
+def display_trip_itinerary(trip_id):
     """Show trip itinerary"""
     trip = crud.get_trip_by_id(trip_id)
     
@@ -169,53 +169,27 @@ def show_trip_itinerary(trip_id):
 
     return render_template('itinerary.html', trip=trip, dates=days)
 
-# @app.route('/trip/activities')
-# def display_trip_activities():
-#     """Display top-rated Yelp activities"""
+@app.route('/trip/<trip_id>/activities')
+def display_trip_activities(trip_id):
+    """Display top-rated Yelp activities"""
 
-#     trip_id = request.args.get('trip-id')
-#     trip = crud.get_trip_by_id(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
 
-#     url = 'https://api.yelp.com/v3/businesses/search'
-#     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
-#     queries = {
-#         'location': trip.trip_name,
-#         'sort_by': 'rating',
-#         'limit': 10,
-#         'categories': 'active,arts'
-#     }
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+    queries = {
+        'location': trip.trip_location,
+        'sort_by': 'rating',
+        'limit': 10,
+    }
 
-#     res = requests.get(url, headers=headers, params=queries)
+    res = requests.get(url, headers=headers, params=queries)
 
-#     data = res.json()
+    data = res.json()
 
-#     activities = data.get('businesses', [])
+    activities = data.get('businesses', [])
 
-#     return render_template('activities.html', activities=activities)
-
-# @app.route('/trip/activities')
-# def display_trip_food():
-#     """Display top-rated Yelp food/restaurants"""
-
-#     trip_id = request.args.get('trip-id')
-#     trip = crud.get_trip_by_id(trip_id)
-
-#     url = 'https://api.yelp.com/v3/businesses/search'
-#     headers = {'Authorization': f'Bearer {API_KEY}'}
-#     queries = {
-#         'location': trip.trip_name,
-#         'sort_by': 'rating',
-#         'limit': 10,
-#         'categories': 'food,restaurant'
-#     }
-
-#     res = requests.get(url, headers=headers, params=queries)
-
-#     data = res.json()
-
-#     activities = data.get('businesses', [])
-
-#     return render_template('activities.html', activities=activities)
+    return render_template('activities.html', trip=trip, activities=activities, data=data)
 
 
 # @app.route('/trip/<trip_id>/invite')
@@ -223,6 +197,8 @@ def show_trip_itinerary(trip_id):
 #     """Invite friends into trip"""
 
 #     return render_template('trip.html')
+
+#  @app.route('/trip/<trip_id>/activities/search')
 
 
 

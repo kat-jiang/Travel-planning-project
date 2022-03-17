@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Trip Page{% endblock %}
+{% block title %}Trip{% endblock %}
 
 {% block body %}
 <input type="hidden" id="trip_id" value="{{trip.trip_id}}">
@@ -11,10 +11,11 @@
     <h3>{{trip.start_date.date()}} to {{trip.end_date.date()}}</h3>
   </div>
   <div class="row">
-    <a href='/trip/{{trip.trip_id}}/itinerary'>Itinerary</a>
-    <a href='/trip/{{trip.trip_id}}/activities'>Search Activities</a>
-    <a href='/trip/{{trip.trip_id}}/invite'>Invite Friends</a>
-    
+    <div class="d-grid gap-2 d-md-block">
+      <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
+      <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Search Activities</a>
+      <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
+    </div>
   </div>
 </div>
 
