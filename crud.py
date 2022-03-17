@@ -60,6 +60,13 @@ def create_days(trip_id, start_date, end_date):
 
     return trip.days
 
+def get_all_days(trip_id):
+    """return all days associated with trip"""
+
+    days = Day.query.filter_by(trip_id=trip_id).all()
+
+    return days
+
 
 if __name__ == '__main__':
     from server import app

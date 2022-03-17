@@ -140,6 +140,12 @@ def delete_trip():
     """Delete a trip from user's trip page"""
 
     trip_id = request.json.get('trip_id')
+    #first delete childs
+    days = crud.get_all_days(trip_id)
+    for day in days:
+        db.session.delete(day)
+        db.session.commit()
+    #then delete trip
     trip = crud.get_trip_by_id(trip_id)
     db.session.delete(trip)
     db.session.commit()

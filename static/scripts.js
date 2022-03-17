@@ -24,15 +24,19 @@ const addTrip = (evt) => {
   .then(response => response.json())
   .then(userTrip => {
       document.querySelector('#get-trips').insertAdjacentHTML('beforeend', 
-      `<div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <p class="card-text">
-          <h3>${userTrip.trip_name}</h3>
-          <h4>${userTrip.trip_location}</h4>
-          ${userTrip.start_date} to ${userTrip.end_date}
-        </p>
-      </div>
-      </div>`);
+      `<div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
+        <a href="/trip/{{trip.trip_id}}">
+          <div class="card-body">
+            <p class="card-text">
+              <h3>${userTrip.trip_name}</h3>
+              <h4>${userTrip.trip_location}</h4>
+              ${userTrip.start_date} to ${userTrip.end_date}
+            </p>
+          </div>
+        </a>
+        <button class="btn btn-secondary" id="delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
+      </div>`
+    );
   })
 }
 
