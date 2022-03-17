@@ -1,6 +1,7 @@
 """CRUD operations."""
 
 from model import db, User, Trip, UserTrip, Day, Activity, connect_to_db
+from datetime import datetime, timedelta
 
 def create_user(user_id, fname, lname, email, password):
     """Create and return a new user."""
@@ -46,6 +47,18 @@ def get_trip_by_id(trip_id):
     """Return trip info by trip_id, else returns None"""
     
     return Trip.query.get(trip_id)
+
+def create_days(trip_id, start_date, end_date):
+    """Based on trip start and end date, create Day instances for num of days"""
+    trip = get_trip_by_id(trip_id)
+
+    delta = end_date - start_date
+    for day in range(delta.days + 1):
+        date = start_date + timedelta(days=day)
+        day = Day(date=date)
+        trip.days.append(day)
+
+    return trip.days
 
 
 if __name__ == '__main__':

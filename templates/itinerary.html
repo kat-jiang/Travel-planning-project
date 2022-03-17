@@ -16,6 +16,22 @@
     <a href='/trip/{{trip.trip_id}}/invite'>Invite Friends</a>
     
   </div>
+  <div class="row">
+    <h1>This is your itinerary</h1>
+    <ul>
+      {% for date in dates %}
+        <li>
+          {{date.date}}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
 </div>
 
+
+
 {% endblock %}
+
+
+

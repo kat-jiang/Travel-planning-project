@@ -5,11 +5,14 @@ from flask import (Flask, render_template, request, flash, session, redirect, js
 from model import connect_to_db, db
 import crud
 from jinja2 import StrictUndefined
-
+import os
+import requests
 
 app = Flask(__name__)
-app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+
+app.secret_key = 'SECRET_KEY'
+YELP_API_KEY = os.environ['YELP_KEY']
 
 @app.route("/")
 def homepage():
@@ -92,7 +95,7 @@ def user_page(user_id):
     
     return render_template('user_page.html', user=user, trips=trips)
 
-@app.route('/user_page/add-trip.json', methods=["POST"])
+@app.route('/add-trip.json', methods=["POST"])
 def add_trip():
     """Add trip to user's trip page"""
 
@@ -122,6 +125,11 @@ def add_trip():
     user.trips.append(new_trip)
     db.session.commit()
 
+    #create Days and add to db
+    dates = crud.create_days(trip_id=new_trip.trip_id, start_date=start_date, end_date=end_date)
+    db.session.add_all(dates)
+    db.session.commit()
+
     #convert python object to dictionary
     new_trip = new_trip.to_dict()
 
@@ -146,20 +154,66 @@ def show_trip(trip_id):
 
     return render_template('trip.html', trip=trip)
 
-# @app.route('/trip/itinerary')
-# def show_trip_itinerary():
-#     """Show trip itinerary"""
+@app.route('/trip/<trip_id>/itinerary')
+def show_trip_itinerary(trip_id):
+    """Show trip itinerary"""
+    trip = crud.get_trip_by_id(trip_id)
+    
+    days = trip.days
 
-#     return render_template('trip.html')
+    return render_template('itinerary.html', trip=trip, dates=days)
 
 # @app.route('/trip/activities')
-# def show_trip_activities():
-#     """Show trip activities"""
+# def display_trip_activities():
+#     """Display top-rated Yelp activities"""
 
-#     return render_template('trip.html')
+#     trip_id = request.args.get('trip-id')
+#     trip = crud.get_trip_by_id(trip_id)
 
-# @app.route('/trip/invite')
-# def invite_friends():
+#     url = 'https://api.yelp.com/v3/businesses/search'
+#     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+#     queries = {
+#         'location': trip.trip_name,
+#         'sort_by': 'rating',
+#         'limit': 10,
+#         'categories': 'active,arts'
+#     }
+
+#     res = requests.get(url, headers=headers, params=queries)
+
+#     data = res.json()
+
+#     activities = data.get('businesses', [])
+
+#     return render_template('activities.html', activities=activities)
+
+# @app.route('/trip/activities')
+# def display_trip_food():
+#     """Display top-rated Yelp food/restaurants"""
+
+#     trip_id = request.args.get('trip-id')
+#     trip = crud.get_trip_by_id(trip_id)
+
+#     url = 'https://api.yelp.com/v3/businesses/search'
+#     headers = {'Authorization': f'Bearer {API_KEY}'}
+#     queries = {
+#         'location': trip.trip_name,
+#         'sort_by': 'rating',
+#         'limit': 10,
+#         'categories': 'food,restaurant'
+#     }
+
+#     res = requests.get(url, headers=headers, params=queries)
+
+#     data = res.json()
+
+#     activities = data.get('businesses', [])
+
+#     return render_template('activities.html', activities=activities)
+
+
+# @app.route('/trip/<trip_id>/invite')
+# def invite_friends(trip_id):
 #     """Invite friends into trip"""
 
 #     return render_template('trip.html')

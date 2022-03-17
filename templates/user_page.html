@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% block title %}User Page{% endblock %}
+
 {% block body %}
 <input type="hidden" id="user_id" value="{{user.user_id}}">
 
@@ -46,7 +48,7 @@
 
 <div class="container">
 
-  <div id="get-trips"class="d-flex flex-wrap">
+  <div id="get-trips" class="d-flex flex-wrap">
     {% for trip in trips %}
     <div class="card col-md-3" id="trip-{{trip.trip_id}}" style="width: 18rem;">
       <a href="/trip/{{trip.trip_id}}">
