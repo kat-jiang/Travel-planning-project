@@ -20,7 +20,7 @@ def homepage():
 
     user_id = session.get('user')
     if user_id:
-        return redirect(f"/user_page/{user_id}")
+        return redirect(f"/homepage/{user_id}")
 
     return render_template("homepage.html")
 
@@ -80,13 +80,13 @@ def login():
     if user.password == password:
         session['user'] = user_id
         flash(f"Welcome, {user_id}!")
-        return redirect (f"/user_page/{user_id}")
+        return redirect (f"/homepage/{user_id}")
     else:
         flash("Sorry, passwords do not match!")
         return redirect('/')
 
 
-@app.route('/user_page/<user_id>')
+@app.route('/homepage/<user_id>')
 def user_page(user_id):
     """Display user's trip page"""
     user = crud.get_user_by_id(user_id)
