@@ -202,6 +202,31 @@ def get_activities():
 
     return jsonify(activities)
 
+@app.route('/api/restaurants')
+def get_restaurants():
+    """Get top-rated yelp restaurants/food"""
+
+    trip_id = request.args.get('trip_id')
+    print('---------------------')
+    print(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
+    #make api request to Yelp-API
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+    queries = {
+        'location': trip.trip_location,
+        'sort_by': 'rating',
+        'limit': 10,
+        'categories': 'restaurant,food'
+    }
+
+    res = requests.get(url, headers=headers, params=queries)
+
+    data = res.json()
+
+    activities = data.get('businesses', [])
+
+    return jsonify(activities)
 
 @app.route('/trip/<trip_id>/invite')
 def invite_friends(trip_id):

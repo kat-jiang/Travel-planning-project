@@ -50,6 +50,23 @@ function getActivitySearch(evt) {
   });
 };
 
+function getRestaurantSearch(evt) {
+  evt.preventDefault();
+
+  const trip_id = document.querySelector('#trip_id').value;
+  console.log(trip_id)
+  fetch(`/api/restaurants?trip_id=${trip_id}`)
+  .then(response => response.json())
+  .then(restaurants => {
+    console.log(restaurants)
+    display_search_cards(restaurants)
+  });
+};
+
 document.querySelector('#activities').addEventListener('click', (evt) => {
   getActivitySearch(evt)
+});
+
+document.querySelector('#restaurants').addEventListener('click', (evt) => {
+  getRestaurantSearch(evt)
 });
