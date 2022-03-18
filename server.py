@@ -17,7 +17,7 @@ YELP_API_KEY = os.environ['YELP_KEY']
 @app.route("/")
 def homepage():
     """View homepage"""
-
+    #check if user is in session
     user_id = session.get('user')
     if user_id:
         return redirect(f"/homepage/{user_id}")
@@ -171,16 +171,27 @@ def display_trip_itinerary(trip_id):
 
 @app.route('/trip/<trip_id>/activities')
 def display_trip_activities(trip_id):
-    """Display top-rated Yelp activities"""
+    """Display activities page nav"""
 
     trip = crud.get_trip_by_id(trip_id)
 
+    return render_template('activities.html', trip=trip, )
+
+@app.route('/api/activites')
+def get_activities():
+    """Get top-rated yelp activities"""
+    trip_id = request.args.get('trip_id')
+    print('---------------------')
+    print(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
+    #make api request to Yelp-API
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
     queries = {
         'location': trip.trip_location,
         'sort_by': 'rating',
         'limit': 10,
+        'categories': 'arts,active'
     }
 
     res = requests.get(url, headers=headers, params=queries)
@@ -189,7 +200,7 @@ def display_trip_activities(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('activities.html', trip=trip, activities=activities, data=data)
+    return jsonify(activities)
 
 
 @app.route('/trip/<trip_id>/invite')
@@ -206,7 +217,7 @@ def invite_friends(trip_id):
 @app.route('/add-friend', methods=["POST"])
 def add_friend_to_trip():
     """Add user to trip"""
-    #retrieve user and trip info from form
+    #retrieve user and trip id from form
     user_id = request.form.get("user-id")
     trip_id = request.form.get("trip-id")
     #retrieve user and trip info from db
