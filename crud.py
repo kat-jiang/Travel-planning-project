@@ -32,6 +32,13 @@ def get_user_trips(user_id):
     
     return user.trips
 
+def get_all_users():
+    """Return list of all users"""
+
+    users = User.query.all()
+
+    return users
+
 def create_trip(trip_location, trip_name, start_date, end_date):
     """Create and return a new trip."""
 

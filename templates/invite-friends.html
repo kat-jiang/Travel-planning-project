@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Trip{% endblock %}
+
+{% block body %}
+<input type="hidden" id="trip_id" value="{{trip.trip_id}}">
+
+<div class="container">
+  <div class="row">
+    <h1>{{trip.trip_name}}</h1>
+    <h2>{{trip.trip_location}}</h2>
+    <h3>{{trip.start_date.date()}} to {{trip.end_date.date()}}</h3>
+  </div>
+
+  <div class="row">
+    <div class="d-grid gap-2 d-md-block">
+      <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
+      <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Search Activities</a>
+      <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <p>
+      <h3>People in this trip</h3>
+      <ul>
+        {% for user in trip_users %}
+
+        <li>{{user.user_id}}: {{user.fname}} {{user.lname}}</li>
+
+        {% endfor %}
+      </ul>
+    </p>
+    <p>
+      <h3>Add friends to this trip</h3>
+      <form action="/add-friend" method="POST">
+        <input type="hidden" name="trip-id" value="{{trip.trip_id}}">
+        <select class="form-select" name="user-id">
+          {% for user in all_users %}
+            {% if user not in trip_users %}
+              <option value="{{user.user_id}}">
+                {{user.user_id}}: {{user.fname}} {{user.lname}}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <input type="submit">
+      </form>
+
+    </p>
+  </div>
+
+</div>
+
+{% endblock %}

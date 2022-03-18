@@ -192,11 +192,32 @@ def display_trip_activities(trip_id):
     return render_template('activities.html', trip=trip, activities=activities, data=data)
 
 
-# @app.route('/trip/<trip_id>/invite')
-# def invite_friends(trip_id):
-#     """Invite friends into trip"""
+@app.route('/trip/<trip_id>/invite')
+def invite_friends(trip_id):
+    """Invite friends into trip"""
+    trip = crud.get_trip_by_id(trip_id)
 
-#     return render_template('trip.html')
+    trip_users = trip.users
+
+    all_users = crud.get_all_users()
+
+    return render_template('invite-friends.html', trip=trip, trip_users=trip_users, all_users=all_users)
+
+@app.route('/add-friend', methods=["POST"])
+def add_friend_to_trip():
+    """Add user to trip"""
+    #retrieve user and trip info from form
+    user_id = request.form.get("user-id")
+    trip_id = request.form.get("trip-id")
+    #retrieve user and trip info from db
+    trip = crud.get_trip_by_id(trip_id)
+    user = crud.get_user_by_id(user_id)
+    #add user to trip and commit to db
+    trip.users.append(user)
+    db.session.commit()
+
+    return redirect(f'/trip/{trip_id}/invite')
+
 
 #  @app.route('/trip/<trip_id>/activities/search')
 

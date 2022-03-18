@@ -38,8 +38,10 @@
                 {{ activity.name }} {{activity.rating}}
               </h5>
               <p class="card-text">
-                {{activity.location.display_address[0]}}
-                {{activity.location.display_address[1]}}
+                {% for item in activity.location.display_address %}
+                  {{item}}
+                {% endfor %}
+                <br>
                 {{activity.display_phone}}
               </p>
               <p class="card-text">
