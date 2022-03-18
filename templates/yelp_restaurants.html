@@ -25,9 +25,35 @@
     <a href='/trip/{{trip.trip_id}}/activities/search' id="search">Search for more activities</a>
   </div>
 
+
   <div class="row">
     <div class="col-md-5" id="display-results">
-      
+      {% for activity in activities %}
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4 d-flex aline-items-center">
+            <img src="{{activity.image_url}}" class="img-fluid rounded-start">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ activity.name }} {{activity.rating}}
+              </h5>
+              <p class="card-text">
+              {% for item in activity.location.display_address %}
+                {{item}}
+              {% endfor %}
+              <br>
+              {{activity.display_phone}}
+              </p>
+              <p class="card-text">
+                <a href="" class="btn btn-primary">Add to itinerary</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
 
     <div class="col-md-7">
@@ -35,8 +61,6 @@
     </div>
 
   </div>
-    
 
 </div>
-<script src="/static/trips.js"></script>
 {% endblock %}

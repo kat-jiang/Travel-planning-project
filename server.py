@@ -126,9 +126,9 @@ def add_trip():
     db.session.commit()
 
     #create Days and add to db
-    dates = crud.create_days(trip_id=new_trip.trip_id, start_date=start_date, end_date=end_date)
-    db.session.add_all(dates)
-    db.session.commit()
+    # dates = crud.create_days(trip_id=new_trip.trip_id, start_date=start_date, end_date=end_date)
+    # db.session.add_all(dates)
+    # db.session.commit()
 
     #convert python object to dictionary
     new_trip = new_trip.to_dict()
@@ -160,73 +160,6 @@ def display_trip_info(trip_id):
 
     return render_template('trip.html', trip=trip)
 
-@app.route('/trip/<trip_id>/itinerary')
-def display_trip_itinerary(trip_id):
-    """Show trip itinerary"""
-    trip = crud.get_trip_by_id(trip_id)
-    
-    days = trip.days
-
-    return render_template('itinerary.html', trip=trip, dates=days)
-
-@app.route('/trip/<trip_id>/activities')
-def display_trip_activities(trip_id):
-    """Display activities page nav"""
-
-    trip = crud.get_trip_by_id(trip_id)
-
-    return render_template('activities.html', trip=trip, )
-
-@app.route('/api/activites')
-def get_activities():
-    """Get top-rated yelp activities"""
-    trip_id = request.args.get('trip_id')
-    print('---------------------')
-    print(trip_id)
-    trip = crud.get_trip_by_id(trip_id)
-    #make api request to Yelp-API
-    url = 'https://api.yelp.com/v3/businesses/search'
-    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
-    queries = {
-        'location': trip.trip_location,
-        'sort_by': 'rating',
-        'limit': 10,
-        'categories': 'arts,active'
-    }
-
-    res = requests.get(url, headers=headers, params=queries)
-
-    data = res.json()
-
-    activities = data.get('businesses', [])
-
-    return jsonify(activities)
-
-@app.route('/api/restaurants')
-def get_restaurants():
-    """Get top-rated yelp restaurants/food"""
-
-    trip_id = request.args.get('trip_id')
-    print('---------------------')
-    print(trip_id)
-    trip = crud.get_trip_by_id(trip_id)
-    #make api request to Yelp-API
-    url = 'https://api.yelp.com/v3/businesses/search'
-    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
-    queries = {
-        'location': trip.trip_location,
-        'sort_by': 'rating',
-        'limit': 10,
-        'categories': 'restaurant,food'
-    }
-
-    res = requests.get(url, headers=headers, params=queries)
-
-    data = res.json()
-
-    activities = data.get('businesses', [])
-
-    return jsonify(activities)
 
 @app.route('/trip/<trip_id>/invite')
 def invite_friends(trip_id):
@@ -254,9 +187,79 @@ def add_friend_to_trip():
 
     return redirect(f'/trip/{trip_id}/invite')
 
+@app.route('/trip/<trip_id>/activities')
+def display_trip_activities(trip_id):
+    """Display activities page nav"""
+
+    trip = crud.get_trip_by_id(trip_id)
+
+    return render_template('activities.html', trip=trip)
+
+@app.route('/trip/<trip_id>/activities/activities')
+def get_activities(trip_id):
+    """Get top-rated yelp activities"""
+    # trip_id = request.args.get('trip_id')
+    # print('---------------------')
+    # print(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
+    #make api request to Yelp-API
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+    queries = {
+        'location': trip.trip_location,
+        'sort_by': 'rating',
+        'limit': 10,
+        'categories': 'arts,active'
+    }
+
+    res = requests.get(url, headers=headers, params=queries)
+
+    data = res.json()
+
+    activities = data.get('businesses', [])
+
+    return render_template('yelp_activities.html', activities=activities, trip=trip)
+
+@app.route('/trip/<trip_id>/activities/restaurants' )
+def get_restaurants(trip_id):
+    """Get top-rated yelp restaurants/food"""
+
+    # trip_id = request.args.get('trip_id')
+    # print('---------------------')
+    # print(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
+    #make api request to Yelp-API
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+    queries = {
+        'location': trip.trip_location,
+        'sort_by': 'rating',
+        'limit': 10,
+        'categories': 'restaurant,food'
+    }
+
+    res = requests.get(url, headers=headers, params=queries)
+
+    data = res.json()
+
+    activities = data.get('businesses', [])
+
+    return render_template('yelp_activities.html', activities=activities, trip=trip)
 
 #  @app.route('/trip/<trip_id>/activities/search')
 
+@app.route('/trip/<trip_id>/itinerary')
+def display_trip_itinerary(trip_id):
+    """Show trip itinerary"""
+    trip = crud.get_trip_by_id(trip_id)
+    
+    trip_dates = crud.create_days(trip.start_date, trip.end_date)
+
+    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates)
+
+# @app.route('/add-to-itinerary')
+# def add_to_itinerary():
+#     """Add activity/restaurant to itinerary, creates Activity instance"""
 
 
 

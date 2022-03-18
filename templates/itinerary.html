@@ -22,9 +22,9 @@
   <div class="row">
     <h1>This is your itinerary</h1>
     <ul>
-      {% for date in dates %}
+      {% for date in trip_dates %}
         <li>
-          {{date.date}}
+          {{date.date()}}
         </li>
       {% endfor %}
     </ul>

@@ -44,13 +44,13 @@ def load_trips_and_add_users():
     brian.trips.append(maui)
     db.session.commit()
 
-def load_dates_to_trip():
-    """Load dates to trip"""
-    trips = Trip.query.all()
-    for trip in trips:
-        dates = crud.create_days(trip_id=trip.trip_id, start_date=trip.start_date, end_date=trip.end_date)
-        db.session.add_all(dates)
-        db.session.commit()
+# def load_dates_to_trip():
+#     """Load dates to trip"""
+#     trips = Trip.query.all()
+#     for trip in trips:
+#         dates = crud.create_days(trip_id=trip.trip_id, start_date=trip.start_date, end_date=trip.end_date)
+#         db.session.add_all(dates)
+#         db.session.commit()
 
 if __name__ == "__main__":
     os.system('dropdb travelplanner')
@@ -61,4 +61,4 @@ if __name__ == "__main__":
 
     load_users()
     load_trips_and_add_users()
-    load_dates_to_trip()
+    # load_dates_to_trip()

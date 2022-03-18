@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, Trip, UserTrip, Day, Activity, connect_to_db
+from model import db, User, Trip, UserTrip, Activity, connect_to_db
 from datetime import datetime, timedelta
 
 def create_user(user_id, fname, lname, email, password):
@@ -53,24 +53,23 @@ def get_trip_by_id(trip_id):
     
     return Trip.query.get(trip_id)
 
-def create_days(trip_id, start_date, end_date):
-    """Based on trip start and end date, create Day instances for num of days"""
-    trip = get_trip_by_id(trip_id)
+def create_days( start_date, end_date):
+    """Based on trip start and end date, create dates for the of days"""
 
+    trip_dates = []
     delta = end_date - start_date
     for day in range(delta.days + 1):
         date = start_date + timedelta(days=day)
-        day = Day(date=date)
-        trip.days.append(day)
+        trip_dates.append(date)
 
-    return trip.days
+    return trip_dates
 
-def get_all_days(trip_id):
-    """return all days associated with trip"""
+# def get_all_days(trip_id):
+#     """return all days associated with trip"""
 
-    days = Day.query.filter_by(trip_id=trip_id).all()
+#     days = Day.query.filter_by(trip_id=trip_id).all()
 
-    return days
+#     return days
 
 
 if __name__ == '__main__':
