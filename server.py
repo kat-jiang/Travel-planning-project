@@ -140,11 +140,11 @@ def delete_trip():
     """Delete a trip from user's trip page"""
 
     trip_id = request.json.get('trip_id')
-    #first delete childs * will need to add one for activities later
-    days = crud.get_all_days(trip_id)
-    for day in days:
-        db.session.delete(day)
-        db.session.commit()
+    #first delete childs
+    # days = crud.get_all_days(trip_id)
+    # for day in days:
+    #     db.session.delete(day)
+    #     db.session.commit()
     #then delete trip
     trip = crud.get_trip_by_id(trip_id)
     db.session.delete(trip)
@@ -255,13 +255,52 @@ def display_trip_itinerary(trip_id):
     
     trip_dates = crud.create_days(trip.start_date, trip.end_date)
 
-    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates)
+    activities = crud.get_activites_by_trip_id(trip_id)
 
-# @app.route('/add-to-itinerary')
-# def add_to_itinerary():
-#     """Add activity/restaurant to itinerary, creates Activity instance"""
+    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, activities=activities)
 
+     
+@app.route('/add-to-itinerary', methods=["POST"])
+def add_to_itinerary():
+    """Add activity/restaurant to itinerary, creates Activity instance"""
+    #retrieve data from ajax
+    trip_id = request.json.get("trip_id")
+    yelp_id = request.json.get("yelp_id")
 
+    #make call to yelp to retrieve trip info
+    url = f'https://api.yelp.com/v3/businesses/{yelp_id}'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+
+    res = requests.get(url, headers=headers)
+  
+    activity = res.json()
+
+    #parse out data
+    cat_list=[]
+    for category in activity.get('categories'):
+        cat_list.append(category['title'])
+    activity_type = ", ".join(cat_list)
+
+    address = ", ".join(activity.get('location').get('display_address'))
+
+    activity_name = activity.get('name')
+    phone = activity.get('display_phone')
+    longitude = activity.get('coordinates').get('longitude')
+    latitude = activity.get('coordinates').get('latitude')
+
+    #create Activity instance and add to db
+    activity = crud.create_activity(trip_id=trip_id,
+                        activity_name=activity_name,
+                        activity_type=activity_type,
+                        address=address,
+                        phone=phone,
+                        longitude=longitude,
+                        latitude=latitude,
+                        yelp_id=yelp_id)
+    db.session.add(activity)
+    db.session.commit()
+
+    return "Activity has been added to itinerary"
 
 
 if __name__ == "__main__":

@@ -53,7 +53,7 @@ def get_trip_by_id(trip_id):
     
     return Trip.query.get(trip_id)
 
-def create_days( start_date, end_date):
+def create_days(start_date, end_date):
     """Based on trip start and end date, create dates for the of days"""
 
     trip_dates = []
@@ -63,6 +63,24 @@ def create_days( start_date, end_date):
         trip_dates.append(date)
 
     return trip_dates
+
+def create_activity(trip_id, activity_name, activity_type, address, phone, longitude, latitude, yelp_id):
+    """Create and return an activity."""
+    activity = Activity(trip_id=trip_id,
+                        activity_name=activity_name,
+                        activity_type=activity_type,
+                        address=address,
+                        phone=phone,
+                        longitude=longitude,
+                        latitude=latitude,
+                        yelp_id=yelp_id)
+    return activity
+
+def get_activites_by_trip_id(trip_id):
+    """Get all activities by trip_id"""
+
+    return Activity.query.filter(Trip.trip_id==trip_id).all()
+
 
 # def get_all_days(trip_id):
 #     """return all days associated with trip"""

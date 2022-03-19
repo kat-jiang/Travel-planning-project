@@ -29,7 +29,16 @@
       {% endfor %}
     </ul>
   </div>
-
+  <div class="row">
+    <h1>Unsorted activities</h1>
+    <ul>
+      {% for activity in activities %}
+        <li>
+          {{activity.activity_name}}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 
 
