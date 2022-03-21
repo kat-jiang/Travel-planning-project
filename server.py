@@ -141,10 +141,10 @@ def delete_trip():
 
     trip_id = request.json.get('trip_id')
     #first delete childs
-    # days = crud.get_all_days(trip_id)
-    # for day in days:
-    #     db.session.delete(day)
-    #     db.session.commit()
+    activities = crud.get_activites_by_trip_id(trip_id)
+    for activity in activities:
+        db.session.delete(activity)
+        db.session.commit()
     #then delete trip
     trip = crud.get_trip_by_id(trip_id)
     db.session.delete(trip)
@@ -255,9 +255,26 @@ def display_trip_itinerary(trip_id):
     
     trip_dates = crud.create_days(trip.start_date, trip.end_date)
 
-    activities = crud.get_activites_by_trip_id(trip_id)
 
-    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, activities=activities)
+    #format datetime to work in input datetime
+    start_date =trip.start_date.strftime("%Y-%m-%dT00:00")
+    end_date =trip.end_date.strftime("%Y-%m-%dT00:00")
+
+    unsorted_activities = crud.get_null_datetime_activities(trip_id)
+
+    dated_activities = crud.get_datetime_activities(trip_id)
+
+    itin_dict = {}
+    for date in trip_dates:
+        activity_list = []
+
+        for activity in dated_activities:
+            if activity.datetime.date() == date.date():
+                activity_list.append(activity)
+        activity_list.sort(key=lambda activity:activity.datetime)
+        itin_dict[date.date()] = activity_list
+
+    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, start_date=start_date, end_date=end_date, activities=unsorted_activities, sorted_activities=itin_dict)
 
      
 @app.route('/add-to-itinerary', methods=["POST"])
@@ -302,6 +319,21 @@ def add_to_itinerary():
 
     return "Activity has been added to itinerary"
 
+@app.route('/add-datetime', methods=["POST"])
+def add_datetime_to_activity():
+    """Add datetime to Activity instance"""
+
+    activity_id = request.json.get("activity_id")
+    date_time = request.json.get("datetime")
+    print('------------------------------')
+    print(date_time)
+    activity=crud.get_activity_by_activity_id(activity_id)
+
+    activity.datetime = date_time
+
+    db.session.commit()
+
+    return "Date and time added to activity"
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)

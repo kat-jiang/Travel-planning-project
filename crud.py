@@ -79,8 +79,34 @@ def create_activity(trip_id, activity_name, activity_type, address, phone, longi
 def get_activites_by_trip_id(trip_id):
     """Get all activities by trip_id"""
 
-    return Activity.query.filter(Trip.trip_id==trip_id).all()
+    return Activity.query.filter_by(trip_id=trip_id).all()
 
+def get_activity_by_activity_id(activity_id):
+    """Return activity by activity id"""
+
+    return Activity.query.get(activity_id)
+
+def get_null_datetime_activities(trip_id):
+    """Return all activities where datetime is null"""
+
+    return Activity.query.filter_by(trip_id=trip_id, datetime= None).all()
+
+def get_datetime_activities(trip_id):
+    """Return all activities where datetime is null"""
+
+    return Activity.query.filter(Activity.trip_id==trip_id, Activity.datetime != None).all()
+
+
+# def create_days(start_date, end_date):
+#     """Based on trip start and end date, create dates for the of days"""
+
+#     trip_dates = []
+#     delta = end_date - start_date
+#     for day in range(delta.days + 1):
+#         date = start_date + timedelta(days=day)
+#         trip_dates.append(date)
+
+#     return trip_dates
 
 # def get_all_days(trip_id):
 #     """return all days associated with trip"""

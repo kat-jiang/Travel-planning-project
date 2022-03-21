@@ -18,31 +18,78 @@
       <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
     </div>
   </div>
+  
+  <h1>Activities List</h1>
+  <div class="row display-flex flex-nowrap overflow-auto" >
+ 
+    {% for activity in activities %}
+    <div class="card border-dark mb-3" style="padding: 0;max-width: 18rem;">
+      <div class="card-header">{{activity.activity_name}}</div>
+      <div class="card-body text-dark">
+        <p class="card-title">{{activity.activity_type}}</p>
+        <p class="card-text">
+          {{activity.address}} <br> 
+          {{activity.phone}}
+        </p>
+        
+      </div>
+      <div class="card-footer">
+        <button type="button" id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Add date/time</button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="addDatetimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="add-datetime">
+          <div class="modal-body">
+              <label for="meeting-time">Choose a date and time for your activity:</label>
+
+              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary add-datetime">Save changes</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
 
   <div class="row">
     <h1>This is your itinerary</h1>
     <ul>
-      {% for date in trip_dates %}
+      {% for date in sorted_activities %}
         <li>
-          {{date.date()}}
+          {{date}}
+          <ul>
+            {% for item in sorted_activities[date] %}
+            <li>
+              {{item.datetime.time()}} {{item.activity_name}} 
+            </li>
+            {% endfor %}
+          </ul>
         </li>
+        
       {% endfor %}
     </ul>
   </div>
-  <div class="row">
-    <h1>Unsorted activities</h1>
-    <ul>
-      {% for activity in activities %}
-        <li>
-          {{activity.activity_name}}
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
+  
 </div>
 
 
-
+<script src="/static/itinerary.js"></script>
 {% endblock %}
 
 

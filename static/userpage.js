@@ -25,7 +25,7 @@ const addTrip = (evt) => {
   .then(userTrip => {
       document.querySelector('#get-trips').insertAdjacentHTML('beforeend', 
       `<div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
-        <a href="/trip/{{trip.trip_id}}">
+        <a href="/trip/${userTrip.trip_id}">
           <div class="card-body">
             <p class="card-text">
               <h3>${userTrip.trip_name}</h3>
@@ -34,7 +34,7 @@ const addTrip = (evt) => {
             </p>
           </div>
         </a>
-        <button class="btn btn-secondary" id="delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
+        <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
       </div>`
     );
   })
@@ -46,10 +46,10 @@ document.querySelector('#add-trip').addEventListener('submit', (evt) => {
 });
 
 // ------------------Delete trip-----------------
-const deleteTrip = (evt) => {
-  const trip_id = evt.target.getAttribute('trip-id')
-  console.log(trip_id)
-  console.log(typeof(trip_id))
+const deleteTrip = (trip_id) => {
+  // const trip_id = evt.target.getAttribute('trip-id')
+  // console.log(trip_id)
+  // console.log(typeof(trip_id))
   
   fetch('/delete-trip', {
     method: 'POST',
@@ -66,9 +66,20 @@ const deleteTrip = (evt) => {
 }
 
 // add an event handler to handle clicking on a delete button
-for (const button of document.querySelectorAll('#delete')) {
-  button.addEventListener('click', (evt) => {
-    deleteTrip(evt)
-  })
-}
+// for (const button of document.querySelectorAll('.delete')) {
+//   button.addEventListener('click', (evt) => {
+//     deleteTrip(evt)
+//   })
+// }
   
+let results = document.querySelector('#get-trips');
+
+results.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('delete')) {
+    console.log(evt.target);
+    if (confirm('Are you sure you want to delete this trip?')) {
+      const trip_id = evt.target.getAttribute('trip-id');
+      deleteTrip(trip_id);
+    };
+  };
+});
