@@ -85,6 +85,14 @@ def login():
         flash("Sorry, passwords do not match!")
         return redirect('/')
 
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    del session['user']
+
+    return redirect('/')
+
 
 @app.route('/homepage/<user_id>')
 def user_page(user_id):
@@ -255,7 +263,6 @@ def display_trip_itinerary(trip_id):
     
     trip_dates = crud.create_days(trip.start_date, trip.end_date)
 
-
     #format datetime to work in input datetime
     start_date =trip.start_date.strftime("%Y-%m-%dT00:00")
     end_date =trip.end_date.strftime("%Y-%m-%dT00:00")
@@ -267,7 +274,6 @@ def display_trip_itinerary(trip_id):
     itin_dict = {}
     for date in trip_dates:
         activity_list = []
-
         for activity in dated_activities:
             if activity.datetime.date() == date.date():
                 activity_list.append(activity)
