@@ -14,6 +14,8 @@ app.jinja_env.undefined = StrictUndefined
 app.secret_key = 'SECRET_KEY'
 YELP_API_KEY = os.environ['YELP_KEY']
 
+# ----- ROUTES FOR HOME/LOGIN ----- #
+
 @app.route("/")
 def homepage():
     """View homepage"""
@@ -23,6 +25,7 @@ def homepage():
         return redirect(f"/homepage/{user_id}")
 
     return render_template("homepage.html")
+
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -52,7 +55,6 @@ def register():
                                     lname=lname,
                                     email=email,
                                     password=password)
-
         db.session.add(new_user)
         db.session.commit()
 
@@ -79,31 +81,33 @@ def login():
     #if passwords match, set session to user_id, send user to user_page
     if user.password == password:
         session['user'] = user_id
-        flash(f"Welcome, {user_id}!")
         return redirect (f"/homepage/{user_id}")
     else:
         flash("Sorry, passwords do not match!")
         return redirect('/')
 
+
 @app.route("/logout")
 def logout():
     """Log user out"""
-
+    #delete session
     del session['user']
 
     return redirect('/')
 
+# ----- ROUTES FOR USERPAGE ----- #
 
 @app.route('/homepage/<user_id>')
 def user_page(user_id):
     """Display user's trip page"""
-    user = crud.get_user_by_id(user_id)
 
+    #get user and trips from db
+    user = crud.get_user_by_id(user_id)
     trips = user.trips
     
     return render_template('user_page.html', user=user, trips=trips)
 
-@app.route('/add-trip.json', methods=["POST"])
+@app.route('/add-trip', methods=["POST"])
 def add_trip():
     """Add trip to user's trip page"""
 
@@ -121,8 +125,8 @@ def add_trip():
     # end_date_str = request.form.get("trip-end")
 
     #convert date strings to datetime
-    start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
-    end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+    start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
     #create trip and add to db
     new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date)
@@ -159,6 +163,8 @@ def delete_trip():
     db.session.commit()
 
     return "Trip has been deleted"
+
+# ----- ROUTES FOR TRIP PAGE ----- #
 
 @app.route('/trip/<trip_id>')
 def display_trip_info(trip_id):
@@ -254,7 +260,30 @@ def get_restaurants(trip_id):
 
     return render_template('yelp_activities.html', activities=activities, trip=trip)
 
-#  @app.route('/trip/<trip_id>/activities/search')
+@app.route('/trip/<trip_id>/activities/search', methods=["POST"])
+def search_activities(trip_id):
+    """Get top-rated yelp search"""
+
+    trip = crud.get_trip_by_id(trip_id)
+    search = request.form.get("search-yelp")
+    print(search)
+    url = 'https://api.yelp.com/v3/businesses/search'
+    headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
+    queries = {
+        'location': trip.trip_location,
+        'limit': 10,
+        'categories': f'{search}',
+    }
+
+    res = requests.get(url, headers=headers, params=queries)
+
+    data = res.json()
+
+    activities = data.get('businesses', [])
+
+    return render_template('yelp_activities.html', activities=activities, trip=trip)
+
+# ----- ROUTES FOR TRIP ITINERARY ----- #
 
 @app.route('/trip/<trip_id>/itinerary')
 def display_trip_itinerary(trip_id):
@@ -328,15 +357,13 @@ def add_to_itinerary():
 @app.route('/add-datetime', methods=["POST"])
 def add_datetime_to_activity():
     """Add datetime to Activity instance"""
-
+    #retrieve activity id and datetime from form
     activity_id = request.json.get("activity_id")
     date_time = request.json.get("datetime")
-    print('------------------------------')
-    print(date_time)
+
+    #get activity object and add datetime instance, commit to db
     activity=crud.get_activity_by_activity_id(activity_id)
-
     activity.datetime = date_time
-
     db.session.commit()
 
     return "Date and time added to activity"

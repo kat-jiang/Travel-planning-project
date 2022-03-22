@@ -97,24 +97,6 @@ def get_datetime_activities(trip_id):
     return Activity.query.filter(Activity.trip_id==trip_id, Activity.datetime != None).all()
 
 
-# def create_days(start_date, end_date):
-#     """Based on trip start and end date, create dates for the of days"""
-
-#     trip_dates = []
-#     delta = end_date - start_date
-#     for day in range(delta.days + 1):
-#         date = start_date + timedelta(days=day)
-#         trip_dates.append(date)
-
-#     return trip_dates
-
-# def get_all_days(trip_id):
-#     """return all days associated with trip"""
-
-#     days = Day.query.filter_by(trip_id=trip_id).all()
-
-#     return days
-
 
 if __name__ == '__main__':
     from server import app

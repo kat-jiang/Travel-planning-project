@@ -14,7 +14,7 @@
   <div class="row">
     <div class="d-grid gap-2 d-md-block">
       <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
-      <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Search Activities</a>
+      <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Explore Activities</a>
       <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
     </div>
   </div>
@@ -22,7 +22,10 @@
   <div class="row">
     <a href='/trip/{{trip.trip_id}}/activities/activities' id="activities">See Yelp recommended activities</a>
     <a href='/trip/{{trip.trip_id}}/activities/restaurants' id="restaurants">See Yelp recommended restaurants</a>
-    <a href='/trip/{{trip.trip_id}}/activities/search' id="search">Search for more activities</a>
+    <form action='/trip/{{trip.trip_id}}/activities/search' method="POST">
+      <input type="text" name="search-yelp">
+      <input type="submit" value="Search">
+    </form>
   </div>
 
   <div class="row">

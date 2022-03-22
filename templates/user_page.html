@@ -12,28 +12,28 @@
 
       <div class="col-12 col-md-3">
         <div class="form-floating">
-          <input type="text" class="form-control" id="location" name="location" placeholder="Where are you going?" aria-label="Location">
+          <input type="text" class="form-control" id="location" name="location" required>
           <label for="floatingInputGrid">Location (city, state)</label>
         </div>
       </div>
 
       <div class="col-12 col-md-4">
         <div class="form-floating">
-          <input type="text" class="form-control" id="trip-name" name="trip-name" placeholder="Name your trip" aria-label="Trip name">
+          <input type="text" class="form-control" id="trip-name" name="trip-name">
           <label for="floatingInputGrid">Trip Name</label>
         </div>
       </div>
 
       <div class="col-5 col-md-2">
         <div class="form-floating">
-          <input type="date" id="start-date" name="trip-start" class="form-control" placeholder="Start date" aria-label="Trip-start">
+          <input type="date" id="start-date" name="trip-start" class="form-control" placeholder="Start date" required>
           <label for="floatingInputGrid">Start Date</label>
         </div>
       </div>
 
       <div class="col-5 col-md-2">
         <div class="form-floating">
-          <input type="date" id="end-date" name="trip-end" class="form-control" placeholder="End date" aria-label="Trip-end">
+          <input type="date" id="end-date" name="trip-end" class="form-control" placeholder="End date" required>
           <label for="floatingInputGrid">End Date</label>
         </div>
       </div>
@@ -46,8 +46,9 @@
   </form>
 </div>
 
+<
 <div class="container">
-
+  <h2>Your Trips</h2>
   <div id="get-trips" class="d-flex flex-wrap">
     {% for trip in trips %}
     <div class="card col-md-3" id="trip-{{trip.trip_id}}" style="width: 18rem;">

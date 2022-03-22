@@ -12,7 +12,7 @@ const addTrip = (evt) => {
     user_id: document.querySelector('#user_id').value,
   };
 
-  const url = '/add-trip.json';
+  const url = '/add-trip';
 
   fetch(url, {
     method: 'POST',
