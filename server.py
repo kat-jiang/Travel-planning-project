@@ -207,7 +207,7 @@ def display_trip_activities(trip_id):
 
     trip = crud.get_trip_by_id(trip_id)
 
-    return render_template('activities.html', trip=trip)
+    return render_template('activities.html', trip=trip, activities=None)
 
 @app.route('/trip/<trip_id>/activities/activities')
 def get_activities(trip_id):
@@ -232,7 +232,7 @@ def get_activities(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('yelp_activities.html', activities=activities, trip=trip)
+    return render_template('activities.html', activities=activities, trip=trip)
 
 @app.route('/trip/<trip_id>/activities/restaurants' )
 def get_restaurants(trip_id):
@@ -258,7 +258,7 @@ def get_restaurants(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('yelp_activities.html', activities=activities, trip=trip)
+    return render_template('activities.html', activities=activities, trip=trip)
 
 @app.route('/trip/<trip_id>/activities/search', methods=["POST"])
 def search_activities(trip_id):
@@ -266,7 +266,7 @@ def search_activities(trip_id):
 
     trip = crud.get_trip_by_id(trip_id)
     search = request.form.get("search-yelp")
-    print(search)
+    
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
     queries = {
@@ -281,7 +281,7 @@ def search_activities(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('yelp_activities.html', activities=activities, trip=trip)
+    return render_template('activities.html', activities=activities, trip=trip)
 
 # ----- ROUTES FOR TRIP ITINERARY ----- #
 

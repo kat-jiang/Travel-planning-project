@@ -3,23 +3,13 @@ let activityId = null
 for (const button of document.querySelectorAll(".modal-btn")) {
   button.addEventListener('click', () => {
     activityId = button.getAttribute('id')
-    console.log(activityId)
   })
-}
+};
 
 const addToItinerary = (evt) => {
   evt.preventDefault();
   
-  // const yelp_id = evt.target.value;
-  // console.log(activity)
-  // console.log(activity.name)
   const formInputs = {
-    // activity_name: activity.name,
-    // activity_type: activity.categories,
-    // address:activity.display_address,
-    // phone: activity.display_phone,
-    // longitude: activity.coordinates,
-    // latitude: activity.coordinates,
     yelp_id: evt.target.value,
     trip_id: document.querySelector('#trip_id').value,
   };
@@ -43,7 +33,7 @@ for (const button of document.querySelectorAll('.add-to-itinerary')) {
   button.addEventListener('click', (evt) => {
     addToItinerary(evt)
   })
-}
+};
 
 
 const addDatetime = (evt, activityId) => {
@@ -53,8 +43,6 @@ const addDatetime = (evt, activityId) => {
     activity_id: activityId,
     datetime: document.querySelector('#activity-time').value,
   };
-  console.log(formInputs.activity_id)
-  console.log(formInputs.datetime)
 
   fetch('/add-datetime', {
     method: 'POST',
@@ -70,7 +58,6 @@ const addDatetime = (evt, activityId) => {
     });
 };
 
-document.querySelector('.add-datetime').addEventListener('click', (evt) => {
+document.querySelector('#add-datetime').addEventListener('submit', (evt) => {
   addDatetime(evt, activityId);
-  console.log(activityId)
 })

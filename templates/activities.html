@@ -23,14 +23,46 @@
     <a href='/trip/{{trip.trip_id}}/activities/activities' id="activities">See Yelp recommended activities</a>
     <a href='/trip/{{trip.trip_id}}/activities/restaurants' id="restaurants">See Yelp recommended restaurants</a>
     <form action='/trip/{{trip.trip_id}}/activities/search' method="POST">
-      <input type="text" name="search-yelp">
+      <input type="text" name="search-yelp" required>
       <input type="submit" value="Search">
     </form>
   </div>
 
   <div class="row">
     <div class="col-md-5" id="display-results">
-      
+    {% if activities %}
+      {% for activity in activities %}
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4 d-flex aline-items-center">
+              <img src="{{activity.image_url}}" class="img-fluid rounded-start">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ activity.name }} {{activity.rating}}
+                </h5>
+                <h6> Category:
+                  {% for category in activity.categories %}
+                  {{ category.title }}
+                  {% endfor %}
+                </h6>
+                <p class="card-text">
+                {% for item in activity.location.display_address %}
+                  {{item}}
+                {% endfor %}
+                <br>
+                {{activity.display_phone}}
+                </p>
+                <p class="card-text">
+                  <button class="btn btn-primary add-to-itinerary" value="{{activity.id}}">Add to itinerary</button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
     </div>
 
     <div class="col-md-7">
@@ -39,7 +71,7 @@
 
   </div>
     
-
 </div>
-<script src="/static/trips.js"></script>
+
+<script src="/static/itinerary.js"></script>
 {% endblock %}

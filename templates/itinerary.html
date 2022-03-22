@@ -19,7 +19,7 @@
     </div>
   </div>
   
-  <h1>Activities List</h1>
+  <h3>Activities List</h3>
   <div class="row display-flex flex-nowrap overflow-auto" >
  
     {% for activity in activities %}
@@ -45,20 +45,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Choose a date and time for your activity:</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <form id="add-datetime">
           <div class="modal-body">
-              <label for="meeting-time">Choose a date and time for your activity:</label>
-
-              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}">
+              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}" required>
           </div>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary add-datetime">Save changes</button>
+            <input type="submit" class="btn btn-primary add-datetime" value="Save changes"></button>
           </div>
         </form>
 
@@ -66,7 +64,7 @@
     </div>
   </div>
 
-  <h1>This is your itinerary</h1>
+  <h3>This is your itinerary</h3>
   <div class="row">
     <ul>
       {% for date in sorted_activities %}
