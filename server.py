@@ -380,8 +380,7 @@ def get_trip_locations():
     trips = []
     for trip in user.trips:
         trips.append(trip.to_dict())
-    print('-------------------')
-    print(trips)
+
     return jsonify(trips)
 
 if __name__ == "__main__":

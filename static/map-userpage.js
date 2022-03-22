@@ -19,9 +19,9 @@ fetch(`/api/trips?user_id=${userId}`)
     for (const trip of trips) {
       let longitude = trip.longitude;
       let latitude = trip.latitude;
-      console.log(trip)
+
       // Create a default Marker and add it to the map.
-      const marker1 = new mapboxgl.Marker()
+      const marker = new mapboxgl.Marker()
       .setLngLat([`${longitude}`, `${latitude}`])
       .setPopup(
         new mapboxgl.Popup({ offset: 25 }) // add popups
