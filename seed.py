@@ -15,23 +15,36 @@ def load_users():
 
     brian = crud.create_user(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password='1234')
 
+    devin = crud.create_user(user_id='devin', fname='Devin', lname='Jiang', email='devin@gmail.com', password='1234')
+
+    hans=crud.create_user(user_id='hans', fname='Hans', lname='Mei', email='hans@gmail.com', password='1234')
+
     christine = crud.create_user(user_id='christine', fname='Christine', lname='Wo', email='chris@gmail.com', password='1234')
 
     nina = crud.create_user(user_id='nina', fname='Nina', lname='Jiang', email='nina@gmail.com', password='1234')
 
-    db.session.add_all([kat, brian, christine, nina])
+    ting=crud.create_user(user_id='ting', fname='Yuting', lname='Jiang', email='ting@gmail.com', password='1234')
+
+    phil=crud.create_user(user_id='phil', fname='Phil', lname='Arrington', email='phil@gmail.com', password='1234')
+
+    jess=crud.create_user(user_id='jess', fname='Jess', lname='Harrigan', email='jess@gmail.com', password='1234')
+
+
+    db.session.add_all([kat, brian, devin, hans, christine, nina, ting, phil, jess])
     db.session.commit()
 
 def load_trips_and_add_users():
     "Load trips into database and add to user"
 
-    maui = crud.create_trip(trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"))
+    maui = Trip(trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924)
 
-    seattle = crud.create_trip(trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"))
+    seattle = Trip(trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"), latitude=47.608013, longitude=-122.335167)
 
-    palm_springs = crud.create_trip(trip_location='Palm Springs, CA', trip_name="Hike Joshua Tree", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"))
+    palm_springs = Trip(trip_location='Palm Springs, CA', trip_name="Hike Joshua Tree", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.830517, longitude=-116.545601)
 
-    db.session.add_all([maui, seattle, palm_springs])
+    chicago = Trip(trip_location='Chicago, IL', trip_name="Explore Windy City", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177)
+
+    db.session.add_all([maui, seattle, palm_springs, chicago])
     db.session.commit()
 
     kat = User.query.get('kat')
@@ -40,17 +53,11 @@ def load_trips_and_add_users():
     kat.trips.append(maui)
     kat.trips.append(seattle)
     kat.trips.append(palm_springs)
+    kat.trips.append(chicago)
 
     brian.trips.append(maui)
     db.session.commit()
 
-# def load_dates_to_trip():
-#     """Load dates to trip"""
-#     trips = Trip.query.all()
-#     for trip in trips:
-#         dates = crud.create_days(trip_id=trip.trip_id, start_date=trip.start_date, end_date=trip.end_date)
-#         db.session.add_all(dates)
-#         db.session.commit()
 
 if __name__ == "__main__":
     os.system('dropdb travelplanner')
@@ -61,4 +68,3 @@ if __name__ == "__main__":
 
     load_users()
     load_trips_and_add_users()
-    # load_dates_to_trip()

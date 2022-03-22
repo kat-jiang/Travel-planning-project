@@ -368,6 +368,22 @@ def add_datetime_to_activity():
 
     return "Date and time added to activity"
 
+# ----- ROUTES FOR MAPS ----- #
+
+@app.route('/api/trips')
+def get_trip_locations():
+    """Return list of trip long/lats"""
+
+    user_id = request.args.get('user_id')
+    user = crud.get_user_by_id(user_id)
+
+    trips = []
+    for trip in user.trips:
+        trips.append(trip.to_dict())
+    print('-------------------')
+    print(trips)
+    return jsonify(trips)
+
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)

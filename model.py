@@ -29,6 +29,7 @@ class Trip(db.Model):
     __tablename__ = "trips"
 
     trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    # creator = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
     trip_location = db.Column(db.String(50), nullable=False)
     trip_name = db.Column(db.String(100), default=trip_location)
     longitude = db.Column(db.Integer)
@@ -46,7 +47,9 @@ class Trip(db.Model):
                     'trip_location': self.trip_location,
                     'trip_name': self.trip_name,
                     'start_date': self.start_date,
-                    'end_date': self.end_date
+                    'end_date': self.end_date,
+                    'longitude': self.longitude,
+                    'latitude': self.latitude,
         }
         return trip_dict
 
