@@ -24,7 +24,8 @@ const addTrip = (evt) => {
   .then(response => response.json())
   .then(userTrip => {
       document.querySelector('#get-trips').insertAdjacentHTML('beforeend', 
-      `<div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
+      `
+      <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
         <a href="/trip/${userTrip.trip_id}">
           <div class="card-body">
             <p class="card-text">
@@ -35,7 +36,8 @@ const addTrip = (evt) => {
           </div>
         </a>
         <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
-      </div>`
+      </div>
+      `
     );
   })
 }

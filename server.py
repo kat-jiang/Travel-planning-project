@@ -209,12 +209,12 @@ def display_trip_activities(trip_id):
 
     return render_template('activities.html', trip=trip, activities=None)
 
-@app.route('/trip/<trip_id>/activities/activities')
-def get_activities(trip_id):
+@app.route('/api/activities')
+def get_activities():
     """Get top-rated yelp activities"""
-    # trip_id = request.args.get('trip_id')
-    # print('---------------------')
-    # print(trip_id)
+    trip_id = request.args.get('trip_id')
+    print('---------------------')
+    print(trip_id)
     trip = crud.get_trip_by_id(trip_id)
     #make api request to Yelp-API
     url = 'https://api.yelp.com/v3/businesses/search'
@@ -232,15 +232,16 @@ def get_activities(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('activities.html', activities=activities, trip=trip)
+    # return render_template('activities.html', activities=activities, trip=trip)
+    return jsonify(activities)
 
-@app.route('/trip/<trip_id>/activities/restaurants' )
-def get_restaurants(trip_id):
+@app.route('/api/restaurants' )
+def get_restaurants():
     """Get top-rated yelp restaurants/food"""
 
-    # trip_id = request.args.get('trip_id')
-    # print('---------------------')
-    # print(trip_id)
+    trip_id = request.args.get('trip_id')
+    print('---------------------')
+    print(trip_id)
     trip = crud.get_trip_by_id(trip_id)
     #make api request to Yelp-API
     url = 'https://api.yelp.com/v3/businesses/search'
@@ -258,15 +259,18 @@ def get_restaurants(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('activities.html', activities=activities, trip=trip)
+    # flash("Activity has been added")
+    # return render_template('activities.html', activities=activities, trip=trip)
+    return jsonify(activities)
 
-@app.route('/trip/<trip_id>/activities/search', methods=["POST"])
-def search_activities(trip_id):
+@app.route('/api/search', methods=["POST"])
+def search_activities():
     """Get top-rated yelp search"""
-
+    trip_id = request.json.get('trip_id')
     trip = crud.get_trip_by_id(trip_id)
-    search = request.form.get("search-yelp")
-    
+
+    search = request.json.get("search")
+
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
     queries = {
@@ -281,7 +285,8 @@ def search_activities(trip_id):
 
     activities = data.get('businesses', [])
 
-    return render_template('activities.html', activities=activities, trip=trip)
+    # return render_template('activities.html', activities=activities, trip=trip)
+    return jsonify(activities)
 
 # ----- ROUTES FOR TRIP ITINERARY ----- #
 
