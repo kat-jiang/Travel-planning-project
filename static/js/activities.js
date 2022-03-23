@@ -1,5 +1,10 @@
 "use strict";
-
+// -------- List to hold markers -------- //
+// let currentMarkers = [];
+//   for (const marker of currentMarkers) {
+//     marker.addTo(map);
+//   }
+let currentMarkers = [];
 // -------- DISPLAY CARDS -------- //
 
 function display_search_cards(results) {
@@ -65,8 +70,8 @@ function getActivitySearch(evt) {
   fetch(`/api/activities?trip_id=${trip_id}`)
   .then(response => response.json())
   .then(activities => {
-    display_search_cards(activities)
-    createMapMarkers(activities)
+    display_search_cards(activities);
+    createMapMarkers(activities);
   });
 };
 
@@ -78,8 +83,8 @@ function getRestaurantSearch(evt) {
   fetch(`/api/restaurants?trip_id=${trip_id}`)
   .then(response => response.json())
   .then(restaurants => {
-    display_search_cards(restaurants)
-    createMapMarkers(restaurants)
+    display_search_cards(restaurants);
+    createMapMarkers(restaurants);
   });
 };
 
@@ -101,7 +106,7 @@ function getSearchResults(evt) {
     .then(response => response.json())
     .then(results => {
       display_search_cards(results);
-      createMapMarkers(results)
+      createMapMarkers(results);
     });
 };
 
@@ -165,8 +170,14 @@ const map = new mapboxgl.Map({
 
 // -------- CREATE MARKERS FOR MAP -------- //
 
+
 const createMapMarkers = (results) => {
-  const currentMarkers = [];
+
+  // removing old markers from map, then clear currentmarkers list
+  for (const oldMarker of currentMarkers) {
+    oldMarker.remove();
+  }
+  currentMarkers = [];
 
   for (const result of results) {
     const name = result.name;
@@ -174,9 +185,6 @@ const createMapMarkers = (results) => {
     const longitude = result.coordinates.longitude;
     const latitude =  result.coordinates.latitude;
 
-    // create div for marker
-    // const el= document.createElement('div');
-    // el.className = 'marker';
     // add popup and marker to the map
     const marker = new mapboxgl.Marker()
     .setLngLat([`${longitude}`, `${latitude}`])
@@ -186,9 +194,11 @@ const createMapMarkers = (results) => {
           `<h5>${name}</h5><p>Rating: ${rating}</p>`
         )
     )
+    // add markers to currentmarkers list
     currentMarkers.push(marker);
-    // .addTo(map);
   }
+
+  // loop through currentmarkers list to add markers to map
   for (const marker of currentMarkers) {
     marker.addTo(map)
   };
