@@ -1,10 +1,58 @@
 "use strict";
-// -------- List to hold markers -------- //
-// let currentMarkers = [];
-//   for (const marker of currentMarkers) {
-//     marker.addTo(map);
-//   }
+// -------- LIST TO HOLD MAP MARKERS-------- //
+
 let currentMarkers = [];
+
+// -------- DISPLAY MAP FROM MAPBOX -------- //
+const tripLat = document.querySelector('#trip-lat').value;
+const tripLng = document.querySelector('#trip-lng').value;
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0amlhbmciLCJhIjoiY2wwdWh3NnRqMHhoODNrcW9yaXY5N2VnayJ9.HDKyR2oAhjjbkMOzSpI5-A';
+
+const map = new mapboxgl.Map({
+  container: 'map', // container ID
+  style: 'mapbox://styles/mapbox/streets-v11', // style URL
+  center: [ `${tripLng}` , `${tripLat}` ], // starting position [lng, lat]
+  zoom: 8, // starting zoom
+  hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
+});
+
+
+// -------- CREATE MARKERS FOR MAP -------- //
+
+const createMapMarkers = (results) => {
+
+  // removing old markers from map, then clear currentmarkers list
+  for (const oldMarker of currentMarkers) {
+    oldMarker.remove();
+  }
+  currentMarkers = [];
+
+  for (const result of results) {
+    const name = result.name;
+    const rating = result.rating;
+    const longitude = result.coordinates.longitude;
+    const latitude =  result.coordinates.latitude;
+
+    // add popup and marker to the map
+    const marker = new mapboxgl.Marker()
+    .setLngLat([`${longitude}`, `${latitude}`])
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML(
+          `<h5>${name}</h5><p>Rating: ${rating}</p>`
+        )
+    )
+    // add markers to currentmarkers list
+    currentMarkers.push(marker);
+  }
+
+  // loop through currentmarkers list to add markers to map
+  for (const marker of currentMarkers) {
+    marker.addTo(map)
+  };
+};
+
 // -------- DISPLAY CARDS -------- //
 
 function display_search_cards(results) {
@@ -155,51 +203,3 @@ results.addEventListener('click', (evt) => {
     addToItinerary(evt);
     };
 });
-
-// -------- DISPLAY MAP FROM MAPBOX -------- //
-
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0amlhbmciLCJhIjoiY2wwdWh3NnRqMHhoODNrcW9yaXY5N2VnayJ9.HDKyR2oAhjjbkMOzSpI5-A';
-
-const map = new mapboxgl.Map({
-  container: 'map', // container ID
-  style: 'mapbox://styles/mapbox/streets-v11', // style URL
-  center: [-98.5795, 39.8283], // starting position [lng, lat]
-  zoom: 4, // starting zoom
-  hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
-});
-
-// -------- CREATE MARKERS FOR MAP -------- //
-
-
-const createMapMarkers = (results) => {
-
-  // removing old markers from map, then clear currentmarkers list
-  for (const oldMarker of currentMarkers) {
-    oldMarker.remove();
-  }
-  currentMarkers = [];
-
-  for (const result of results) {
-    const name = result.name;
-    const rating = result.rating;
-    const longitude = result.coordinates.longitude;
-    const latitude =  result.coordinates.latitude;
-
-    // add popup and marker to the map
-    const marker = new mapboxgl.Marker()
-    .setLngLat([`${longitude}`, `${latitude}`])
-    .setPopup(
-      new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML(
-          `<h5>${name}</h5><p>Rating: ${rating}</p>`
-        )
-    )
-    // add markers to currentmarkers list
-    currentMarkers.push(marker);
-  }
-
-  // loop through currentmarkers list to add markers to map
-  for (const marker of currentMarkers) {
-    marker.addTo(map)
-  };
-};

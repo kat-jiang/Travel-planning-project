@@ -388,6 +388,17 @@ def get_trip_locations():
 
     return jsonify(trips)
 
+@app.route('/api/trip')
+def get_trip_location():
+    """Return trip long/lats"""
+    trip_id = request.args.get('trip_id')
+
+    trip = crud.get_trip_by_id(trip_id)
+
+    trip_dict = trip.to_dict()
+
+    return jsonify(trip_dict)
+
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)
