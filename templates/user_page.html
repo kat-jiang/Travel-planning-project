@@ -1,32 +1,45 @@
 {% extends 'base.html' %}
 
 {% block head %}
-  <!-- Mapbox map -->
+
+<!-- Mapbox map -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 
-  <!-- Mapbox map style -->
+<!-- Mapbox map style -->
   <style>
-    .map-wrapper { padding: 40px; }
-    #map { position: relative; width: 100%; height: 500px; }
+    .map-wrapper { padding: 20px; }
+    #map { position: relative; width: 100%; height: 400px; }
     .page-activities #map { position: relative; width: 100%; }
   </style>
+
 {% endblock %}
 
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
+
+<!-- Mapbox geocoding scripts -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="/static/css/mapbox-input.css" type="text/css">
+
+
+<!-- Userpage body -->
 <input type="hidden" id="user_id" value="{{user.user_id}}">
 
 <div class="container">
   <h1>Ready to plan your next trip?</h1>
-  <form id="add-trip" class="form-floating">
+  <form id="add-trip" class="form-floating form--rounded">
     <div class="row">
 
       <div class="col-12 col-md-3">
         <div class="form-floating">
-          <input type="text" class="form-control" id="location" name="location" required>
-          <label for="floatingInputGrid">Location (city, state)</label>
+          <div id="geocoder"></div>
+          <!-- <input type="text" class="form-control" id="autocomplete" name="location" required>
+          <label for="floatingInputGrid">Location (city, state)</label> -->
+          <!-- hidden inputs to capture lat/long from geocoding API -->
+          <input type="hidden" id="trip-lat" name="trip-lat">
+          <input type="hidden" id="trip-lng" name="trip-lat">
         </div>
       </div>
 
@@ -51,7 +64,7 @@
         </div>
       </div>
 
-      <div class="col-2 col-md-1">
+      <div class="col-2 col-md-1 col--btn">
         <input type="submit" class="btn btn-secondary" id="add-trip-btn" value="Add trip">
       </div>
 

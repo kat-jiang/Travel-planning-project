@@ -117,6 +117,8 @@ def add_trip():
     start_date_str = request.json.get("start")
     end_date_str = request.json.get("end")
     user_id = request.json.get("user_id")
+    longitude = float(request.json.get("longitude"))
+    latitude = float(request.json.get("latitude"))
 
     #without ajax
     # trip_location = request.form.get("location")
@@ -129,18 +131,15 @@ def add_trip():
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
     #create trip and add to db
-    new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date)
+    new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date, longitude=longitude, latitude=latitude)
+
     db.session.add(new_trip)
     db.session.commit()
+
     #add trip to User in db
     user = crud.get_user_by_id(user_id)
     user.trips.append(new_trip)
     db.session.commit()
-
-    #create Days and add to db
-    # dates = crud.create_days(trip_id=new_trip.trip_id, start_date=start_date, end_date=end_date)
-    # db.session.add_all(dates)
-    # db.session.commit()
 
     #convert python object to dictionary
     new_trip = new_trip.to_dict()
@@ -213,8 +212,6 @@ def display_trip_activities(trip_id):
 def get_activities():
     """Get top-rated yelp activities"""
     trip_id = request.args.get('trip_id')
-    print('---------------------')
-    print(trip_id)
     trip = crud.get_trip_by_id(trip_id)
     #make api request to Yelp-API
     url = 'https://api.yelp.com/v3/businesses/search'
@@ -240,8 +237,6 @@ def get_restaurants():
     """Get top-rated yelp restaurants/food"""
 
     trip_id = request.args.get('trip_id')
-    print('---------------------')
-    print(trip_id)
     trip = crud.get_trip_by_id(trip_id)
     #make api request to Yelp-API
     url = 'https://api.yelp.com/v3/businesses/search'
@@ -388,16 +383,6 @@ def get_trip_locations():
 
     return jsonify(trips)
 
-@app.route('/api/trip')
-def get_trip_location():
-    """Return trip long/lats"""
-    trip_id = request.args.get('trip_id')
-
-    trip = crud.get_trip_by_id(trip_id)
-
-    trip_dict = trip.to_dict()
-
-    return jsonify(trip_dict)
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)

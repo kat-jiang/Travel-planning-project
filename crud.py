@@ -37,15 +37,15 @@ def get_all_users():
 
     return User.query.all()
 
-def create_trip(trip_location, trip_name, start_date, end_date):
+def create_trip(trip_location, trip_name, start_date, end_date, longitude, latitude):
     """Create and return a new trip."""
 
     trip = Trip(trip_location=trip_location,
                 trip_name=trip_name,
                 start_date=start_date,
-                end_date=end_date)
-                # longitude=longitude,
-                # latitude=latitude,
+                end_date=end_date,
+                longitude=longitude,
+                latitude=latitude)
     return trip
 
 def get_trip_by_id(trip_id):

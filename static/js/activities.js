@@ -1,5 +1,5 @@
 "use strict";
-// -------- LIST TO HOLD MAP MARKERS-------- //
+// -------- LIST TO HOLD MAP MARKERS -------- //
 
 let currentMarkers = [];
 

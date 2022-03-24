@@ -1,11 +1,14 @@
 "use strict";
 
-// -----------------Add trip------------------
+// -------- ADD TRIP TO DB -------- //
+
 const addTrip = (evt) => {
   evt.preventDefault();
 
   const formInputs = {
-    location: document.querySelector('#location').value,
+    location: document.querySelector('#geocoder').value,
+    latitude: document.querySelector('#trip-lat').value,
+    longitude: document.querySelector('#trip-lng').value,
     name: document.querySelector('#trip-name').value,
     start: document.querySelector('#start-date').value,
     end: document.querySelector('#end-date').value,
@@ -47,11 +50,9 @@ document.querySelector('#add-trip').addEventListener('submit', (evt) => {
   addTrip(evt)
 });
 
-// ------------------Delete trip-----------------
+// -------- DELETE TRIP FROM DB -------- //
+
 const deleteTrip = (trip_id) => {
-  // const trip_id = evt.target.getAttribute('trip-id')
-  // console.log(trip_id)
-  // console.log(typeof(trip_id))
   
   fetch('/delete-trip', {
     method: 'POST',
@@ -67,13 +68,7 @@ const deleteTrip = (trip_id) => {
     });
 }
 
-// add an event handler to handle clicking on a delete button
-// for (const button of document.querySelectorAll('.delete')) {
-//   button.addEventListener('click', (evt) => {
-//     deleteTrip(evt)
-//   })
-// }
-  
+// add an event handler for deleting trip
 let results = document.querySelector('#get-trips');
 
 results.addEventListener('click', (evt) => {
