@@ -1,7 +1,8 @@
 "use strict";
+import {config} from "./config.js"
 
 // -------- DISPLAY MAP FROM MAPBOX -------- //
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0amlhbmciLCJhIjoiY2wwdWh3NnRqMHhoODNrcW9yaXY5N2VnayJ9.HDKyR2oAhjjbkMOzSpI5-A';
+mapboxgl.accessToken = config.mapboxApiKey;
 
   const map = new mapboxgl.Map({
     container: 'map', // container ID

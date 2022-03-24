@@ -1,4 +1,6 @@
 "use strict";
+import {config} from "./config.js"
+
 // -------- LIST TO HOLD MAP MARKERS -------- //
 
 let currentMarkers = [];
@@ -7,7 +9,7 @@ let currentMarkers = [];
 const tripLat = document.querySelector('#trip-lat').value;
 const tripLng = document.querySelector('#trip-lng').value;
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0amlhbmciLCJhIjoiY2wwdWh3NnRqMHhoODNrcW9yaXY5N2VnayJ9.HDKyR2oAhjjbkMOzSpI5-A';
+mapboxgl.accessToken = config.mapboxApiKey;
 
 const map = new mapboxgl.Map({
   container: 'map', // container ID
