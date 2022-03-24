@@ -102,6 +102,7 @@ class Activity(db.Model):
     longitude = db.Column(db.Integer)
     latitude = db.Column(db.Integer)
     yelp_id = db.Column(db.String(100))
+    note = db.Column(db.String)
 
     # # -- relationship to Day --
     # days = db.relationship("Day", backref="activity")

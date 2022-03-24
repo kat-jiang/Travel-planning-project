@@ -368,6 +368,20 @@ def add_datetime_to_activity():
 
     return "Date and time added to activity"
 
+@app.route('/delete-activity', methods=["POST"])
+def remove_activity():
+    """Remove activity from db"""
+    #retrieve activity id and datetime from form
+    activity_id = request.json.get("activity_id")
+
+    #get activity object and remove from db
+    activity=crud.get_activity_by_activity_id(activity_id)
+    print(activity)
+    db.session.delete(activity)
+    db.session.commit()
+
+    return "Activity removed"
+
 # ----- ROUTES FOR MAPS ----- #
 
 @app.route('/api/trips')

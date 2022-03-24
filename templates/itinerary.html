@@ -34,7 +34,8 @@
         
       </div>
       <div class="card-footer">
-        <button type="button" id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Add date/time</button>
+        <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Add date/time</button>
+        <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
       </div>
     </div>
     {% endfor %}
@@ -71,9 +72,13 @@
         <li>
           {{date}}
           <ul>
-            {% for item in sorted_activities[date] %}
+            {% for activity in sorted_activities[date] %}
             <li>
-              {{item.datetime.time()}} {{item.activity_name}} 
+              {{activity.datetime.time()}} <br>
+              {{activity.activity_name}} <br>
+              {{activity.address}} <br>
+              <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Edit</button>
+              <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
             </li>
             {% endfor %}
           </ul>
