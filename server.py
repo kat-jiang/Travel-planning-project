@@ -354,16 +354,45 @@ def add_to_itinerary():
 
     return "Activity has been added to itinerary"
 
+@app.route('/add-own-activity', methods=["POST"])
+def add_own_activity():
+    """Add own activity to itinerary, creates Activity instance"""
+    #retrieve data from ajax
+    trip_id = request.json.get("trip_id")
+    activity_name = request.json.get("activity_name")
+    activity_type = request.json.get("activity_type")
+    address = request.json.get("address")
+    phone = request.json.get("phone")
+    date_time = request.json.get("datetime")
+    note = request.json.get("note")
+
+    #create Activity instance and add to db
+    activity = crud.create_activity(trip_id=trip_id,
+                        activity_name=activity_name,
+                        activity_type=activity_type,
+                        address=address,
+                        phone=phone,
+                        longitude=None,
+                        latitude=None,
+                        yelp_id=None)
+    db.session.add(activity)
+    activity.datetime = date_time
+    activity.note = note
+    db.session.commit()
+
+    return "Activity has been added to itinerary"
+
 @app.route('/add-datetime', methods=["POST"])
 def add_datetime_to_activity():
     """Add datetime to Activity instance"""
     #retrieve activity id and datetime from form
     activity_id = request.json.get("activity_id")
     date_time = request.json.get("datetime")
-
+    note = request.json.get("note")
     #get activity object and add datetime instance, commit to db
     activity=crud.get_activity_by_activity_id(activity_id)
     activity.datetime = date_time
+    activity.note = note
     db.session.commit()
 
     return "Date and time added to activity"
@@ -376,7 +405,6 @@ def remove_activity():
 
     #get activity object and remove from db
     activity=crud.get_activity_by_activity_id(activity_id)
-    print(activity)
     db.session.delete(activity)
     db.session.commit()
 

@@ -23,15 +23,14 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="/static/css/mapbox-input.css" type="text/css">
 
-
-<!-- Userpage body -->
+<!-- User id -->
 <input type="hidden" id="user_id" value="{{user.user_id}}">
 
+<!-- form to add trip to db -->
 <div class="container">
   <h1>Ready to plan your next trip?</h1>
   <form id="add-trip" class="form-floating form--rounded">
     <div class="row">
-
       <div class="col-12 col-md-3">
         <div class="form-floating">
           <div id="geocoder"></div>
@@ -42,36 +41,31 @@
           <input type="hidden" id="trip-lng" name="trip-lat">
         </div>
       </div>
-
       <div class="col-12 col-md-4">
         <div class="form-floating">
           <input type="text" class="form-control" id="trip-name" name="trip-name">
           <label for="floatingInputGrid">Trip Name</label>
         </div>
       </div>
-
       <div class="col-5 col-md-2">
         <div class="form-floating">
           <input type="date" id="start-date" name="trip-start" class="form-control" placeholder="Start date" required>
           <label for="floatingInputGrid">Start Date</label>
         </div>
       </div>
-
       <div class="col-5 col-md-2">
         <div class="form-floating">
           <input type="date" id="end-date" name="trip-end" class="form-control" placeholder="End date" required>
           <label for="floatingInputGrid">End Date</label>
         </div>
       </div>
-
       <div class="col-2 col-md-1 col--btn">
         <input type="submit" class="btn btn-secondary" id="add-trip-btn" value="Add trip">
       </div>
-
     </div>
   </form>
 </div>
-
+<!-- display map container -->
 <div class="container">
   <div class="row">
     <div class="map-wrapper">
@@ -79,8 +73,7 @@
     </div>
   </div>
 </div>
-
-
+<!-- display user trips -->
 <div class="container">
   <h2>Your Trips</h2>
   <div id="get-trips" class="d-flex flex-wrap">
@@ -99,9 +92,9 @@
     </div>
     {% endfor %}
   </div>
-
 </div>
 
+<!-- JS scripts-->
 <script src="/static/js/userpage.js"></script>
 <script src="/static/js/map-userpage.js" type="module"></script>
 

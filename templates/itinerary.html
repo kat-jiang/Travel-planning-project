@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
+
 {% block title %}Trip Itinerary{% endblock %}
 
 {% block body %}
+<!-- Trip id -->
 <input type="hidden" id="trip_id" value="{{trip.trip_id}}">
 
 <div class="container">
+  <!-- Row to display trip info-->
   <div class="row">
     <h1>{{trip.trip_name}}</h1>
     <h2>{{trip.trip_location}}</h2>
     <h3>{{trip.start_date.date()}} to {{trip.end_date.date()}}</h3>
   </div>
-
+  <!-- Row to navigate trip planning-->
   <div class="row">
     <div class="d-grid gap-2 d-md-block">
       <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
@@ -19,6 +22,7 @@
     </div>
   </div>
   
+  <!-- Row to display unsorted activities-->
   <h3>Activities List</h3>
   <div class="row display-flex flex-nowrap overflow-auto" >
  
@@ -31,41 +35,22 @@
           {{activity.address}} <br> 
           {{activity.phone}}
         </p>
-        
       </div>
       <div class="card-footer">
-        <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Add date/time</button>
+        <!-- Button trigger datetime modal -->
+        <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Add date/time</button>
+        <!-- Button to remove activity -->
         <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
       </div>
     </div>
     {% endfor %}
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="addDatetimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Choose a date and time for your activity:</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+  <h3>Itinerary</h3>
+  <!-- Button trigger add own activity modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
 
-        <form id="add-datetime">
-          <div class="modal-body">
-              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}" required>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <input type="submit" class="btn btn-primary add-datetime" value="Save changes"></button>
-          </div>
-        </form>
-
-      </div>
-    </div>
-  </div>
-
-  <h3>This is your itinerary</h3>
+  <!-- Row to display itinerary sorted by date and time -->
   <div class="row">
     <ul>
       {% for date in sorted_activities %}
@@ -77,21 +62,94 @@
               {{activity.datetime.time()}} <br>
               {{activity.activity_name}} <br>
               {{activity.address}} <br>
+              Notes: {{activity.note}} <br>
+              <!-- Button trigger datetime modal -->
               <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#addDatetimeModal">Edit</button>
+              <!-- Button to remove activity -->
               <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
             </li>
             {% endfor %}
           </ul>
         </li>
-        
       {% endfor %}
     </ul>
   </div>
-  
+
+  <!-- Modal to edit datetime -->
+  <div class="modal fade" id="add-datetime-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-activity">Edit activity</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- form to edit datetime -->
+        <form id="add-datetime">
+          <div class="modal-body">
+              <label for="activity-time">Choose a date and time for your activity:</label>
+              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}" required>
+              <br>
+              <label for="activity-note">Add a note to the activity:</label>
+              <br>
+              <input type="text" id="activity-note" name="activity-note">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary add-datetime" value="Save changes"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal to add own activity -->
+  <div class="modal fade" id="add-own-activity-modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="own-activity">Add your own Activity</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- form to add own activity -->
+        <form>
+          <div class="modal-body">
+            <label for="own-activity-name">Activity Name</label>
+            <br>
+            <input type="text" id="own-activity-name" name="own-activity-name" required>
+            <br>
+            <label for="own-activity-type">Activity Type</label>
+            <br>
+            <input type="text" id="own-activity-type" name="own-activity-type">
+            <br>
+            <label for="own-activity-address">Activity Address</label>
+            <br>
+            <input type="text" id="own-activity-address" name="own-activity-address">
+            <br>
+            <label for="own-activity-phone">Activity Phone</label>
+            <br>
+            <input type="text" id="own-activity-phone" name="own-activity-phone">
+            <br>
+            <label for="own-activity-time">Choose a date and time for your activity:</label>
+            <input type="datetime-local" id="own-activity-time" name="own-activity-time" min="{{start_date}}" max="{{end_date}}" required>
+            <br>
+            <label for="own-activity-note">Add a note to the activity:</label>
+            <br>
+            <input type="text" id="own-activity-note" name="own-activity-note">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="add-activity">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-
+<!-- JS scripts -->
 <script src="/static/js/itinerary.js"></script>
+
 {% endblock %}
 
 

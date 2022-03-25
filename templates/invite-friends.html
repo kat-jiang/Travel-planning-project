@@ -2,15 +2,17 @@
 {% block title %}Trip Invite{% endblock %}
 
 {% block body %}
+<!-- Trip id -->
 <input type="hidden" id="trip_id" value="{{trip.trip_id}}">
 
 <div class="container">
+  <!-- Row to display trip info-->
   <div class="row">
     <h1>{{trip.trip_name}}</h1>
     <h2>{{trip.trip_location}}</h2>
     <h3>{{trip.start_date.date()}} to {{trip.end_date.date()}}</h3>
   </div>
-
+  <!-- Row to navigate trip planning-->
   <div class="row">
     <div class="d-grid gap-2 d-md-block">
       <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
@@ -18,7 +20,7 @@
       <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
     </div>
   </div>
-
+  <!-- Row to display users in trip-->
   <div class="row">
     <p>
       <h3>People in this trip</h3>
@@ -45,10 +47,9 @@
         </select>
         <input type="submit">
       </form>
-
     </p>
   </div>
-
+  
 </div>
 
 {% endblock %}
