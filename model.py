@@ -16,8 +16,10 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(25), nullable=False)
 
-    # -- relationship to Trip --
+    # -- relationship to Trip/Task --
     # trips = db.relationship("Trip", secondary="users_trips", backref="users")
+    # trips_created = db.relationship("Trip", backref="creator")
+    tasks = db.relationship("Task", backref="user")
 
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
@@ -29,7 +31,7 @@ class Trip(db.Model):
     __tablename__ = "trips"
 
     trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    # creator = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
+    trip_creator = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
     trip_location = db.Column(db.String(50), nullable=False)
     trip_name = db.Column(db.String(100), default=trip_location)
     longitude = db.Column(db.Integer)
@@ -37,9 +39,11 @@ class Trip(db.Model):
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
 
-    #-- relationships to User and Activity --
+    #-- relationships to User/Activity/Task --
     users = db.relationship("User", secondary="users_trips", backref="trips")
+    creator = db.relationship("User", backref="trips_created")
     activities = db.relationship("Activity", backref="trip")
+    tasks = db.relationship("Task", backref="trip")
 
     def to_dict(self):
         """return data as dictionary"""
@@ -70,21 +74,23 @@ class UserTrip(db.Model):
         return f'<UserTrip user_trip_id={self.user_trip_id} user_id={self.user_id} trip_id={self.trip_id}>'
 
 
-# class Day(db.Model):
-#     """A day for the trip"""
+class Task(db.Model):
+    """A day for the trip"""
 
-#     __tablename__ = "days"
+    __tablename__ = "tasks"
 
-#     day_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     trip_id = db.Column(db.Integer, db.ForeignKey("trips.trip_id"), nullable=False)
-#     date = db.Column(db.DateTime)
+    task_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    trip_id = db.Column(db.Integer, db.ForeignKey("trips.trip_id"), nullable=False)
+    assigned_user = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
+    task_item = db.Column(db.String, nullable=False)
+    completed = db.Column(db.Boolean)
 
-#     #-- relationship to Trip and Activity --
-#     # trip = db.relationship("Trip", backref="days")
-#     # activity = db.relationship("Activity", backref="days")
+    #-- relationship to Trip and User --
+    # trip = db.relationship("Trip", backref="tasks")
+    # user = db.relationship("User", backref="tasks")
 
-#     def __repr__(self):
-#         return f'<Day day_id={self.day_id} trip_id={self.trip_id} date={self.date}>'
+    def __repr__(self):
+        return f'<Task task_id={self.task_id} trip_id={self.trip_id} assigned_user={self.assigned_user} task_item={self.task_item} completed={self.completed}>'
 
 
 class Activity(db.Model):
@@ -104,8 +110,8 @@ class Activity(db.Model):
     yelp_id = db.Column(db.String(100))
     note = db.Column(db.String)
 
-    # # -- relationship to Day --
-    # days = db.relationship("Day", backref="activity")
+    # # -- relationship to Trip --
+    # trip = db.relationship("Trip", backref="activities")
 
     def __repr__(self):
         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name} activity_type={self.activity_type}>'

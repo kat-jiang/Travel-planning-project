@@ -134,7 +134,7 @@ def add_trip():
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
     #create trip and add to db
-    new_trip = crud.create_trip(trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date, longitude=longitude, latitude=latitude)
+    new_trip = crud.create_trip(trip_creator=user_id,trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date, longitude=longitude, latitude=latitude)
 
     db.session.add(new_trip)
     db.session.commit()
@@ -154,7 +154,11 @@ def delete_trip():
     """Delete a trip from user's trip page"""
 
     trip_id = request.json.get('trip_id')
-    #first delete childs
+    #first delete childs (activity/task)
+    tasks = crud.get_tasks_by_trip_id(trip_id)
+    for task in tasks:
+        db.session.delete(task)
+        db.session.commit()
     activities = crud.get_activites_by_trip_id(trip_id)
     for activity in activities:
         db.session.delete(activity)
@@ -165,6 +169,21 @@ def delete_trip():
     db.session.commit()
 
     return "Trip has been deleted"
+
+@app.route('/remove-trip', methods=["POST"])
+def remove_trip():
+    """Remove a trip from user's trip page"""
+    # get info from ajax
+    trip_id = request.json.get('trip_id')
+    user_id = request.json.get('user_id')
+    #retrieve trip and user info from db
+    trip = crud.get_trip_by_id(trip_id)
+    user = crud.get_user_by_id(user_id)
+    # remove user and commit()
+    trip.users.remove(user)
+    db.session.commit()
+
+    return "Trip has been removed"
 
 # ----- ROUTES FOR TRIP PAGE ----- #
 

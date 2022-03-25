@@ -1,7 +1,9 @@
 """CRUD operations."""
 
-from model import db, User, Trip, UserTrip, Activity, connect_to_db
+from model import db, User, Trip, Activity, Task,connect_to_db
 from datetime import datetime, timedelta
+
+# ----- FUNCTIONS FOR USER TABLE ----- #
 
 def create_user(user_id, fname, lname, email, password):
     """Create and return a new user."""
@@ -13,7 +15,6 @@ def create_user(user_id, fname, lname, email, password):
                 password=password)
 
     return user
-
 
 def get_user_by_id(user_id):
     """Return user info by user_id, else returns None"""
@@ -37,10 +38,13 @@ def get_all_users():
 
     return User.query.all()
 
-def create_trip(trip_location, trip_name, start_date, end_date, longitude, latitude):
+# ----- FUNCTIONS FOR TRIP TABLE ----- #
+
+def create_trip(trip_creator, trip_location, trip_name, start_date, end_date, longitude, latitude):
     """Create and return a new trip."""
 
-    trip = Trip(trip_location=trip_location,
+    trip = Trip(trip_creator=trip_creator,
+                trip_location=trip_location,
                 trip_name=trip_name,
                 start_date=start_date,
                 end_date=end_date,
@@ -54,7 +58,7 @@ def get_trip_by_id(trip_id):
     return Trip.query.get(trip_id)
 
 def create_days(start_date, end_date):
-    """Based on trip start and end date, create dates for the of days"""
+    """Based on trip start and end date, create dates for the trip days"""
 
     trip_dates = []
     delta = end_date - start_date
@@ -64,8 +68,11 @@ def create_days(start_date, end_date):
 
     return trip_dates
 
+# ----- FUNCTIONS FOR ACTIVITY TABLE ----- #
+
 def create_activity(trip_id, activity_name, activity_type, address, phone, longitude, latitude, yelp_id):
     """Create and return an activity."""
+    
     activity = Activity(trip_id=trip_id,
                         activity_name=activity_name,
                         activity_type=activity_type,
@@ -96,6 +103,12 @@ def get_datetime_activities(trip_id):
 
     return Activity.query.filter(Activity.trip_id==trip_id, Activity.datetime != None).all()
 
+# ----- FUNCTIONS FOR TASK TABLE ----- #
+
+def get_tasks_by_trip_id(trip_id):
+    """Return all tasks by trip_id"""
+
+    return Task.query.filter(Task.trip_id==trip_id).all()
 
 
 if __name__ == '__main__':

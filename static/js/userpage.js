@@ -67,8 +67,25 @@ const deleteTrip = (trip_id) => {
       alert(response);
     });
 }
+// -------- REMOVE TRIP FROM DB -------- //
 
-// add an event handler for deleting trip
+const removeTrip = (trip_id, user_id) => {
+  
+  fetch('/remove-trip', {
+    method: 'POST',
+    body: JSON.stringify({trip_id: trip_id, user_id: user_id}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.text())
+    .then(response => {
+      document.querySelector(`#trip-${trip_id}`).remove();
+      alert(response);
+    });
+}
+
+// add an event handler for deleting/removing trip
 let results = document.querySelector('#get-trips');
 
 results.addEventListener('click', (evt) => {
@@ -78,5 +95,13 @@ results.addEventListener('click', (evt) => {
       const trip_id = evt.target.getAttribute('trip-id');
       deleteTrip(trip_id);
     };
-  };
+  } else if (evt.target.classList.contains('remove')) {
+    if (confirm('Are you sure you want to remove this trip?')) {
+      const trip_id = evt.target.getAttribute('trip-id');
+      const user_id = document.querySelector('#user_id').value;
+      console.log(trip_id)
+      console.log(user_id)
+      removeTrip(trip_id, user_id);
+    };
+  }
 });

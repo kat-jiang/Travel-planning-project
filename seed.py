@@ -36,13 +36,13 @@ def load_users():
 def load_trips_and_add_users():
     "Load trips into database and add to user"
 
-    maui = Trip(trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924)
+    maui = Trip(trip_creator='kat', trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924)
 
-    seattle = Trip(trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"), latitude=47.608013, longitude=-122.335167)
+    seattle = Trip(trip_creator='kat',trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"), latitude=47.608013, longitude=-122.335167)
 
-    palm_springs = Trip(trip_location='Palm Springs, CA', trip_name="Hike Joshua Tree", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.830517, longitude=-116.545601)
+    palm_springs = Trip(trip_creator='brian',trip_location='Palm Springs, CA', trip_name="Hike Joshua Tree", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.830517, longitude=-116.545601)
 
-    chicago = Trip(trip_location='Chicago, IL', trip_name="Explore Windy City", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177)
+    chicago = Trip(trip_creator='kat', trip_location='Chicago, IL', trip_name="Explore Windy City", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177)
 
     db.session.add_all([maui, seattle, palm_springs, chicago])
     db.session.commit()
@@ -52,10 +52,10 @@ def load_trips_and_add_users():
 
     kat.trips.append(maui)
     kat.trips.append(seattle)
-    kat.trips.append(palm_springs)
     kat.trips.append(chicago)
 
     brian.trips.append(maui)
+    brian.trips.append(palm_springs)
     db.session.commit()
 
 
