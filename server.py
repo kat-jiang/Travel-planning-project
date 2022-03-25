@@ -91,7 +91,7 @@ def login():
 def logout():
     """Log user out"""
     #delete session
-    del session['user']
+    session.pop('user')
 
     return redirect('/')
 
@@ -100,6 +100,9 @@ def logout():
 @app.route('/homepage/<user_id>')
 def user_page(user_id):
     """Display user's trip page"""
+    #prevent other users from seeing another's trippage
+    if session.get('user') != user_id:
+        return redirect('/')
 
     #get user and trips from db
     user = crud.get_user_by_id(user_id)
@@ -171,6 +174,10 @@ def display_trip_info(trip_id):
 
     trip = crud.get_trip_by_id(trip_id)
 
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
+
     return render_template('trip.html', trip=trip)
 
 
@@ -182,6 +189,10 @@ def invite_friends(trip_id):
     trip_users = trip.users
 
     all_users = crud.get_all_users()
+
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
 
     return render_template('invite-friends.html', trip=trip, trip_users=trip_users, all_users=all_users)
 
@@ -205,6 +216,10 @@ def display_trip_activities(trip_id):
     """Display activities page nav"""
 
     trip = crud.get_trip_by_id(trip_id)
+
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
 
     return render_template('activities.html', trip=trip, activities=None)
 
@@ -308,6 +323,10 @@ def display_trip_itinerary(trip_id):
                 activity_list.append(activity)
         activity_list.sort(key=lambda activity:activity.datetime)
         itin_dict[date.date()] = activity_list
+        
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
 
     return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, start_date=start_date, end_date=end_date, activities=unsorted_activities, sorted_activities=itin_dict)
 

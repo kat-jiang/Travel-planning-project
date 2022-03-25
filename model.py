@@ -111,9 +111,8 @@ class Activity(db.Model):
         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name} activity_type={self.activity_type}>'
 
 
-
-
 def connect_to_db(flask_app, db_uri="postgresql:///travelplanner", echo=True):
+    """Connect to db"""
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -123,7 +122,15 @@ def connect_to_db(flask_app, db_uri="postgresql:///travelplanner", echo=True):
 
     print("Connected to the db!")
 
+def example_data():
+    """Create example data for the test database."""
 
+    kat = User(user_id='kat', fname='Kat', lname='Jiang', email='kat@gmail.com', password='1234')
+
+    brian = User(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password='1234')
+
+    db.session.add_all([kat, brian])
+    db.session.commit()
 
 if __name__ == "__main__":
     from server import app
