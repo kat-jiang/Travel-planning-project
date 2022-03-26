@@ -141,25 +141,16 @@ function getRestaurantSearch(evt) {
 function getSearchResults(evt) {
   evt.preventDefault();
 
-  const formInputs = {
-    trip_id: document.querySelector('#trip_id').value,
-    search: document.querySelector('#search-yelp').value
-  };
+  const trip_id = document.querySelector('#trip_id').value;
+  const search = document.querySelector('#search-yelp').value;
 
-  fetch('/api/search', {
-    method: 'POST',
-    body: JSON.stringify(formInputs),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  fetch(`/api/search?trip_id=${trip_id}&search=${search}`)
     .then(response => response.json())
     .then(results => {
       display_search_cards(results);
       createMapMarkers(results);
     });
 };
-
 
 document.querySelector('#activities').addEventListener('click', (evt) => {
   getActivitySearch(evt)

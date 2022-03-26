@@ -199,6 +199,7 @@ def display_trip_info(trip_id):
 
     return render_template('trip.html', trip=trip)
 
+# ----- ROUTES FOR TRIP INVITE ----- #
 
 @app.route('/trip/<trip_id>/invite')
 def invite_friends(trip_id):
@@ -229,6 +230,8 @@ def add_friend_to_trip():
     db.session.commit()
 
     return redirect(f'/trip/{trip_id}/invite')
+
+# ----- ROUTES FOR TRIP ACTIVITY ----- #
 
 @app.route('/trip/<trip_id>/activities')
 def display_trip_activities(trip_id):
@@ -292,13 +295,13 @@ def get_restaurants():
     # return render_template('activities.html', activities=activities, trip=trip)
     return jsonify(activities)
 
-@app.route('/api/search', methods=["POST"])
+@app.route('/api/search')
 def search_activities():
     """Get top-rated yelp search"""
-    trip_id = request.json.get('trip_id')
+    trip_id = request.args.get('trip_id')
     trip = crud.get_trip_by_id(trip_id)
 
-    search = request.json.get("search")
+    search = request.args.get("search")
 
     url = 'https://api.yelp.com/v3/businesses/search'
     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
@@ -448,6 +451,59 @@ def remove_activity():
 
     return "Activity removed"
 
+# ----- ROUTES FOR TRIP TASK ----- #
+
+@app.route('/trip/<trip_id>/task-list')
+def display_trip_tasks(trip_id):
+    """Display trip tasks for all users"""
+
+    trip=crud.get_trip_by_id(trip_id)
+
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
+
+    return render_template('tasks.html', trip=trip)
+
+@app.route("/tasks.json")
+def get_tasks_json():
+    """Return a JSON response with all tasks."""
+
+    trip_id = request.args.get("tripId")
+    #retrieve all task by trip
+    tasks = crud.get_tasks_by_trip_id(trip_id)
+    #make a list of task dict items
+    task_list = []
+    for task in tasks:
+        task_list.append(task.to_dict())
+    #return users in the trip as dictionary
+    trip = crud.get_trip_by_id(trip_id)
+    trip_users_list = []
+    for user in trip.users:
+        trip_users_list.append(user.to_dict())
+
+    return jsonify({"tasks": task_list, "users": trip_users_list})
+
+
+@app.route('/add-task', methods=["POST"])
+def add_task():
+    """Add a new task to the DB."""
+
+    # get info from js
+    trip_id = request.json.get("tripId")
+    assigned_user = request.json.get("assignedUser")
+    task_item = request.json.get("task")
+    # create task instance and add to db
+    new_task = crud.create_task(trip_id=trip_id,
+                            assigned_user=assigned_user,
+                            task_item=task_item)
+    db.session.add(new_task)
+    db.session.commit()
+    # return task object as dictionary
+    new_task_dict = new_task.to_dict()
+
+    return jsonify({"success": True, "taskAdded": new_task_dict})
+
 # ----- ROUTES FOR MAPS ----- #
 
 @app.route('/api/trips')
@@ -462,6 +518,7 @@ def get_trip_locations():
         trips.append(trip.to_dict())
 
     return jsonify(trips)
+
 
 
 if __name__ == "__main__":

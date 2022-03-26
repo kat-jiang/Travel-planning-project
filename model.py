@@ -21,6 +21,15 @@ class User(db.Model):
     # trips_created = db.relationship("Trip", backref="creator")
     tasks = db.relationship("Task", backref="user")
 
+    def to_dict(self):
+        """return data as dictionary"""
+        trip_dict = {'user_id': self.user_id,
+                    'fname': self.fname,
+                    'lname': self.lname,
+                    'email': self.email,
+        }
+        return trip_dict
+
     def __repr__(self):
         return f'<User user_id={self.user_id} email={self.email}>'
 
@@ -34,8 +43,8 @@ class Trip(db.Model):
     trip_creator = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
     trip_location = db.Column(db.String(50), nullable=False)
     trip_name = db.Column(db.String(100), default=trip_location)
-    longitude = db.Column(db.Integer)
-    latitude = db.Column(db.Integer)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
 
@@ -89,6 +98,16 @@ class Task(db.Model):
     # trip = db.relationship("Trip", backref="tasks")
     # user = db.relationship("User", backref="tasks")
 
+    def to_dict(self):
+        """return data as dictionary"""
+        task_dict = {'task_id': self.task_id,
+                    'trip_id': self.trip_id,
+                    'assigned_user': self.assigned_user,
+                    'task_item': self.task_item,
+                    'completed': self.completed,
+        }
+        return task_dict
+
     def __repr__(self):
         return f'<Task task_id={self.task_id} trip_id={self.trip_id} assigned_user={self.assigned_user} task_item={self.task_item} completed={self.completed}>'
 
@@ -105,8 +124,8 @@ class Activity(db.Model):
     address = db.Column(db.String)
     phone = db.Column(db.String(20))
     datetime = db.Column(db.DateTime)
-    longitude = db.Column(db.Integer)
-    latitude = db.Column(db.Integer)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
     yelp_id = db.Column(db.String(100))
     note = db.Column(db.String)
 

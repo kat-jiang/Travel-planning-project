@@ -110,6 +110,15 @@ def get_tasks_by_trip_id(trip_id):
 
     return Task.query.filter(Task.trip_id==trip_id).all()
 
+def create_task(trip_id, assigned_user, task_item):
+    """Create and return a task"""
+
+    task = Task(trip_id=trip_id,
+                assigned_user=assigned_user,
+                task_item=task_item)
+
+    return task
+
 
 if __name__ == '__main__':
     from server import app
