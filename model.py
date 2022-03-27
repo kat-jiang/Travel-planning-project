@@ -129,7 +129,7 @@ class Activity(db.Model):
     yelp_id = db.Column(db.String(100))
     note = db.Column(db.String)
 
-    # # -- relationship to Trip --
+    # -- relationship to Trip --
     # trip = db.relationship("Trip", backref="activities")
 
     def __repr__(self):

@@ -14,7 +14,7 @@ const addTrip = (evt) => {
     end: document.querySelector('#end-date').value,
     user_id: document.querySelector('#user_id').value,
   };
-
+  console.log(JSON.stringify(formInputs));
   const url = '/add-trip';
 
   fetch(url, {
@@ -26,7 +26,7 @@ const addTrip = (evt) => {
   })
   .then(response => response.json())
   .then(userTrip => {
-      document.querySelector('#get-trips').insertAdjacentHTML('beforeend', 
+      document.querySelector('#get-trips').insertAdjacentHTML('beforeend',
       `
       <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
         <a href="/trip/${userTrip.trip_id}">
@@ -53,7 +53,7 @@ document.querySelector('#add-trip').addEventListener('submit', (evt) => {
 // -------- DELETE TRIP FROM DB -------- //
 
 const deleteTrip = (trip_id) => {
-  
+
   fetch('/delete-trip', {
     method: 'POST',
     body: JSON.stringify({trip_id}),
@@ -70,7 +70,7 @@ const deleteTrip = (trip_id) => {
 // -------- REMOVE TRIP FROM DB -------- //
 
 const removeTrip = (trip_id, user_id) => {
-  
+
   fetch('/remove-trip', {
     method: 'POST',
     body: JSON.stringify({trip_id: trip_id, user_id: user_id}),

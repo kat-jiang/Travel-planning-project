@@ -47,7 +47,7 @@ def register():
 
     if email_exists:
         flash(f"{email} already exists!")
-    
+
     #create new user, add to db
     if user_exists is None and email_exists is None:
         new_user = crud.create_user(user_id=user_id,
@@ -91,7 +91,7 @@ def login():
 def logout():
     """Log user out"""
     #delete session
-    session.pop('user')
+    session.pop('user', None)
 
     return redirect('/')
 
@@ -107,7 +107,7 @@ def user_page(user_id):
     #get user and trips from db
     user = crud.get_user_by_id(user_id)
     trips = user.trips
-    
+
     return render_template('user_page.html', user=user, trips=trips)
 
 @app.route('/add-trip', methods=["POST"])
@@ -326,7 +326,7 @@ def search_activities():
 def display_trip_itinerary(trip_id):
     """Show trip itinerary"""
     trip = crud.get_trip_by_id(trip_id)
-    
+
     trip_dates = crud.create_days(trip.start_date, trip.end_date)
 
     #format datetime to work in input datetime
@@ -345,14 +345,14 @@ def display_trip_itinerary(trip_id):
                 activity_list.append(activity)
         activity_list.sort(key=lambda activity:activity.datetime)
         itin_dict[date.date()] = activity_list
-        
+
     #prevent unauthorized users from seeing trippage
     if session.get('user') not in [user.user_id for user in trip.users]:
         return redirect('/')
 
     return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, start_date=start_date, end_date=end_date, activities=unsorted_activities, sorted_activities=itin_dict)
 
-     
+
 @app.route('/add-to-itinerary', methods=["POST"])
 def add_to_itinerary():
     """Add activity/restaurant to itinerary, creates Activity instance"""
@@ -365,7 +365,7 @@ def add_to_itinerary():
     headers = {'Authorization': f'Bearer {YELP_API_KEY}'}
 
     res = requests.get(url, headers=headers)
-  
+
     activity = res.json()
 
     #parse out data
