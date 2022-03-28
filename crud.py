@@ -18,7 +18,7 @@ def create_user(user_id, fname, lname, email, password):
 
 def get_user_by_id(user_id):
     """Return user info by user_id, else returns None"""
-    
+
     return User.query.get(user_id)
 
 def get_user_by_email(email):
@@ -30,7 +30,7 @@ def get_user_trips(user_id):
     """Return list of user trips """
 
     user = User.query.get(user_id)
-    
+
     return user.trips
 
 def get_all_users():
@@ -54,7 +54,7 @@ def create_trip(trip_creator, trip_location, trip_name, start_date, end_date, lo
 
 def get_trip_by_id(trip_id):
     """Return trip info by trip_id, else returns None"""
-    
+
     return Trip.query.get(trip_id)
 
 def create_days(start_date, end_date):
@@ -72,7 +72,7 @@ def create_days(start_date, end_date):
 
 def create_activity(trip_id, activity_name, activity_type, address, phone, longitude, latitude, yelp_id):
     """Create and return an activity."""
-    
+
     activity = Activity(trip_id=trip_id,
                         activity_name=activity_name,
                         activity_type=activity_type,
@@ -115,9 +115,15 @@ def create_task(trip_id, assigned_user, task_item):
 
     task = Task(trip_id=trip_id,
                 assigned_user=assigned_user,
-                task_item=task_item)
+                task_item=task_item,
+                completed=False)
 
     return task
+
+def get_task_by_task_id(task_id):
+    """Return task by task_id"""
+
+    return Task.query.get(task_id)
 
 
 if __name__ == '__main__':

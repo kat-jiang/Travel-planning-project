@@ -430,6 +430,7 @@ def add_datetime_to_activity():
     activity_id = request.json.get("activity_id")
     date_time = request.json.get("datetime")
     note = request.json.get("note")
+
     #get activity object and add datetime instance, commit to db
     activity=crud.get_activity_by_activity_id(activity_id)
     activity.datetime = date_time
@@ -468,14 +469,16 @@ def display_trip_tasks(trip_id):
 @app.route("/tasks.json")
 def get_tasks_json():
     """Return a JSON response with all tasks."""
-
+    # get info from js
     trip_id = request.args.get("tripId")
     #retrieve all task by trip
     tasks = crud.get_tasks_by_trip_id(trip_id)
+
     #make a list of task dict items
     task_list = []
     for task in tasks:
         task_list.append(task.to_dict())
+
     #return users in the trip as dictionary
     trip = crud.get_trip_by_id(trip_id)
     trip_users_list = []
@@ -488,21 +491,41 @@ def get_tasks_json():
 @app.route('/add-task', methods=["POST"])
 def add_task():
     """Add a new task to the DB."""
-
     # get info from js
     trip_id = request.json.get("tripId")
     assigned_user = request.json.get("assignedUser")
     task_item = request.json.get("task")
+
     # create task instance and add to db
     new_task = crud.create_task(trip_id=trip_id,
                             assigned_user=assigned_user,
                             task_item=task_item)
     db.session.add(new_task)
     db.session.commit()
+
     # return task object as dictionary
     new_task_dict = new_task.to_dict()
 
     return jsonify({"success": True, "taskAdded": new_task_dict})
+
+
+@app.route('/task-complete', methods=["POST"])
+def mark_task_complete():
+    """Update task in DB for completeness."""
+
+    # get info from js
+    task_id= request.json.get("taskId")
+    completed= request.json.get("completed")
+
+    # get task and update completed in db
+    task = crud.get_task_by_task_id(task_id)
+    task.completed = completed
+    db.session.commit()
+
+    # return task object as dictionary
+    task_dict = task.to_dict()
+
+    return jsonify({"success": True, "task": task_dict})
 
 # ----- ROUTES FOR MAPS ----- #
 

@@ -2,25 +2,53 @@
 
 // ----- component to create task html ----- //
 function TaskItem(props) {
+  // make completed a state and not prop
+  const [completed, setCompleted] = React.useState(props.completed);
+
+  let completeness = "not complete";
+  if (completed) {completeness = "completed"};
+
+  // call function which takes task_id, sends fetch to backend to update db, return task item, and call function to setstate
+  function taskCompleted() {
+    fetch("/task-complete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ taskId: props.taskId, completed: !completed }),
+    })
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      setCompleted(jsonResponse.task.completed);
+    });
+  }
+
   return (
     <li className="task">
-        {props.assignedUser}
-        {props.taskItem}
-        {props.completed}
+        {props.assignedUser}//
+        {props.taskItem}//
+        <button onClick={taskCompleted}
+        >{completeness}</button>
+        {/* <button onClick={deleteTask}
+        >Delete</button> */}
     </li>
   );
 }
 
 // ----- Parent component to store tasks and users ----- //
 function TaskListContainer() {
-
+  // make tasks and users a state
   const [tasks, setTasks] = React.useState([]);
   const [users, setUsers] = React.useState([]);
-
-  function addTaskItem(newTaskItem) {
-    setTasks([...tasks, newTaskItem]);
-  }
+  // tripid
   const tripId = document.querySelector('#trip_id').value;
+
+  // function to add new task item to tasks state
+  function addTask(newTask) {
+    setTasks([...tasks, newTask]);
+  }
+  // function to delete task from task list
+  // function deleteTask()
 
   // fetch trip tasks from backend to render on initial load
   React.useEffect(() => {
@@ -32,13 +60,13 @@ function TaskListContainer() {
     })
   }, [])
 
-  // grab all tasks and create html
+  // grab all tasks and create html - call TaskItem component
   const taskList = [];
-
   for (const task of tasks) {
     taskList.push(
       <TaskItem
         key={task.task_id}
+        taskId={task.task_id}
         assignedUser={task.assigned_user}
         taskItem={task.task_item}
         completed={task.completed}
@@ -49,7 +77,7 @@ function TaskListContainer() {
   // return form component with props/render the new tasks
   return (
     <React.Fragment>
-      <AddNewTaskForm addTaskItem={addTaskItem} users={users} />
+      <AddNewTaskForm addTask={addTask} users={users} />
       <h2>Task List</h2>
       <div className="grid">{taskList}</div>
     </React.Fragment>
@@ -62,7 +90,7 @@ function AddNewTaskForm(props) {
   const [task, setTask] = React.useState("");
 
   // takes form inputs, send to backend, returns new task
-  function addNewTaskItem() {
+  function addNewTask() {
     if (task !== "" && assignedUser !== "") {
       const tripId = document.querySelector('#trip_id').value;
 
@@ -74,11 +102,16 @@ function AddNewTaskForm(props) {
         body: JSON.stringify({ assignedUser: assignedUser, task: task, tripId: tripId }),
       }).then((response) => { response.json()
         .then((jsonResponse) => {
-          props.addTaskItem(jsonResponse.taskAdded);
+          props.addTask(jsonResponse.taskAdded);
         });
       });
     };
   }
+  // prevent submission of form
+  function handleSubmit (event) {
+    event.preventDefault();
+  }
+
   // grab all trip users and create html
   const userList = [];
 
@@ -90,7 +123,7 @@ function AddNewTaskForm(props) {
   return (
     <React.Fragment>
       <h2>Add A New Task</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="taskInput">Create a new task: </label>
         <input id="taskInput"
           value={task}
@@ -100,7 +133,7 @@ function AddNewTaskForm(props) {
           <option value="" disabled>Assign to:</option>
           {userList}
         </select>
-        <button onClick={addNewTaskItem}> Add </button>
+        <button onClick={addNewTask}> Add </button>
       </form>
     </React.Fragment>
   );
