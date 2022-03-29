@@ -527,6 +527,28 @@ def mark_task_complete():
 
     return jsonify({"success": True, "task": task_dict})
 
+@app.route('/delete-task', methods=["POST"])
+def delete_task():
+    """Delete task from db"""
+
+    # get info from js
+    task_id= request.json.get("taskId")
+    # trip_id= request.json.get("tripId")
+
+    # get task and update completed in db
+    task = crud.get_task_by_task_id(task_id)
+    db.session.delete(task)
+    db.session.commit()
+
+    #retrieve all task by trip if
+    tasks = crud.get_tasks_by_trip_id(task.trip_id)
+    #make a list of task dict items
+    task_list = []
+    for task in tasks:
+        task_list.append(task.to_dict())
+
+    return jsonify({"success": True, "tasks": task_list})
+
 # ----- ROUTES FOR MAPS ----- #
 
 @app.route('/api/trips')

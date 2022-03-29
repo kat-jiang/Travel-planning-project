@@ -117,13 +117,17 @@ def create_task(trip_id, assigned_user, task_item):
                 assigned_user=assigned_user,
                 task_item=task_item,
                 completed=False)
-
     return task
 
 def get_task_by_task_id(task_id):
     """Return task by task_id"""
 
     return Task.query.get(task_id)
+
+# def get_trip_id(task_id):
+#     """Return task by task_id"""
+
+#     return Task.query.get(task_id)
 
 
 if __name__ == '__main__':

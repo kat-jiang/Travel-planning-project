@@ -23,15 +23,30 @@ function TaskItem(props) {
     });
   }
 
+  // function to delete task from task list
+  function deleteTask() {
+    fetch("/delete-task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ taskId: props.taskId}),
+    })
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      props.updateTaskList(jsonResponse.tasks);
+    });
+  }
+
   return (
-    <li className="task">
+    <div className="task">
         {props.assignedUser}//
         {props.taskItem}//
         <button onClick={taskCompleted}
         >{completeness}</button>
-        {/* <button onClick={deleteTask}
-        >Delete</button> */}
-    </li>
+        <button onClick={deleteTask}
+        >Delete</button>
+    </div>
   );
 }
 
@@ -47,8 +62,9 @@ function TaskListContainer() {
   function addTask(newTask) {
     setTasks([...tasks, newTask]);
   }
-  // function to delete task from task list
-  // function deleteTask()
+  function updateTaskList(updatedTasks) {
+    setTasks(updatedTasks);
+  }
 
   // fetch trip tasks from backend to render on initial load
   React.useEffect(() => {
@@ -70,6 +86,7 @@ function TaskListContainer() {
         assignedUser={task.assigned_user}
         taskItem={task.task_item}
         completed={task.completed}
+        updateTaskList={updateTaskList}
       />,
     );
   }
@@ -114,22 +131,28 @@ function AddNewTaskForm(props) {
 
   // grab all trip users and create html
   const userList = [];
-
   for (const user of props.users) {
     userList.push(
     <option key={user.user_id} value={user.user_id}>{user.fname} {user.lname}</option>)
   };
+
   // return form, make sure to add event handlers to update state
   return (
     <React.Fragment>
       <h2>Add A New Task</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="taskInput">Create a new task: </label>
-        <input id="taskInput"
+        <input
+          id="taskInput"
           value={task}
-          onChange={(event) => setTask(event.target.value)} required></input>
+          onChange={(event) => setTask(event.target.value)}
+          required></input>
         <label htmlFor="nameInput">Assign to: </label>
-        <select className="form-select" defaultValue="" onChange={(event) => setAssignedUser(event.target.value)} required>
+        <select
+          className="form-select"
+          defaultValue=""
+          onChange={(event) => setAssignedUser(event.target.value)}
+          required>
           <option value="" disabled>Assign to:</option>
           {userList}
         </select>
