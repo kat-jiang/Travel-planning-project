@@ -8,7 +8,7 @@ function TaskItem(props) {
   let completeness = "not complete";
   if (completed) {completeness = "completed"};
 
-  // call function which takes task_id, sends fetch to backend to update db, return task item, and call function to setstate
+  // function to update db for task completed, and update state
   function taskCompleted() {
     fetch("/task-complete", {
       method: "POST",
@@ -39,14 +39,14 @@ function TaskItem(props) {
   }
 
   return (
-    <div className="task">
+    <li>
         {props.assignedUser}//
         {props.taskItem}//
         <button onClick={taskCompleted}
         >{completeness}</button>
         <button onClick={deleteTask}
         >Delete</button>
-    </div>
+    </li>
   );
 }
 
@@ -62,6 +62,7 @@ function TaskListContainer() {
   function addTask(newTask) {
     setTasks([...tasks, newTask]);
   }
+  // function update state when a task is deleted
   function updateTaskList(updatedTasks) {
     setTasks(updatedTasks);
   }
@@ -75,28 +76,65 @@ function TaskListContainer() {
       setUsers(data.users);
     })
   }, [])
-
-  // grab all tasks and create html - call TaskItem component
-  const taskList = [];
-  for (const task of tasks) {
-    taskList.push(
-      <TaskItem
-        key={task.task_id}
-        taskId={task.task_id}
-        assignedUser={task.assigned_user}
-        taskItem={task.task_item}
-        completed={task.completed}
-        updateTaskList={updateTaskList}
-      />,
-    );
+  // list to hold sorted tasks by user
+  const sortedTaskList = []
+  // loop through all users in trip, get user's tasks, make html element and push into sorted list
+  for (const user of users) {
+    const userTaskList = [];
+    const userTasks = tasks.filter(task => task.assigned_user === user.user_id);
+    for (const task of userTasks) {
+      userTaskList.push(
+        <TaskItem
+          key={task.task_id}
+          taskId={task.task_id}
+          assignedUser={task.assigned_user}
+          taskItem={task.task_item}
+          completed={task.completed}
+          updateTaskList={updateTaskList}
+        />,
+      );
+    }
+    sortedTaskList.push(
+    <div className = "col-md-4" key={user.user_id}>
+      <h3>{user.user_id}</h3>
+      <ul>
+        {userTaskList}
+      </ul>
+    </div>
+    )
   }
+
+  // grab all tasks, sort and create html - call TaskItem component
+  // const taskList = [];
+  // const tasksCopy = [...tasks]
+  // tasksCopy.sort((a,b) => {
+  //   if (a.assigned_user < b.assigned_user) {
+  //     return -1;
+  //   }
+  //   if (a.assigned_user > b.assigned_user) {
+  //     return 1;
+  //   }
+  //   return 0;
+  // })
+  // for (const task of tasksCopy) {
+  //   taskList.push(
+  //     <TaskItem
+  //       key={task.task_id}
+  //       taskId={task.task_id}
+  //       assignedUser={task.assigned_user}
+  //       taskItem={task.task_item}
+  //       completed={task.completed}
+  //       updateTaskList={updateTaskList}
+  //     />,
+  //   );
+  // }
 
   // return form component with props/render the new tasks
   return (
     <React.Fragment>
       <AddNewTaskForm addTask={addTask} users={users} />
       <h2>Task List</h2>
-      <div className="grid">{taskList}</div>
+      <div className="grid row">{sortedTaskList}</div>
     </React.Fragment>
   );
 }
@@ -144,6 +182,7 @@ function AddNewTaskForm(props) {
         <label htmlFor="taskInput">Create a new task: </label>
         <input
           id="taskInput"
+          type="text"
           value={task}
           onChange={(event) => setTask(event.target.value)}
           required></input>
