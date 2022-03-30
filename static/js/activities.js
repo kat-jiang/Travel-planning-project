@@ -15,7 +15,7 @@ const map = new mapboxgl.Map({
   container: 'map', // container ID
   style: 'mapbox://styles/mapbox/streets-v11', // style URL
   center: [ `${tripLng}` , `${tripLat}` ], // starting position [lng, lat]
-  zoom: 8, // starting zoom
+  zoom: 9, // starting zoom
   hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
 });
 
@@ -76,7 +76,7 @@ function display_search_cards(results) {
     }
 
     // make a card for each result
-    const cardHtml = 
+    const cardHtml =
     `
     <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
@@ -104,7 +104,7 @@ function display_search_cards(results) {
       </div>
     </div>
     `;
-    
+
     // Display results
     document.querySelector('#display-results').insertAdjacentHTML('beforeend', cardHtml);
   }
@@ -168,7 +168,7 @@ document.querySelector('#search').addEventListener('click', (evt) => {
 
 const addToItinerary = (evt) => {
   evt.preventDefault();
-  
+
   const formInputs = {
     yelp_id: evt.target.value,
     trip_id: document.querySelector('#trip_id').value,

@@ -7,27 +7,29 @@ import crud
 from model import User, Trip, connect_to_db, db
 from server import app
 
+password = os.environ['PASSWORD']
 
 def load_users():
     """Load users into database"""
+    hash_password = crud.hash_password(password)
 
-    kat = crud.create_user(user_id='kat', fname='Kat', lname='Jiang', email='kat@gmail.com', password='1234')
+    kat = crud.create_user(user_id='kat', fname='Kat', lname='Jiang', email='kat@gmail.com', password=hash_password)
 
-    brian = crud.create_user(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password='1234')
+    brian = crud.create_user(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password=hash_password)
 
-    devin = crud.create_user(user_id='devin', fname='Devin', lname='Jiang', email='devin@gmail.com', password='1234')
+    devin = crud.create_user(user_id='devin', fname='Devin', lname='Jiang', email='devin@gmail.com', password=hash_password)
 
-    hans=crud.create_user(user_id='hans', fname='Hans', lname='Mei', email='hans@gmail.com', password='1234')
+    hans=crud.create_user(user_id='hans', fname='Hans', lname='Mei', email='hans@gmail.com', password=hash_password)
 
-    christine = crud.create_user(user_id='christine', fname='Christine', lname='Wo', email='chris@gmail.com', password='1234')
+    christine = crud.create_user(user_id='christine', fname='Christine', lname='Wo', email='chris@gmail.com', password=hash_password)
 
-    nina = crud.create_user(user_id='nina', fname='Nina', lname='Jiang', email='nina@gmail.com', password='1234')
+    nina = crud.create_user(user_id='nina', fname='Nina', lname='Jiang', email='nina@gmail.com', password=hash_password)
 
-    ting=crud.create_user(user_id='ting', fname='Yuting', lname='Jiang', email='ting@gmail.com', password='1234')
+    ting=crud.create_user(user_id='ting', fname='Yuting', lname='Jiang', email='ting@gmail.com', password=hash_password)
 
-    phil=crud.create_user(user_id='phil', fname='Phil', lname='Arrington', email='phil@gmail.com', password='1234')
+    phil=crud.create_user(user_id='phil', fname='Phil', lname='Arrington', email='phil@gmail.com', password=hash_password)
 
-    jess=crud.create_user(user_id='jess', fname='Jess', lname='Harrigan', email='jess@gmail.com', password='1234')
+    jess=crud.create_user(user_id='jess', fname='Jess', lname='Harrigan', email='jess@gmail.com', password=hash_password)
 
 
     db.session.add_all([kat, brian, devin, hans, christine, nina, ting, phil, jess])

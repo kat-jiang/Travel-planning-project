@@ -1,6 +1,6 @@
 """Models for travel planning app."""
 
-from flask_sqlalchemy import SQLAlchemy 
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -14,7 +14,7 @@ class User(db.Model):
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(25), nullable=False)
     email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(25), nullable=False)
+    password = db.Column(db.String, nullable=False)
 
     # -- relationship to Trip/Task --
     # trips = db.relationship("Trip", secondary="users_trips", backref="users")

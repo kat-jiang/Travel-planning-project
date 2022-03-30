@@ -1,7 +1,9 @@
 """CRUD operations."""
 
-from model import db, User, Trip, Activity, Task,connect_to_db
-from datetime import datetime, timedelta
+from model import User, Trip, Activity, Task,connect_to_db
+from datetime import timedelta
+from passlib.hash import argon2
+
 
 # ----- FUNCTIONS FOR USER TABLE ----- #
 
@@ -37,6 +39,11 @@ def get_all_users():
     """Return list of all users"""
 
     return User.query.all()
+
+def hash_password(password):
+    """Converts password to hash"""
+
+    return argon2.hash(password)
 
 # ----- FUNCTIONS FOR TRIP TABLE ----- #
 
@@ -124,10 +131,6 @@ def get_task_by_task_id(task_id):
 
     return Task.query.get(task_id)
 
-# def get_trip_id(task_id):
-#     """Return task by task_id"""
-
-#     return Task.query.get(task_id)
 
 
 if __name__ == '__main__':

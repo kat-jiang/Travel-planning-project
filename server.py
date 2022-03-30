@@ -7,6 +7,8 @@ import crud
 from jinja2 import StrictUndefined
 import os
 import requests
+from passlib.hash import argon2
+
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
@@ -48,13 +50,17 @@ def register():
     if email_exists:
         flash(f"{email} already exists!")
 
+    #hash password
+    hash_password = argon2.hash(password)
+    del password
+
     #create new user, add to db
     if user_exists is None and email_exists is None:
         new_user = crud.create_user(user_id=user_id,
                                     fname=fname,
                                     lname=lname,
                                     email=email,
-                                    password=password)
+                                    password=hash_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -79,7 +85,7 @@ def login():
         return redirect('/')
 
     #if passwords match, set session to user_id, send user to user_page
-    if user.password == password:
+    if argon2.verify(password, user.password):
         session['user'] = user_id
         return redirect (f"/homepage/{user_id}")
     else:
