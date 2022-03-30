@@ -35,24 +35,35 @@ const createMapMarkers = (results) => {
     const rating = result.rating;
     const longitude = result.coordinates.longitude;
     const latitude =  result.coordinates.latitude;
+    const yelpId = result.id;
 
-    // add popup and marker to the map
+    // create popup for the activity
+    const popup = new mapboxgl.Popup({ offset: 25 })
+    .setHTML(
+      `<h5>${name}</h5>
+      <p>Rating: ${rating}</p>`
+    )
+    // create marker and add to map
     const marker = new mapboxgl.Marker()
     .setLngLat([`${longitude}`, `${latitude}`])
-    .setPopup(
-      new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML(
-          `<h5>${name}</h5><p>Rating: ${rating}</p>`
-        )
-    )
+    .setPopup(popup)
+    .addTo(map)
+
     // add markers to currentmarkers list
     currentMarkers.push(marker);
-  }
 
-  // loop through currentmarkers list to add markers to map
-  for (const marker of currentMarkers) {
-    marker.addTo(map)
-  };
+    // Add a custom event listener to the map to close allpopups
+    map.on('closeAllPopups', () => {
+      popup.remove();
+    });
+
+    // adding event listener to the activity card to togglepopup
+    const yelpCard = document.querySelector(`#card-${yelpId}`);
+    yelpCard.addEventListener('click', (e) => {
+      map.fire('closeAllPopups');
+      marker.togglePopup();
+    });
+  }
 };
 
 // -------- DISPLAY CARDS -------- //
@@ -78,24 +89,16 @@ function display_search_cards(results) {
     // make a card for each result
     const cardHtml =
     `
-    <div class="card mb-3" style="max-width: 540px;">
+    <div class="card mb-3" id="card-${id}" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4 d-flex aline-items-center">
           <img src="${imageUrl}" class="img-fluid rounded-start">
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">
-              ${name} <br> Rating: ${rating}
-            </h5>
-            <h6>
-              Categories: ${categories}
-            </h6>
-            <p class="card-text">
-              ${address}
-              <br>
-              ${displayPhone}
-            </p>
+            <h5 class="card-title">${name}<br>Rating: ${rating}</h5>
+            <h6>Categories: ${categories}</h6>
+            <p class="card-text">${address}<br>${displayPhone}</p>
             <p class="card-text">
               <button class="btn btn-primary add-to-itinerary" value="${id}">Add to itinerary</button>
             </p>
@@ -195,4 +198,5 @@ results.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('add-to-itinerary')) {
     addToItinerary(evt);
     };
+
 });
