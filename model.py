@@ -13,7 +13,7 @@ class User(db.Model):
     user_id = db.Column(db.String(25), primary_key=True)
     fname = db.Column(db.String(25), nullable=False)
     lname = db.Column(db.String(25), nullable=False)
-    email = db.Column(db.String(50), nullable=False, unique=True)
+    email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
 
     # -- relationship to Trip/Task --
@@ -41,8 +41,8 @@ class Trip(db.Model):
 
     trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     trip_creator = db.Column(db.String(25), db.ForeignKey("users.user_id"), nullable=False)
-    trip_location = db.Column(db.String(50), nullable=False)
-    trip_name = db.Column(db.String(100), default=trip_location)
+    trip_location = db.Column(db.String, nullable=False)
+    trip_name = db.Column(db.String, default=trip_location)
     longitude = db.Column(db.Float)
     latitude = db.Column(db.Float)
     start_date = db.Column(db.DateTime, nullable=False)
@@ -119,8 +119,8 @@ class Activity(db.Model):
 
     activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     trip_id = db.Column(db.Integer, db.ForeignKey("trips.trip_id"), nullable=False)
-    activity_name = db.Column(db.String(100))
-    activity_type = db.Column(db.String(50))
+    activity_name = db.Column(db.String)
+    activity_type = db.Column(db.String)
     address = db.Column(db.String)
     phone = db.Column(db.String(20))
     datetime = db.Column(db.DateTime)
