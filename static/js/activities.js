@@ -57,11 +57,13 @@ const createMapMarkers = (results) => {
       popup.remove();
     });
 
-    // adding event listener to the activity card to togglepopup
+    // add event listener to the activity card to togglepopup
     const yelpCard = document.querySelector(`#card-${yelpId}`);
     yelpCard.addEventListener('click', (e) => {
-      map.fire('closeAllPopups');
-      marker.togglePopup();
+      if (!e.target.classList.contains('add-to-itinerary')) {
+        map.fire('closeAllPopups');
+        marker.togglePopup();
+      };
     });
   }
 };
@@ -198,5 +200,4 @@ results.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('add-to-itinerary')) {
     addToItinerary(evt);
     };
-
 });
