@@ -140,7 +140,13 @@ def add_trip():
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
     #create trip and add to db
-    new_trip = crud.create_trip(trip_creator=user_id,trip_location=trip_location, trip_name=trip_name, start_date=start_date, end_date=end_date, longitude=longitude, latitude=latitude)
+    new_trip = crud.create_trip(trip_creator=user_id,
+                                trip_location=trip_location,
+                                trip_name=trip_name,
+                                start_date=start_date,
+                                end_date=end_date,
+                                longitude=longitude,
+                                latitude=latitude)
 
     db.session.add(new_trip)
     db.session.commit()
@@ -356,7 +362,13 @@ def display_trip_itinerary(trip_id):
     if session.get('user') not in [user.user_id for user in trip.users]:
         return redirect('/')
 
-    return render_template('itinerary.html', trip=trip, trip_dates=trip_dates, start_date=start_date, end_date=end_date, activities=unsorted_activities, sorted_activities=itin_dict)
+    return render_template('itinerary.html',
+                            trip=trip,
+                            trip_dates=trip_dates,
+                            start_date=start_date,
+                            end_date=end_date,
+                            activities=unsorted_activities,
+                            sorted_activities=itin_dict)
 
 
 @app.route('/add-to-itinerary', methods=["POST"])

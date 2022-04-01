@@ -10,16 +10,17 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.String(25), primary_key=True)
-    fname = db.Column(db.String(25), nullable=False)
-    lname = db.Column(db.String(25), nullable=False)
+    user_id = db.Column(db.String(50), primary_key=True)
+    fname = db.Column(db.String(50), nullable=False)
+    lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
 
-    # -- relationship to Trip/Task --
+    # -- relationship to Trip/Task/Option --
     # trips = db.relationship("Trip", secondary="users_trips", backref="users")
     # trips_created = db.relationship("Trip", backref="creator")
     tasks = db.relationship("Task", backref="user")
+    options = db.relationship("Option", secondary="votes", backref="users")
 
     def to_dict(self):
         """return data as dictionary"""
@@ -48,11 +49,12 @@ class Trip(db.Model):
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
 
-    #-- relationships to User/Activity/Task --
+    #-- relationships to User/Activity/Task/Poll --
     users = db.relationship("User", secondary="users_trips", backref="trips")
     creator = db.relationship("User", backref="trips_created")
     activities = db.relationship("Activity", backref="trip")
     tasks = db.relationship("Task", backref="trip")
+    polls = db.relationship("Poll", backref="trip")
 
     def to_dict(self):
         """return data as dictionary"""
@@ -84,7 +86,7 @@ class UserTrip(db.Model):
 
 
 class Task(db.Model):
-    """A day for the trip"""
+    """A task for the trip"""
 
     __tablename__ = "tasks"
 
@@ -113,7 +115,7 @@ class Task(db.Model):
 
 
 class Activity(db.Model):
-    """An activity for the day for the trip"""
+    """An activity for the trip"""
 
     __tablename__ = "activities"
 
@@ -134,6 +136,55 @@ class Activity(db.Model):
 
     def __repr__(self):
         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name} activity_type={self.activity_type}>'
+
+
+class Poll(db.Model):
+    """A poll for the trip"""
+
+    __tablename__ = "polls"
+
+    poll_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    trip_id = db.Column(db.Integer, db.ForeignKey("trips.trip_id"), nullable=False)
+    poll_title = db.Column(db.String)
+
+    # -- relationship to Trip/Option --
+    # trip = db.relationship("Trip", backref="polls")
+    options = db.relationship("Option", backref="poll")
+
+
+    def __repr__(self):
+        return f'<Poll poll_id={self.poll_id} poll_title={self.poll_title}>'
+
+class Option(db.Model):
+    """An option for the poll"""
+
+    __tablename__ = "options"
+
+    option_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    poll_id = db.Column(db.Integer, db.ForeignKey("polls.poll_id"), nullable=False)
+    option_name = db.Column(db.String)
+
+    # -- relationship to Option --
+    # users = db.relationship("User", secondary="votes", backref="options")
+    # poll = db.relationship("Poll", backref="options")
+
+    def __repr__(self):
+        return f'<Option option_id={self.option_id} poll_id={self.poll_id} option_name={self.option_name}>'
+
+
+class Vote(db.Model):
+    """Association Table: An option that the user voted on"""
+
+    __tablename__ = "votes"
+
+    vote_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    option_id = db.Column(db.Integer, db.ForeignKey("options.option_id"), nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey("users.user_id"), nullable=False)
+
+
+    def __repr__(self):
+        return f'<Vote vote_id={self.vote_id} option_id={self.option_id} user_id={self.user_id}>'
+
 
 
 def connect_to_db(flask_app, db_uri="postgresql:///travelplanner", echo=True):
