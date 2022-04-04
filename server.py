@@ -558,7 +558,7 @@ def delete_task():
     db.session.delete(task)
     db.session.commit()
 
-    #retrieve all task by trip if
+    #retrieve all task by trip id
     tasks = crud.get_tasks_by_trip_id(task.trip_id)
     #make a list of task dict items
     task_list = []
@@ -566,6 +566,61 @@ def delete_task():
         task_list.append(task.to_dict())
 
     return jsonify({"success": True, "tasks": task_list})
+
+# ----- ROUTES FOR TRIP POLLS ----- #
+
+@app.route('/trip/<trip_id>/polls')
+def display_trip_polls(trip_id):
+    """Display trip polls for all users to vote"""
+
+    trip = crud.get_trip_by_id(trip_id)
+
+    return render_template('poll.html', trip=trip)
+
+@app.route("/polls.json")
+def get_polls_json():
+    """Return a JSON response with all polls and options."""
+    # get info from js
+    trip_id = request.args.get("tripId")
+    #retrieve all polls by trip
+    #retrieve all options for polls
+
+    #make a list of poll/option dict items
+
+    return jsonify({})
+
+@app.route('/create-poll', methods=["POST"])
+def create_poll():
+    """Creates poll and option instances"""
+
+    # get info from js
+    trip_id = request.json.get("tripId")
+    poll_title = request.json.get("title")
+    options_list = request.json.get("options")
+
+    # create a poll instance and add to db
+    poll = crud.create_poll(trip_id=trip_id,
+                            poll_title=poll_title)
+    db.session.add(poll)
+    db.session.commit()
+
+    # create option instances add to db
+    option_dict_list = []
+    for option_name in options_list:
+        option = crud.create_option(poll_id=poll.poll_id,
+                                    option_name=option_name)
+        db.session.add(option)
+        db.session.commit()
+        # make option object a dict and add to list
+        option_dict_list.append(option.to_dict())
+
+    # return poll object as dictionary
+    poll_dict = poll.to_dict()
+    # add options to poll dict
+    poll_dict['options'] = option_dict_list
+
+    return jsonify({"success": True, "poll": poll_dict})
+
 
 # ----- ROUTES FOR MAPS ----- #
 

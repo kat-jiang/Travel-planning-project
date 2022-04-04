@@ -151,6 +151,13 @@ class Poll(db.Model):
     # trip = db.relationship("Trip", backref="polls")
     options = db.relationship("Option", backref="poll")
 
+    def to_dict(self):
+        """return data as dictionary"""
+        poll_dict = {'poll_id': self.poll_id,
+                    'trip_id': self.trip_id,
+                    'poll_title': self.poll_title,
+        }
+        return poll_dict
 
     def __repr__(self):
         return f'<Poll poll_id={self.poll_id} poll_title={self.poll_title}>'
@@ -167,6 +174,14 @@ class Option(db.Model):
     # -- relationship to Option --
     # users = db.relationship("User", secondary="votes", backref="options")
     # poll = db.relationship("Poll", backref="options")
+
+    def to_dict(self):
+        """return data as dictionary"""
+        option_dict = {'option_id': self.option_id,
+                    'poll_id': self.poll_id,
+                    'option_name': self.option_name,
+        }
+        return option_dict
 
     def __repr__(self):
         return f'<Option option_id={self.option_id} poll_id={self.poll_id} option_name={self.option_name}>'

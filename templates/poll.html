@@ -2,10 +2,13 @@
 
 {% block head %}
 
+<!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
 <!-- React scripts -->
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
 
 {% endblock %}
 
@@ -34,12 +37,16 @@
   </div>
 </div>
 
-<!-- React container -->
-<div class="container task-list">
-
+<div class="container polls" width="500px">
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-3">
+      <canvas id="test-chart"></canvas>
+    </div>
+  </div>
 </div>
-
 <!-- JS scripts -->
-<script type="text/jsx" src="/static/js/taskList.jsx"></script>
+<script type="text/jsx" src="/static/js/poll.jsx"></script>
 
 {% endblock %}

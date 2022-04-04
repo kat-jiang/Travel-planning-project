@@ -18,6 +18,7 @@
       <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
       <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Explore Activities</a>
       <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary">Task List</a>
+      <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary">Polls</a>
       <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
     </div>
   </div>
@@ -28,7 +29,7 @@
       <ul>
         {% for user in trip_users %}
 
-        <li>{{user.user_id}}: {{user.fname}} {{user.lname}}</li>
+        <li>@{{user.user_id}}: {{user.fname}} {{user.lname}}</li>
 
         {% endfor %}
       </ul>
@@ -41,7 +42,7 @@
           {% for user in all_users %}
             {% if user not in trip_users %}
               <option value="{{user.user_id}}">
-                {{user.user_id}}: {{user.fname}} {{user.lname}}
+                @{{user.user_id}}: {{user.fname}} {{user.lname}}
               </option>
             {% endif %}
           {% endfor %}
@@ -50,7 +51,7 @@
       </form>
     </p>
   </div>
-  
+
 </div>
 
 {% endblock %}

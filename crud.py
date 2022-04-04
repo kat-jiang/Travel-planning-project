@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import User, Trip, Activity, Task,connect_to_db
+from model import connect_to_db, User, Trip, Activity, Task, Poll, Option
 from datetime import timedelta
 from passlib.hash import argon2
 
@@ -131,6 +131,21 @@ def get_task_by_task_id(task_id):
 
     return Task.query.get(task_id)
 
+# ----- FUNCTIONS FOR POLL/OPTIONS TABLE ----- #
+
+def create_poll(trip_id, poll_title):
+    """Create and return a poll"""
+
+    poll = Poll(trip_id=trip_id,
+                poll_title=poll_title)
+    return poll
+
+def create_option(poll_id, option_name):
+    """Create and return an option"""
+
+    option = Option(poll_id=poll_id,
+                    option_name=option_name)
+    return option
 
 
 if __name__ == '__main__':
