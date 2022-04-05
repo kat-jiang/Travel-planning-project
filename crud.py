@@ -213,6 +213,16 @@ def get_voted_users_for_poll(poll_id):
 
     return voted_users
 
+def get_poll_by_id(poll_id):
+    """return a poll by id"""
+
+    return Poll.query.get(poll_id)
+
+def get_all_options_by_poll_id(poll_id):
+    """return all by id"""
+    
+    return Option.query.filter(Option.poll_id==poll_id).all()
+
 
 
 if __name__ == '__main__':

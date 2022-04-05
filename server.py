@@ -631,6 +631,27 @@ def create_poll():
 
     return jsonify({"success": True, "poll": poll_dict})
 
+@app.route('/remove-poll', methods=["POST"])
+def remove_poll():
+    """Remove poll and options from db"""
+    # get info from js
+    poll_id= request.json.get("pollId")
+
+    # get options and polls, delete from db
+    options=crud.get_all_options_by_poll_id(poll_id)
+    for option in options:
+        db.session.delete(option)
+        db.session.commit()
+    poll = crud.get_poll_by_id(poll_id)
+    db.session.delete(poll)
+    db.session.commit()
+
+    #retrieve all remaining polls
+    poll_list = crud.get_poll_list_by_trip_id(poll.trip_id)
+
+    return jsonify({"success": True, "polls": poll_list })
+
+
 @app.route('/add-vote', methods=["POST"])
 def add_vote():
     """Adds vote to an option"""
@@ -638,7 +659,7 @@ def add_vote():
     option_id = request.json.get("optionId")
     user_id = session.get('user')
     poll_id = request.json.get("pollId")
-
+    # append user to option.users
     option = crud.get_option_by_option_id(option_id)
     user = crud.get_user_by_id(user_id)
     option.users.append(user)

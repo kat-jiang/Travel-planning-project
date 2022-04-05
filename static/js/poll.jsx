@@ -85,8 +85,23 @@ function PollOptions(props) {
       deleteChart(jsonResponse.options);
     });
   }
+  // function to delete poll and options
+  function removePoll() {
+    fetch("/remove-poll", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ pollId: props.pollId}),
+    })
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      props.updatePollList(jsonResponse.polls);
+    });
+  }
 
   // loop through options in list to render in poll
+  // check if user voted, if so, disable click button
   const options_list = []
   for (const option of options) {
     if (votedUsers.includes(currentUser)) {
@@ -119,6 +134,9 @@ function PollOptions(props) {
           <ul className="list-group list-group-flush">
             {options_list}
           </ul>
+          <button id={`remove-${props.pollId}`}
+            onClick={removePoll}
+          >Remove Poll</button>
         </div>
       </div>
       <div className="col-md-3">
@@ -142,6 +160,10 @@ function PollContainer() {
   function addPoll(newPoll) {
     setPolls([...polls, newPoll]);
   }
+  // function to update polls state when a poll is removed
+  function updatePollList(remainingPolls) {
+    setPolls(remainingPolls);
+  }
 
   // fetch polls/options from backend to render on initial load
   React.useEffect(() => {
@@ -158,6 +180,7 @@ function PollContainer() {
         key={poll.poll_id}
         pollId={poll.poll_id}
         pollTitle={poll.poll_title}
+        updatePollList={updatePollList}
       />
     )
   }
