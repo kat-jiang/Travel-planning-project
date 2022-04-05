@@ -582,12 +582,22 @@ def get_polls_json():
     """Return a JSON response with all polls and options."""
     # get info from js
     trip_id = request.args.get("tripId")
-    #retrieve all polls by trip
-    #retrieve all options for polls
+    
+    #get list of polls by trip
+    poll_list = crud.get_poll_list_by_trip_id(trip_id)
 
-    #make a list of poll/option dict items
+    return jsonify({"success": True, "polls": poll_list})
 
-    return jsonify({})
+@app.route("/options.json")
+def get_poll_options_json():
+    """Return a JSON response with all poll options."""
+    # get info from js
+    poll_id = request.args.get("pollId")
+
+    #retrieve all options by poll_id get dict of option and count
+    options_list = crud.get_options_by_poll_id(poll_id)
+
+    return jsonify({"success": True, 'options': options_list})
 
 @app.route('/create-poll', methods=["POST"])
 def create_poll():
@@ -601,16 +611,12 @@ def create_poll():
     # create a poll instance and add to db
     poll = crud.create_poll(trip_id=trip_id,
                             poll_title=poll_title)
-    db.session.add(poll)
-    db.session.commit()
 
     # create option instances add to db
     option_dict_list = []
     for option_name in options_list:
         option = crud.create_option(poll_id=poll.poll_id,
                                     option_name=option_name)
-        db.session.add(option)
-        db.session.commit()
         # make option object a dict and add to list
         option_dict_list.append(option.to_dict())
 
@@ -621,6 +627,22 @@ def create_poll():
 
     return jsonify({"success": True, "poll": poll_dict})
 
+@app.route('/add-vote', methods=["POST"])
+def add_vote():
+    """Adds vote to an option"""
+    # get info from js
+    option_id = request.json.get("optionId")
+    user_id = session.get('user')
+    poll_id = request.json.get("pollId")
+
+    option = crud.get_option_by_option_id(option_id)
+    user = crud.get_user_by_id(user_id)
+    option.users.append(user)
+    db.session.commit()
+
+    options_list = crud.get_options_by_poll_id(poll_id)
+
+    return jsonify({"success": True, "options": options_list})
 
 # ----- ROUTES FOR MAPS ----- #
 

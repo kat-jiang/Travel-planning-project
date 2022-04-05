@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import connect_to_db, User, Trip, Activity, Task, Poll, Option
+from model import db, connect_to_db, User, Trip, Activity, Task, Poll, Option
 from datetime import timedelta
 from passlib.hash import argon2
 
@@ -138,6 +138,9 @@ def create_poll(trip_id, poll_title):
 
     poll = Poll(trip_id=trip_id,
                 poll_title=poll_title)
+    db.session.add(poll)
+    db.session.commit()
+
     return poll
 
 def create_option(poll_id, option_name):
@@ -145,7 +148,61 @@ def create_option(poll_id, option_name):
 
     option = Option(poll_id=poll_id,
                     option_name=option_name)
+    db.session.add(option)
+    db.session.commit()
+
     return option
+
+# def create_poll_option_list_for_trip(trip_id):
+#     """Create a dic of polls and options for a specific trip via trip_id"""
+
+#     trip_polls = Poll.query.filter(Poll.trip_id==trip_id).all()
+#     poll_option_list = []
+#     for poll in trip_polls:
+#         poll_dict = poll.to_dict()
+
+#         option_dict_list = []
+
+#         options_list = poll.options
+
+#         for option in options_list:
+#             option_dict_list.append(option.to_dict())
+#         poll_dict['options'] = option_dict_list
+
+#         poll_option_list.append(poll_dict)
+
+#     return poll_option_list
+
+def get_poll_list_by_trip_id(trip_id):
+    """return a list of polls for that trip"""
+
+    trip_polls = Poll.query.filter(Poll.trip_id==trip_id).all()
+
+    poll_list = []
+    for poll in trip_polls:
+        poll_list.append(poll.to_dict())
+
+    return poll_list
+
+
+def get_options_by_poll_id(poll_id):
+    """return a list of option objects in dictionary form with name and user counts"""
+
+    options_list = []
+    options = Option.query.filter(Option.poll_id==poll_id).all()
+    for option in options:
+        option_dict = {}
+        option_dict['option_id'] = option.option_id
+        option_dict['option_name'] = option.option_name
+        option_dict['votes'] = len(option.users)
+        options_list.append(option_dict)
+    return options_list
+
+def get_option_by_option_id(option_id):
+    """return option by option id"""
+    return Option.query.get(option_id)
+
+
 
 
 if __name__ == '__main__':

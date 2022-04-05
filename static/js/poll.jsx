@@ -1,4 +1,5 @@
 // ----- component to display chart ----- //
+
 const data = {
   labels: [
     'Red',
@@ -34,6 +35,113 @@ const config = new Chart(
 
 // to display chart, label is the key, data is the value
 
+function PollOptions(props) {
+  // state: {option_name:user_count}
+  const [options, setOptions] = React.useState([]);
+
+  // fetch options from backend to render on initial load
+  // need to input poll id and user id
+  React.useEffect(() => {
+    fetch(`/options.json?pollId=${props.pollId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      setOptions(data.options);
+      renderChart(data.options)
+    })
+  }, [])
+
+  function renderChart(options) {
+    const label_list = [];
+    const data_list = [];
+
+    for (const option of options) {
+      label_list.push(option.option_name)
+      data_list.push(option.votes)
+    }
+
+    const data = {
+      labels: label_list,
+      datasets: [{
+        label: 'My First Dataset',
+        data: data_list,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const config = new Chart(
+      document.querySelector(`#chart-${props.pollId}`),
+      {
+        type: 'doughnut',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: `${props.pollTitle}`,
+            }
+          }
+        },
+      }
+    );
+  }
+
+  function addVote(optionId) {
+    // need user id, option
+    fetch("/add-vote", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ optionId: optionId, pollId: props.pollId }),
+    })
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      setOptions(jsonResponse.options);
+    });
+  }
+
+  const options_list = []
+  for (const option of options) {
+    options_list.push(
+      <li
+      className="list-group-item"
+      key={option.option_id}
+      value={option.option_id}
+      onClick={(event) => addVote(event.target.value)}
+      >{option.option_name}</li>
+    )
+  }
+
+
+  return (
+    <div className="row">
+      <div className="col-md-6">
+        <div className="card">
+          <div className="card-header">
+            {props.pollTitle}
+          </div>
+          <ul className="list-group list-group-flush">
+            {options_list}
+          </ul>
+        </div>
+      </div>
+      <div className="col-md-3">
+        <canvas id={`chart-${props.pollId}`}>
+        </canvas>
+      </div>
+    </div>
+
+  );
+}
 
 
 
@@ -46,11 +154,34 @@ const config = new Chart(
 // return needs to display the form and then the polls and chart
 
 function PollContainer() {
+  // state: poll_list - list of all polls
   const [polls, setPolls] = React.useState([]);
+
+  // tripid
+  const tripId = document.querySelector('#trip_id').value;
 
   // function to add new poll to polls state
   function addPoll(newPoll) {
     setPolls([...polls, newPoll]);
+  }
+
+  // fetch polls/options from backend to render on initial load
+  React.useEffect(() => {
+    fetch(`/polls.json?tripId=${tripId}`)
+    .then((response) => response.json())
+    .then((data) => {
+      setPolls(data.polls);
+    })
+  }, [])
+  const polls_list = [];
+  for (const poll of polls) {
+    polls_list.push(
+      <PollOptions
+        key={poll.poll_id}
+        pollId={poll.poll_id}
+        pollTitle={poll.poll_title}
+      />
+    )
   }
 
   return (
@@ -58,20 +189,10 @@ function PollContainer() {
       <div className="row">
         <CreatePollForm addPoll={addPoll} />
       </div>
-      <div className="row">
-        <div className="col-md-6">
-        </div>
-        <div className="col-md-3">
-          <canvas id="test-chart"></canvas>
-        </div>
-      </div>
+      {polls_list}
     </React.Fragment>
   );
 }
-
-
-
-
 
 // ----- component to display form and take inputs ----- //
 
