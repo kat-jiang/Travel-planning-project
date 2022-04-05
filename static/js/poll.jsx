@@ -249,10 +249,10 @@ function CreatePollForm(props) {
           value={option}
           onChange={(event) => setOption(event.target.value)}
           ></input>
-        <button onClick={addOption}> Add more options </button>
-        {options}
+        <button onClick={addOption}> Add option </button>
+        <div>{options}</div>
       </form>
-      <button onClick={createPoll}> Create </button>
+      <button onClick={createPoll}> Create Poll </button>
 
     </React.Fragment>
   );

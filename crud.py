@@ -174,7 +174,7 @@ def create_option(poll_id, option_name):
 #     return poll_option_list
 
 def get_poll_list_by_trip_id(trip_id):
-    """return a list of polls for that trip"""
+    """return a list of polls dict objects for that trip"""
 
     trip_polls = Poll.query.filter(Poll.trip_id==trip_id).all()
 
@@ -220,8 +220,13 @@ def get_poll_by_id(poll_id):
 
 def get_all_options_by_poll_id(poll_id):
     """return all by id"""
-    
+
     return Option.query.filter(Option.poll_id==poll_id).all()
+
+def get_polls_by_trip_id(trip_id):
+    """return all polls for that trip"""
+
+    return Poll.query.filter(Poll.trip_id==trip_id).all()
 
 
 

@@ -166,7 +166,7 @@ def delete_trip():
     """Delete a trip from user's trip page"""
 
     trip_id = request.json.get('trip_id')
-    #first delete childs (activity/task)
+    #first delete childs (activity/task/poll/option)
     tasks = crud.get_tasks_by_trip_id(trip_id)
     for task in tasks:
         db.session.delete(task)
@@ -174,6 +174,13 @@ def delete_trip():
     activities = crud.get_activites_by_trip_id(trip_id)
     for activity in activities:
         db.session.delete(activity)
+        db.session.commit()
+    polls = crud.get_polls_by_trip_id(trip_id)
+    for poll in polls:
+        options=crud.get_all_options_by_poll_id(poll.poll_id)
+        for option in options:
+            db.session.delete(option)
+        db.session.delete(poll)
         db.session.commit()
     #then delete trip
     trip = crud.get_trip_by_id(trip_id)
