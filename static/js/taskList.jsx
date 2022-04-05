@@ -40,8 +40,7 @@ function TaskItem(props) {
 
   return (
     <li>
-        {props.assignedUser}//
-        {props.taskItem}//
+        <div>{props.taskItem}</div>
         <button onClick={taskCompleted}
         >{completeness}</button>
         <button onClick={deleteTask}
@@ -171,7 +170,7 @@ function AddNewTaskForm(props) {
   const userList = [];
   for (const user of props.users) {
     userList.push(
-    <option key={user.user_id} value={user.user_id}>[{user.user_id}] {user.fname} {user.lname}</option>)
+    <option key={user.user_id} value={user.user_id}>@{user.user_id} ({user.fname} {user.lname})</option>)
   };
 
   // return form, make sure to add event handlers to update state

@@ -1,5 +1,6 @@
 "use strict";
 import {config} from "./config.js"
+import {formatDate} from "./dateFormatting.js"
 
 // -------- DISPLAY MAP FROM MAPBOX -------- //
 mapboxgl.accessToken = config.mapboxApiKey;
@@ -102,6 +103,9 @@ const addTrip = (evt) => {
     )
     .addTo(map);
 
+    const startdateObject = formatDate(userTrip.start_date)
+    const enddateObject = formatDate(userTrip.end_date)
+
     document.querySelector('#get-trips').insertAdjacentHTML('beforeend',
     `
     <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
@@ -110,7 +114,7 @@ const addTrip = (evt) => {
           <p class="card-text">
             <h3>${userTrip.trip_name}</h3>
             <h4>${userTrip.trip_location}</h4>
-            ${userTrip.start_date} to ${userTrip.end_date}
+            ${startdateObject} to ${enddateObject}
           </p>
         </div>
       </a>

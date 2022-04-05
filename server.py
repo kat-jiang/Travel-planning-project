@@ -363,7 +363,7 @@ def display_trip_itinerary(trip_id):
             if activity.datetime.date() == date.date():
                 activity_list.append(activity)
         activity_list.sort(key=lambda activity:activity.datetime)
-        itin_dict[date.date()] = activity_list
+        itin_dict[date.strftime("%a, %b %d %Y")] = activity_list
 
     #prevent unauthorized users from seeing trippage
     if session.get('user') not in [user.user_id for user in trip.users]:
@@ -583,6 +583,10 @@ def display_trip_polls(trip_id):
     trip = crud.get_trip_by_id(trip_id)
 
     user_id = session.get('user')
+
+    #prevent unauthorized users from seeing trippage
+    if session.get('user') not in [user.user_id for user in trip.users]:
+        return redirect('/')
 
     return render_template('poll.html', trip=trip, user_id=user_id)
 

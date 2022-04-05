@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'trip.html' %}
 
 {% block head %}
 
@@ -20,27 +20,10 @@
 {% block body %}
 
 <!-- Trip info -->
-<input type="hidden" id="trip_id" value="{{trip.trip_id}}">
 <input type="hidden" id="trip-lat" value="{{trip.latitude}}">
 <input type="hidden" id="trip-lng" value="{{trip.longitude}}">
 
 <div class="container page-activities">
-  <!-- Row to display trip info-->
-  <div class="row">
-    <h1>{{trip.trip_name}}</h1>
-    <h2>{{trip.trip_location}}</h2>
-    <h3>{{trip.start_date.date()}} to {{trip.end_date.date()}}</h3>
-  </div>
-  <!-- Row to navigate trip planning-->
-  <div class="row">
-    <div class="d-grid gap-2 d-md-block">
-      <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
-      <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Explore Activities</a>
-      <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary">Task List</a>
-      <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary">Polls</a>
-      <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
-    </div>
-  </div>
   <!-- Row to fetch yelp recommended-->
   <div class="row">
     <button id="activities">Top Rated Activities</button>
@@ -54,13 +37,11 @@
   <div class="row">
     <div class="col-md-5" id="display-results">
     </div>
-
     <div class="col-md-7">
       <div id="map">
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- JS scripts-->

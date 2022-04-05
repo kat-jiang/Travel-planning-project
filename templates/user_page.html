@@ -84,7 +84,7 @@
           <p class="card-text">
             <h3>{{ trip.trip_name }}</h3>
             <h4>{{ trip.trip_location }}</h4>
-            {{ trip.start_date.date() }} to {{ trip.end_date.date() }}
+            {{ trip.start_date.strftime("%m-%d-%Y") }} to {{ trip.end_date.strftime("%m-%d-%Y") }}
           </p>
         </div>
       </a>
