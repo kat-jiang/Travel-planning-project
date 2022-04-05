@@ -1,34 +1,29 @@
 "use strict";
 
-// ----- component will display the poll/chart ----- //
-// state: option count (make it a dict? key option name, value option count)
-// props: poll title
-
 // display the poll, with the options, button on click for the option, get key, update the value in state, make the button disable so user cannot vote again
 
-// to display chart, label is the key, data is the value
+// ----- component will display the poll/chart ----- //
 
 function PollOptions(props) {
-  // state: {option_name:user_count}
+  // state: [{option_name:user_count}]
   const [options, setOptions] = React.useState([]);
-  const chart_list = []
-  console.log(chart_list)
+
   // fetch options from backend to render on initial load
-  // need to input poll id and user id
   React.useEffect(() => {
     fetch(`/options.json?pollId=${props.pollId}`)
     .then((response) => response.json())
     .then((data) => {
       setOptions(data.options);
-      renderChart(data.options)
+      renderChart(data.options);
     })
   }, [])
 
-  function renderChart(options) {
+  // function to make a chart with the data
+  function renderChart(optionsData) {
     const label_list = [];
     const data_list = [];
 
-    for (const option of options) {
+    for (const option of optionsData) {
       label_list.push(option.option_name)
       data_list.push(option.votes)
     }
@@ -55,20 +50,25 @@ function PollOptions(props) {
             legend: {
               position: 'top',
             },
-            title: {
-              display: true,
-              text: `${props.pollTitle}`,
-            }
           }
         },
       }
     const grapharea = document.querySelector(`#chart-${props.pollId}`);
     const chart = new Chart(grapharea, config);
-    chart_list.push(chart)
   }
 
+  // function to delete old chart and then make new chart with new data
+  function deleteChart(optionsData) {
+    // Filter all Chart instances for the instance with the canvas.id property that matches my canvas id
+    const currentChart = Object.values(Chart.instances).filter((chart) => chart.canvas.id == `chart-${props.pollId}`).pop();
+    // destroy the chart
+    currentChart.destroy()
+    // make a new chart by calling renderchart function
+    renderChart(optionsData);
+  }
+
+  // function to make post request to backend to update option.users
   function addVote(optionId) {
-    // need user id, option
     fetch("/add-vote", {
       method: "POST",
       headers: {
@@ -79,11 +79,11 @@ function PollOptions(props) {
     .then((response) => response.json())
     .then((jsonResponse) => {
       setOptions(jsonResponse.options);
-      chart_list[0].destroy();
-      renderChart(jsonResponse.options);
+      deleteChart(jsonResponse.options);
     });
   }
-
+  
+  // loop through options in list to render in poll
   const options_list = []
   for (const option of options) {
     options_list.push(
@@ -95,7 +95,6 @@ function PollOptions(props) {
       >{option.option_name}</li>
     )
   }
-
 
   return (
     <div className="row">
@@ -114,19 +113,10 @@ function PollOptions(props) {
         </canvas>
       </div>
     </div>
-
   );
 }
 
-
-
-
-// ----- Parent component to store polls and charts ----- //
-// state: poll_list - list of all polls
-
-// need useeffect to fetch all the polls on initial load
-
-// return needs to display the form and then the polls and chart
+// ----- Parent component to store polls---- //
 
 function PollContainer() {
   // state: poll_list - list of all polls
