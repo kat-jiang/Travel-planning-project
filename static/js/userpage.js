@@ -1,4 +1,70 @@
 "use strict";
+import {config} from "./config.js"
+
+// -------- DISPLAY MAP FROM MAPBOX -------- //
+mapboxgl.accessToken = config.mapboxApiKey;
+
+  const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/light-v10', // style URL
+    center: [-98.5795, 39.8283], // starting position [lng, lat]
+    zoom: 2, // starting zoom
+    hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
+  });
+
+  // fetch all trip lng/lats to display
+  const userId = document.querySelector('#user_id').value;
+
+  fetch(`/api/trips?user_id=${userId}`)
+    .then(response => response.json())
+    .then(trips => {
+      for (const trip of trips) {
+        let tripLng = trip.longitude;
+        let tripLat = trip.latitude;
+
+        // add popup and marker to the map
+        new mapboxgl.Marker()
+        .setLngLat([`${tripLng}`, `${tripLat}`])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+              `<h5>${trip.trip_name}</h5><p>${trip.trip_location}</p>`
+            )
+        )
+        .addTo(map);
+      }
+  });
+
+// -------- USE GEOCODING AUTOCOMPLETE IN FORM -------- //
+
+  const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    types: 'country,region,district,place'
+    });
+
+    geocoder.addTo('#geocoder');
+
+    document.querySelector('#geocoder input').setAttribute('required', true);
+
+    // Get the input form elements.
+    const tripLocation = document.querySelector("#geocoder");
+    const latitude = document.querySelector('#trip-lat');
+    const longitude = document.querySelector('#trip-lng');
+
+    // Add geocoder results to the input form elements
+    geocoder.on('result', (e) => {
+    tripLocation.value = e.result.place_name;
+    latitude.value = e.result.center[1];
+    longitude.value = e.result.center[0];
+    });
+
+    // Clear results when search is cleared.
+    geocoder.on('clear', () => {
+    tripLocation.value = '';
+    latitude.value = '';
+    longitude.value = '';
+    });
+
 
 // -------- ADD TRIP TO DB -------- //
 
@@ -14,7 +80,6 @@ const addTrip = (evt) => {
     end: document.querySelector('#end-date').value,
     user_id: document.querySelector('#user_id').value,
   };
-  console.log(JSON.stringify(formInputs));
   const url = '/add-trip';
 
   fetch(url, {
@@ -26,21 +91,32 @@ const addTrip = (evt) => {
   })
   .then(response => response.json())
   .then(userTrip => {
-      document.querySelector('#get-trips').insertAdjacentHTML('beforeend',
-      `
-      <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
-        <a href="/trip/${userTrip.trip_id}">
-          <div class="card-body">
-            <p class="card-text">
-              <h3>${userTrip.trip_name}</h3>
-              <h4>${userTrip.trip_location}</h4>
-              ${userTrip.start_date} to ${userTrip.end_date}
-            </p>
-          </div>
-        </a>
-        <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
-      </div>
-      `
+    // add popup and marker to the map
+    new mapboxgl.Marker()
+    .setLngLat([`${userTrip.longitude}`, `${userTrip.latitude}`])
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML(
+          `<h5>${userTrip.trip_name}</h5><p>${userTrip.trip_location}</p>`
+        )
+    )
+    .addTo(map);
+
+    document.querySelector('#get-trips').insertAdjacentHTML('beforeend',
+    `
+    <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
+      <a href="/trip/${userTrip.trip_id}">
+        <div class="card-body">
+          <p class="card-text">
+            <h3>${userTrip.trip_name}</h3>
+            <h4>${userTrip.trip_location}</h4>
+            ${userTrip.start_date} to ${userTrip.end_date}
+          </p>
+        </div>
+      </a>
+      <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
+    </div>
+    `
     );
   })
 }

@@ -1,31 +1,4 @@
-// ----- component to display chart ----- //
-
-const data = {
-  labels: [
-    'Red',
-    'Blue',
-    'Yellow'
-  ],
-  datasets: [{
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-    backgroundColor: [
-      'rgb(255, 99, 132)',
-      'rgb(54, 162, 235)',
-      'rgb(255, 205, 86)'
-    ],
-    hoverOffset: 4
-  }]
-};
-
-const config = new Chart(
-  document.querySelector('#test-chart'),
-  {
-    type: 'doughnut',
-    data: data,
-  }
-);
-
+"use strict";
 
 // ----- component will display the poll/chart ----- //
 // state: option count (make it a dict? key option name, value option count)
@@ -38,7 +11,8 @@ const config = new Chart(
 function PollOptions(props) {
   // state: {option_name:user_count}
   const [options, setOptions] = React.useState([]);
-
+  const chart_list = []
+  console.log(chart_list)
   // fetch options from backend to render on initial load
   // need to input poll id and user id
   React.useEffect(() => {
@@ -72,10 +46,7 @@ function PollOptions(props) {
         hoverOffset: 4
       }]
     };
-
-    const config = new Chart(
-      document.querySelector(`#chart-${props.pollId}`),
-      {
+    const config ={
         type: 'doughnut',
         data: data,
         options: {
@@ -91,7 +62,9 @@ function PollOptions(props) {
           }
         },
       }
-    );
+    const grapharea = document.querySelector(`#chart-${props.pollId}`);
+    const chart = new Chart(grapharea, config);
+    chart_list.push(chart)
   }
 
   function addVote(optionId) {
@@ -106,6 +79,8 @@ function PollOptions(props) {
     .then((response) => response.json())
     .then((jsonResponse) => {
       setOptions(jsonResponse.options);
+      chart_list[0].destroy();
+      renderChart(jsonResponse.options);
     });
   }
 
