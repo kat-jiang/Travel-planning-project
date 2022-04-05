@@ -575,14 +575,16 @@ def display_trip_polls(trip_id):
 
     trip = crud.get_trip_by_id(trip_id)
 
-    return render_template('poll.html', trip=trip)
+    user_id = session.get('user')
+
+    return render_template('poll.html', trip=trip, user_id=user_id)
 
 @app.route("/polls.json")
 def get_polls_json():
     """Return a JSON response with all polls and options."""
     # get info from js
     trip_id = request.args.get("tripId")
-    
+
     #get list of polls by trip
     poll_list = crud.get_poll_list_by_trip_id(trip_id)
 
@@ -597,7 +599,9 @@ def get_poll_options_json():
     #retrieve all options by poll_id get dict of option and count
     options_list = crud.get_options_by_poll_id(poll_id)
 
-    return jsonify({"success": True, 'options': options_list})
+    voted_users = crud.get_voted_users_for_poll(poll_id)
+
+    return jsonify({"success": True, 'options': options_list, 'votedUsers': voted_users })
 
 @app.route('/create-poll', methods=["POST"])
 def create_poll():
@@ -642,7 +646,9 @@ def add_vote():
 
     options_list = crud.get_options_by_poll_id(poll_id)
 
-    return jsonify({"success": True, "options": options_list})
+    voted_users = crud.get_voted_users_for_poll(poll_id)
+
+    return jsonify({"success": True, "options": options_list, 'votedUsers': voted_users })
 
 # ----- ROUTES FOR MAPS ----- #
 

@@ -7,6 +7,7 @@
 function PollOptions(props) {
   // state: [{option_name:user_count}]
   const [options, setOptions] = React.useState([]);
+  const [votedUsers, setVotedUsers] = React.useState([]);
 
   // fetch options from backend to render on initial load
   React.useEffect(() => {
@@ -14,6 +15,7 @@ function PollOptions(props) {
     .then((response) => response.json())
     .then((data) => {
       setOptions(data.options);
+      setVotedUsers(data.votedUsers);
       renderChart(data.options);
     })
   }, [])
@@ -31,7 +33,7 @@ function PollOptions(props) {
     const data = {
       labels: label_list,
       datasets: [{
-        label: 'My First Dataset',
+        label: 'Votes',
         data: data_list,
         backgroundColor: [
           'rgb(255, 99, 132)',
@@ -79,21 +81,32 @@ function PollOptions(props) {
     .then((response) => response.json())
     .then((jsonResponse) => {
       setOptions(jsonResponse.options);
+      setVotedUsers(jsonResponse.votedUsers);
       deleteChart(jsonResponse.options);
     });
   }
-  
+
   // loop through options in list to render in poll
   const options_list = []
   for (const option of options) {
-    options_list.push(
-      <li
-      className="list-group-item"
-      key={option.option_id}
-      value={option.option_id}
-      onClick={(event) => addVote(event.target.value)}
-      >{option.option_name}</li>
-    )
+    if (votedUsers.includes(currentUser)) {
+      options_list.push(
+        <li
+        className="list-group-item"
+        key={option.option_id}
+        value={option.option_id}
+        >{option.option_name}</li>
+      )
+    } else {
+      options_list.push(
+        <li
+        className="list-group-item"
+        key={option.option_id}
+        value={option.option_id}
+        onClick={(event) => addVote(event.target.value)}
+        >{option.option_name}</li>
+      )
+    }
   }
 
   return (

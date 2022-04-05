@@ -202,6 +202,16 @@ def get_option_by_option_id(option_id):
     """return option by option id"""
     return Option.query.get(option_id)
 
+def get_voted_users_for_poll(poll_id):
+    """return list of users that voted in the poll"""
+
+    voted_users= []
+    options = Option.query.filter(Option.poll_id==poll_id).all()
+    for option in options:
+        for user in option.users:
+            voted_users.append(user.user_id)
+
+    return voted_users
 
 
 
