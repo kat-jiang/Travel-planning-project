@@ -3,9 +3,9 @@
 import os
 from datetime import datetime
 
+from server import app
 import crud
 from model import User, Trip, connect_to_db, db
-from server import app
 
 password = os.environ['PASSWORD']
 
@@ -38,15 +38,15 @@ def load_users():
 def load_trips_and_add_users():
     "Load trips into database and add to user"
 
-    maui = Trip(trip_creator='kat', trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924)
+    maui = Trip(trip_creator='kat', trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924, trip_image="https://images.unsplash.com/photo-1483168527879-c66136b56105?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyMDM0Nzc&ixlib=rb-1.2.1&q=80&w=400")
 
-    seattle = Trip(trip_creator='kat',trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"), latitude=47.608013, longitude=-122.335167)
+    seattle = Trip(trip_creator='kat',trip_location='Seattle, WA', trip_name="See the PNW", start_date=datetime.strptime("2022-05-29", "%Y-%m-%d"), end_date=datetime.strptime("2022-06-04", "%Y-%m-%d"), latitude=47.608013, longitude=-122.335167, trip_image="https://images.unsplash.com/photo-1648372795759-f91c2225d752?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzMwMzc&ixlib=rb-1.2.1&q=80&w=400")
 
-    palm_springs = Trip(trip_creator='brian',trip_location='Palm Springs, CA', trip_name="Hike Joshua Tree", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.830517, longitude=-116.545601)
+    joshua_tree = Trip(trip_creator='brian',trip_location='Joshua Tree, CA', trip_name="Joshua Tree National Park Trip", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.8734, longitude=-115.9010, trip_image="https://images.unsplash.com/photo-1600680386586-9b4795bee256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzMzNDU&ixlib=rb-1.2.1&q=80&w=400")
 
-    chicago = Trip(trip_creator='kat', trip_location='Chicago, IL', trip_name="Explore Windy City", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177)
+    chicago = Trip(trip_creator='kat', trip_location='Chicago, IL', trip_name="Chicago Weekend", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177, trip_image="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzQzOTg&ixlib=rb-1.2.1&q=80&w=400")
 
-    db.session.add_all([maui, seattle, palm_springs, chicago])
+    db.session.add_all([maui, seattle, joshua_tree, chicago])
     db.session.commit()
 
     kat = User.query.get('kat')
@@ -57,7 +57,7 @@ def load_trips_and_add_users():
     kat.trips.append(chicago)
 
     brian.trips.append(maui)
-    brian.trips.append(palm_springs)
+    brian.trips.append(joshua_tree)
     db.session.commit()
 
 

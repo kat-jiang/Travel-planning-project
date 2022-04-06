@@ -47,7 +47,7 @@ def hash_password(password):
 
 # ----- FUNCTIONS FOR TRIP TABLE ----- #
 
-def create_trip(trip_creator, trip_location, trip_name, start_date, end_date, longitude, latitude):
+def create_trip(trip_creator, trip_location, trip_name, start_date, end_date, longitude, latitude, trip_image):
     """Create and return a new trip."""
 
     trip = Trip(trip_creator=trip_creator,
@@ -56,7 +56,8 @@ def create_trip(trip_creator, trip_location, trip_name, start_date, end_date, lo
                 start_date=start_date,
                 end_date=end_date,
                 longitude=longitude,
-                latitude=latitude)
+                latitude=latitude,
+                trip_image=trip_image)
     return trip
 
 def get_trip_by_id(trip_id):

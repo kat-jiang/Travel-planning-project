@@ -110,9 +110,10 @@ const addTrip = (evt) => {
     `
     <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
       <a href="/trip/${userTrip.trip_id}">
+        <img src="${userTrip.trip_image}" class="card-img-top">
         <div class="card-body">
           <p class="card-text">
-            <h3>${userTrip.trip_name}</h3>
+            <h4>${userTrip.trip_name}</h4>
             <h4>${userTrip.trip_location}</h4>
             ${startdateObject} to ${enddateObject}
           </p>
@@ -144,7 +145,7 @@ const deleteTrip = (trip_id) => {
     .then(response => response.text())
     .then(response => {
       document.querySelector(`#trip-${trip_id}`).remove();
-      alert(response);
+      // alert(response);
     });
 }
 // -------- REMOVE TRIP FROM DB -------- //

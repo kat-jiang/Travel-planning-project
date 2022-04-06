@@ -1,13 +1,13 @@
 """Server for travel planning app."""
 
-from datetime import datetime
 from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
-from model import connect_to_db, db
-import crud
 from jinja2 import StrictUndefined
 import os
 import requests
 from passlib.hash import argon2
+from model import connect_to_db, db
+import crud
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -15,6 +15,7 @@ app.jinja_env.undefined = StrictUndefined
 
 app.secret_key = 'SECRET_KEY'
 YELP_API_KEY = os.environ['YELP_KEY']
+UNSPLASH_API_KEY = os.environ['UNSPLASH_KEY']
 
 # ----- ROUTES FOR HOME/LOGIN ----- #
 
@@ -113,6 +114,7 @@ def user_page(user_id):
     #get user and trips from db
     user = crud.get_user_by_id(user_id)
     trips = user.trips
+    trips.sort(key=lambda trip:trip.start_date)
 
     return render_template('user_page.html', user=user, trips=trips)
 
@@ -129,15 +131,24 @@ def add_trip():
     longitude = float(request.json.get("longitude"))
     latitude = float(request.json.get("latitude"))
 
-    #without ajax
-    # trip_location = request.form.get("location")
-    # trip_name = request.form.get("trip-name")
-    # start_date_str = request.form.get("trip-start")
-    # end_date_str = request.form.get("trip-end")
-
     #convert date strings to datetime
     start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
     end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+
+    #make api call to unsplash
+    url = 'https://api.unsplash.com/search/photos/'
+    queries = {
+        'client_id': UNSPLASH_API_KEY,
+        'query': trip_location,
+        'orientation': 'landscape',
+    }
+    res = requests.get(url, params=queries)
+
+    data = res.json()
+
+    results = data.get('results', [])
+
+    image = results[0].get('urls', {}).get('small')
 
     #create trip and add to db
     new_trip = crud.create_trip(trip_creator=user_id,
@@ -146,8 +157,8 @@ def add_trip():
                                 start_date=start_date,
                                 end_date=end_date,
                                 longitude=longitude,
-                                latitude=latitude)
-
+                                latitude=latitude,
+                                trip_image=image)
     db.session.add(new_trip)
     db.session.commit()
 
@@ -285,7 +296,6 @@ def get_activities():
 
     activities = data.get('businesses', [])
 
-    # return render_template('activities.html', activities=activities, trip=trip)
     return jsonify(activities)
 
 @app.route('/api/restaurants' )
@@ -310,8 +320,6 @@ def get_restaurants():
 
     activities = data.get('businesses', [])
 
-    # flash("Activity has been added")
-    # return render_template('activities.html', activities=activities, trip=trip)
     return jsonify(activities)
 
 @app.route('/api/search')
@@ -336,7 +344,6 @@ def search_activities():
 
     activities = data.get('businesses', [])
 
-    # return render_template('activities.html', activities=activities, trip=trip)
     return jsonify(activities)
 
 # ----- ROUTES FOR TRIP ITINERARY ----- #

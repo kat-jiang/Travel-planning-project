@@ -48,6 +48,7 @@ class Trip(db.Model):
     latitude = db.Column(db.Float)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
+    trip_image = db.Column(db.String)
 
     #-- relationships to User/Activity/Task/Poll --
     users = db.relationship("User", secondary="users_trips", backref="trips")
@@ -65,6 +66,7 @@ class Trip(db.Model):
                     'end_date': self.end_date,
                     'longitude': self.longitude,
                     'latitude': self.latitude,
+                    'trip_image': self.trip_image,
         }
         return trip_dict
 

@@ -80,9 +80,10 @@
     {% for trip in trips %}
     <div class="card col-md-3" id="trip-{{trip.trip_id}}" style="width: 18rem;">
       <a href="/trip/{{trip.trip_id}}">
+        <img src="{{trip.trip_image}}" class="card-img-top">
         <div class="card-body">
           <p class="card-text">
-            <h3>{{ trip.trip_name }}</h3>
+            <h4>{{ trip.trip_name }}</h4>
             <h4>{{ trip.trip_location }}</h4>
             {{ trip.start_date.strftime("%m-%d-%Y") }} to {{ trip.end_date.strftime("%m-%d-%Y") }}
           </p>
