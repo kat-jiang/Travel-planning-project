@@ -7,8 +7,7 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 * 📖 [Set Up](#set-up)
 * 😸 [About Me](#about-me)
 ## Technologies Used
-* Backend: Python, Flask, SQLAlchemy
-* Database: SQL, PostgreSQL
+* Backend: Python, Flask, SQL, PostgreSQL, SQLAlchemy
 * Frontend: Javascript, React, HTML, Bootstrap, AJAX, JSON, Jinja2
 * APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API
 ## Features
