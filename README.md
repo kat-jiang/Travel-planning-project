@@ -4,7 +4,7 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 1. [General Info](#general-info)
 2. [Technologies](#TechnologiesUsed)
 3. [Features](#Features)
-4. [Future Improvements](#FutureImprovements)
+4. [Future Improvements](#Future Improvements)
 5. [Set Up](#SetUp)
 6. [About Me](#AboutMe)
 ## Technologies Used
