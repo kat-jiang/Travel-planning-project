@@ -13,13 +13,13 @@ for (const button of document.querySelectorAll(".modal-btn")) {
 // callback function to update db with datetime
 const addDatetime = (evt, activityId) => {
   evt.preventDefault();
-  
+
   const formInputs = {
     activity_id: activityId,
     datetime: document.querySelector('#activity-time').value,
     note: document.querySelector('#activity-note').value,
   };
-  
+
   fetch('/add-datetime', {
     method: 'POST',
     body: JSON.stringify(formInputs),
@@ -29,7 +29,7 @@ const addDatetime = (evt, activityId) => {
   })
     .then(response => response.text())
     .then(response => {
-      alert(response);
+      // alert(response);
       location.reload()
     });
 };
@@ -56,7 +56,7 @@ const addOwnActivity = (tripId) => {
     datetime: document.querySelector('#own-activity-time').value,
     note: document.querySelector('#own-activity-note').value,
   };
-  
+
   fetch('/add-own-activity', {
     method: 'POST',
     body: JSON.stringify(formInputs),
@@ -66,7 +66,7 @@ const addOwnActivity = (tripId) => {
   })
     .then(response => response.text())
     .then(response => {
-      alert(response);
+      // alert(response);
       location.reload()
     });
 };

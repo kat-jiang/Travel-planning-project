@@ -1,12 +1,22 @@
 {% extends 'trip.html' %}
 
+{% block head %}
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+<!-- <link rel="stylesheet" href="/static/css/itinerary.css"/> -->
+{% endblock %}
+
 {% block title %}Trip Itinerary{% endblock %}
 
 {% block body %}
 
 <div class="container">
-  <!-- Row to display unsorted activities-->
+
   <h3>Activities List</h3>
+  <!-- Button trigger add own activity modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
+
+  <!-- Row to display unsorted activities-->
   <div class="row display-flex flex-nowrap overflow-auto" >
 
     {% for activity in activities %}
@@ -27,35 +37,6 @@
       </div>
     </div>
     {% endfor %}
-  </div>
-
-  <h3>Itinerary</h3>
-  <!-- Button trigger add own activity modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
-
-  <!-- Row to display itinerary sorted by date and time -->
-  <div class="row">
-    <ul>
-      {% for date in sorted_activities %}
-        <li>
-          {{date}}
-          <ul>
-            {% for activity in sorted_activities[date] %}
-            <li>
-              {{activity.datetime.time()}} <br>
-              {{activity.activity_name}} <br>
-              {{activity.address}} <br>
-              Notes: {{activity.note}} <br>
-              <!-- Button trigger datetime modal -->
-              <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
-              <!-- Button to remove activity -->
-              <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
-            </li>
-            {% endfor %}
-          </ul>
-        </li>
-      {% endfor %}
-    </ul>
   </div>
 
   <!-- Modal to edit datetime -->
@@ -96,28 +77,30 @@
         <!-- form to add own activity -->
         <form>
           <div class="modal-body">
-            <label for="own-activity-name">Activity Name</label>
-            <br>
-            <input type="text" id="own-activity-name" name="own-activity-name" required>
-            <br>
-            <label for="own-activity-type">Activity Type</label>
-            <br>
-            <input type="text" id="own-activity-type" name="own-activity-type">
-            <br>
-            <label for="own-activity-address">Activity Address</label>
-            <br>
-            <input type="text" id="own-activity-address" name="own-activity-address">
-            <br>
-            <label for="own-activity-phone">Activity Phone</label>
-            <br>
-            <input type="text" id="own-activity-phone" name="own-activity-phone">
-            <br>
-            <label for="own-activity-time">Choose a date and time for your activity:</label>
-            <input type="datetime-local" id="own-activity-time" name="own-activity-time" min="{{start_date}}" max="{{end_date}}" required>
-            <br>
-            <label for="own-activity-note">Add a note to the activity:</label>
-            <br>
-            <input type="text" id="own-activity-note" name="own-activity-note">
+            <div class="form-group">
+              <label for="own-activity-name">Activity Name</label>
+              <input type="text" class="form-control" id="own-activity-name" name="own-activity-name" required>
+            </div>
+            <div class="form-group">
+              <label for="own-activity-type">Activity Type</label>
+              <input type="text" class="form-control" id="own-activity-type" name="own-activity-type">
+            </div>
+            <div class="form-group">
+              <label for="own-activity-address">Activity Address</label>
+              <input type="text" class="form-control" id="own-activity-address" name="own-activity-address">
+            </div>
+            <div class="form-group">
+              <label for="own-activity-phone">Activity Phone</label>
+              <input type="text" class="form-control" id="own-activity-phone" name="own-activity-phone">
+            </div>
+            <div class="form-group">
+              <label for="own-activity-time">Choose a date and time for your activity:</label>
+              <input type="datetime-local" class="form-control" id="own-activity-time" name="own-activity-time" min="{{start_date}}" max="{{end_date}}" required>
+            </div>
+            <div class="form-group">
+              <label for="own-activity-note">Add a note to the activity:</label>
+              <input type="text" class="form-control" id="own-activity-note" name="own-activity-note">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -127,11 +110,69 @@
       </div>
     </div>
   </div>
-
 </div>
+
+<!-- Display itinerary sorted by date and time -->
+<div class="container carousel">
+  <h3>Itinerary</h3>
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for date in sorted_activities %}
+          <div class="swiper-slide">
+            <div class="card">
+              <div class="card-header">
+                {{date}}
+              </div>
+              <div class="card-body">
+                {% for activity in sorted_activities[date] %}
+                  <h5 class="card-title">{{activity.datetime.strftime("%I:%M %p")}}</h5>
+                  <p class="card-text">
+                    {{activity.activity_name}}<br>
+                    {{activity.address}} <br>
+                    Notes: {{activity.note}}
+                  </p>
+                  <!-- Button trigger datetime modal -->
+                  <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
+                  <!-- Button to remove activity -->
+                  <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
+                {% endfor %}
+              </div>
+              <div class="card-footer text-muted">
+                2 days ago
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+
+
 
 <!-- JS scripts -->
 <script src="/static/js/itinerary.js"></script>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 4,
+    spaceBetween: 30,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+    },
+  });
+</script>
 
 {% endblock %}
 
