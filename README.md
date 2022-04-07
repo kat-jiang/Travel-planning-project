@@ -1,12 +1,11 @@
 # Travel-planning-project
 Traveling with a group of friends is very fun, but can be difficult to coordinate. My travel app will take the stress out of planning a group trip by allowing multiple users to interact and collaborate on planning their trip. Once a trip has been decided on, users can start by creating a new trip and adding in their trip buddies. The app will generate a list of top rated activities and restaurants for users to explore and add to their itinerary. Users also have the option of using the search bar to find their own activities. Once activities are added to the itinerary, users can edit the date and times to their liking. If users have trouble deciding on an activity or time, a poll can be made and all users can vote on their choice. In addition, users have the option to assign tasks to other users to keep each other organized. 
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Technologies](#technologies-used)
-3. [Features](#features)
-4. [Future Improvements](#future-improvements)
-5. [Set Up](#set-up)
-6. [About Me](#about-me)
+* [Technologies](#technologies-used)
+* [Features](#features)
+* [Future Improvements](#future-improvements)
+* [Set Up](#set-up)
+* [About Me](#about-me)
 ## Technologies Used
 * Backend: Python, Flask, SQLAlchemy
 * Database: SQL, PostgreSQL
@@ -59,4 +58,4 @@ python3 server.py
 ```
 You can now navigate to 'localhost:5000/' to access the travel app
 ## About Me
-Hi, my name is Kat and I'm a software engineer. This travel app is my first full stack application which I created in four weeks as my final project at Hackbright, a 12-week accelerated software engineering fellowship. Feel free to connect on [LinkedIn](https://www.linkedin.com/in/jiangkatherine/)!
+😸 Hi, my name is Kat and I'm a software engineer. This travel app is my first full stack application which I created in four weeks as my final project at Hackbright, a 12-week accelerated software engineering fellowship. Feel free to connect on [LinkedIn](https://www.linkedin.com/in/jiangkatherine/)!
