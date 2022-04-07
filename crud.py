@@ -196,6 +196,10 @@ def get_options_by_poll_id(poll_id):
         option_dict['option_id'] = option.option_id
         option_dict['option_name'] = option.option_name
         option_dict['votes'] = len(option.users)
+        voters = []
+        for user in option.users:
+            voters.append(user.user_id)
+        option_dict['voters'] = voters
         options_list.append(option_dict)
     return options_list
 

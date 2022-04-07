@@ -104,7 +104,15 @@ function PollOptions(props) {
   // check if user voted, if so, disable click button
   const options_list = []
   for (const option of options) {
-    if (votedUsers.includes(currentUser)) {
+    if (option.voters.includes(currentUser)) {
+      options_list.push(
+      <li
+      className="list-group-item"
+      key={option.option_id}
+      value={option.option_id}
+      >{option.option_name} - Your Vote! </li>
+      )
+    } else if (votedUsers.includes(currentUser)) {
       options_list.push(
         <li
         className="list-group-item"

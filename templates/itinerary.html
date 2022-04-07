@@ -50,12 +50,14 @@
         <!-- form to edit datetime -->
         <form id="add-datetime">
           <div class="modal-body">
+            <div class="form-group">
               <label for="activity-time">Choose a date and time for your activity:</label>
-              <input type="datetime-local" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}" required>
-              <br>
+              <input type="datetime-local" class="form-control" id="activity-time" name="activity-time" min="{{start_date}}" max="{{end_date}}" required>
+            </div>
+            <div class="form-group">
               <label for="activity-note">Add a note to the activity:</label>
-              <br>
-              <input type="text" id="activity-note" name="activity-note">
+              <input type="text" class="form-control" id="activity-note" name="activity-note">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -163,6 +165,7 @@
   const swiper = new Swiper(".mySwiper", {
     slidesPerView: 4,
     spaceBetween: 30,
+    allowTouchMove: false,
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
