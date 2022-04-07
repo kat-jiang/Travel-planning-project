@@ -57,5 +57,6 @@ Run the app:
 ```
 python3 server.py
 ```
+You can now navigate to 'localhost:5000/' to access the travel app
 ## About Me
 Hi, my name is Kat and I'm a software engineer. This travel app is my first full stack application which I created in four weeks as my final project at Hackbright, a 12-week accelerated software engineering fellowship. Feel free to connect on [LinkedIn](https://www.linkedin.com/in/jiangkatherine/)!
