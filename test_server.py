@@ -1,9 +1,6 @@
 import unittest
-
 from server import app
-from flask import g
 from model import db, connect_to_db, example_data
-
 
 class TravelPlannerTest(unittest.TestCase):
     """Test for my site"""
@@ -150,9 +147,22 @@ class TravelPlannerTestDatabase(unittest.TestCase):
     def tearDown(self):
         """Do at end of every test."""
 
-        # (uncomment when testing database)
         db.session.close()
         db.drop_all()
+
+
+# import json
+
+# def test_index():
+#     data = json.dumps({})
+#     client = app.test_client()
+#     headers = {
+#         'Content-Type': 'application/json',
+#     }
+#     response = client.post('/', data=data, headers=headers)
+#     data = json.loads(response.data)
+#     assert data
+
 
 
 if __name__ == "__main__":

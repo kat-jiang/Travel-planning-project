@@ -137,6 +137,22 @@ class Activity(db.Model):
 
     # -- relationship to Trip --
     # trip = db.relationship("Trip", backref="activities")
+    
+    def to_dict(self):
+        """return data as dictionary"""
+        activity_dict = {'activity_id': self.activity_id,
+                    'trip_id': self.trip_id,
+                    'activity_name': self.activity_name,
+                    'activity_type': self.activity_type,
+                    'address': self.address,
+                    'phone': self.phone,
+                    'datetime': self.datetime,
+                    'longitude': self.longitude,
+                    'latitude': self.latitude,
+                    'yelp_id': self.yelp_id,
+                    'note': self.note,
+        }
+        return activity_dict
 
     def __repr__(self):
         return f'<Activity activity_id={self.activity_id} activity_name={self.activity_name} activity_type={self.activity_type}>'
@@ -229,7 +245,7 @@ def example_data():
     maui = Trip(trip_creator='kat', trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924, trip_image="https://images.unsplash.com/photo-1483168527879-c66136b56105?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyMDM0Nzc&ixlib=rb-1.2.1&q=80&w=400")
     db.session.add(maui)
     kat.trips.append(maui)
-    
+
     db.session.commit()
 
 if __name__ == "__main__":

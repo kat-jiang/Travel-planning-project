@@ -162,7 +162,7 @@ const removeTrip = (trip_id, user_id) => {
     .then(response => response.text())
     .then(response => {
       document.querySelector(`#trip-${trip_id}`).remove();
-      alert(response);
+      // alert(response);
     });
 }
 

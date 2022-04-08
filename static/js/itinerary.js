@@ -1,4 +1,119 @@
 "use strict";
+import {config} from "./config.js"
+
+
+// -------- DISPLAY MAP FROM MAPBOX -------- //
+const tripLat = document.querySelector('#trip-lat').value;
+const tripLng = document.querySelector('#trip-lng').value;
+
+mapboxgl.accessToken = config.mapboxApiKey;
+
+  const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    center: [ `${tripLng}` , `${tripLat}` ], // starting position [lng, lat]
+    zoom: 9, // starting zoom
+    hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
+  });
+  // fetch all trip lng/lats to display
+  const tripId = document.querySelector('#trip_id').value;
+  fetch(`/api/itinerary-activities?trip_id=${tripId}`)
+    .then(response => response.json())
+    .then(activities_list => {
+      for (const activity of activities_list) {
+        let activityLng = activity.longitude;
+        let activityLat = activity.latitude;
+
+        // create popup for the activity
+        const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(
+          `<h5>${activity.activity_name}</h5>
+          <p>${activity.activity_type}<br>${activity.address}</p>`
+        )
+        // create marker and add to map
+        if (activity.datetime == null) {
+          const marker = new mapboxgl.Marker({
+          })
+          .setLngLat([`${activityLng}`, `${activityLat}`])
+          .setPopup(popup)
+          .addTo(map)
+        } else {
+          const marker = new mapboxgl.Marker({
+            color: '#F0ABB1',
+          })
+          .setLngLat([`${activityLng}`, `${activityLat}`])
+          .setPopup(popup)
+          .addTo(map)
+        }
+      }
+  });
+  // fetch all trip lng/lats to display
+  // const tripId = document.querySelector('#trip_id').value;
+  // fetch(`/api/itinerary-activities?trip_id=${tripId}`)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log(data)
+  //     const unsortedActivities = data.unsorted_activities;
+  //     const sortedActivities = data.sorted_activities;
+
+  //     for (const unsortedActivity of unsortedActivities) {
+  //       let uactivityLng = unsortedActivity.longitude;
+  //       let uactivityLat = unsortedActivity.latitude;
+
+  //       // create popup for the activity
+  //       const popup = new mapboxgl.Popup({ offset: 25 })
+  //       .setHTML(
+  //         `<h5>${unsortedActivity.activity_name}</h5>
+  //         <p>${unsortedActivity.activity_type}<br>${unsortedActivity.address}</p>`
+  //       )
+  //       // create marker and add to map
+  //       const marker = new mapboxgl.Marker()
+  //       .setLngLat([`${uactivityLng}`, `${uactivityLat}`])
+  //       .setPopup(popup)
+  //       .addTo(map)
+  //     }
+  //     console.log(sortedActivities)
+  //     for (let [i, date] of Object.entries(Object.keys(sortedActivities))) {
+  //       const num = i
+  //       for (const [date, activity_list] of Object.entries(sortedActivities)) {
+  //         for (const activity of activity_list) {
+  //         let activityLng = activity.longitude;
+  //         let activityLat = activity.latitude;
+  //         const geojson = {'features': [
+  //           {
+  //             type: 'Feature',
+  //             geometry: {
+  //               type: 'Point',
+  //               coordinates: [activityLng, activityLat]
+  //             },
+  //             properties: {
+  //               'marker-color': '#F0ABB1',
+  //               'marker-symbol': `${num}`,
+  //             }
+  //           }]};
+  //         // add markers to map
+  //           for (const feature of geojson.features) {
+  //             // create a HTML element for each feature
+  //             const el = document.createElement('div');
+  //             el.className = 'marker';
+
+  //             // make a marker for each feature and add it to the map
+  //             new mapboxgl.Marker(el)
+  //             .setLngLat(feature.geometry.coordinates)
+  //             .setPopup(
+  //               new mapboxgl.Popup({ offset: 25 }) // add popups
+  //               .setHTML(
+  //                 `<h5>${activity.activity_name}</h5>
+  //                 <p>${activity.activity_type}<br>${activity.address}</p>`
+  //               )
+  //             )
+  //             .addTo(map);
+  //           }
+  //         }
+  //       }
+  //     }
+  // });
+
 
 // -------- ADD DATETIME TO ACTIVITY -------- //
 
@@ -84,7 +199,7 @@ const removeActivity = (activityId) => {
   })
     .then(response => response.text())
     .then(response => {
-      console.log(response);
+      // console.log(response);
       location.reload()
     });
 };
