@@ -135,7 +135,7 @@ def get_task_by_task_id(task_id):
 # ----- FUNCTIONS FOR POLL/OPTIONS TABLE ----- #
 
 def create_poll(trip_id, poll_title):
-    """Create and return a poll"""
+    """Create a poll, add to db and return poll"""
 
     poll = Poll(trip_id=trip_id,
                 poll_title=poll_title)
@@ -145,7 +145,7 @@ def create_poll(trip_id, poll_title):
     return poll
 
 def create_option(poll_id, option_name):
-    """Create and return an option"""
+    """Create an option, add to db and return option"""
 
     option = Option(poll_id=poll_id,
                     option_name=option_name)
@@ -154,28 +154,9 @@ def create_option(poll_id, option_name):
 
     return option
 
-# def create_poll_option_list_for_trip(trip_id):
-#     """Create a dic of polls and options for a specific trip via trip_id"""
-
-#     trip_polls = Poll.query.filter(Poll.trip_id==trip_id).all()
-#     poll_option_list = []
-#     for poll in trip_polls:
-#         poll_dict = poll.to_dict()
-
-#         option_dict_list = []
-
-#         options_list = poll.options
-
-#         for option in options_list:
-#             option_dict_list.append(option.to_dict())
-#         poll_dict['options'] = option_dict_list
-
-#         poll_option_list.append(poll_dict)
-
-#     return poll_option_list
 
 def get_poll_list_by_trip_id(trip_id):
-    """return a list of polls dict objects for that trip"""
+    """Return a list of polls dict objects for that trip"""
 
     trip_polls = Poll.query.filter(Poll.trip_id==trip_id).all()
 
@@ -187,7 +168,7 @@ def get_poll_list_by_trip_id(trip_id):
 
 
 def get_options_by_poll_id(poll_id):
-    """return a list of option objects in dictionary form with name and user counts"""
+    """Return a list of option objects in dictionary form with option id, name, voters, and num of votes"""
 
     options_list = []
     options = Option.query.filter(Option.poll_id==poll_id).all()
@@ -204,11 +185,12 @@ def get_options_by_poll_id(poll_id):
     return options_list
 
 def get_option_by_option_id(option_id):
-    """return option by option id"""
+    """Return option by option id"""
+
     return Option.query.get(option_id)
 
 def get_voted_users_for_poll(poll_id):
-    """return list of users that voted in the poll"""
+    """Return list of users that voted in that poll"""
 
     voted_users= []
     options = Option.query.filter(Option.poll_id==poll_id).all()
@@ -219,17 +201,17 @@ def get_voted_users_for_poll(poll_id):
     return voted_users
 
 def get_poll_by_id(poll_id):
-    """return a poll by id"""
+    """Return a poll by id"""
 
     return Poll.query.get(poll_id)
 
 def get_all_options_by_poll_id(poll_id):
-    """return all by id"""
+    """Return all options by poll_id"""
 
     return Option.query.filter(Option.poll_id==poll_id).all()
 
 def get_polls_by_trip_id(trip_id):
-    """return all polls for that trip"""
+    """Return all polls for that trip"""
 
     return Poll.query.filter(Poll.trip_id==trip_id).all()
 

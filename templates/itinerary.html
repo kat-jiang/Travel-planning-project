@@ -130,8 +130,10 @@
                 {% for activity in sorted_activities[date] %}
                   <h5 class="card-title">{{activity.datetime.strftime("%I:%M %p")}}</h5>
                   <p class="card-text">
-                    {{activity.activity_name}}<br>
-                    {{activity.address}} <br>
+                    <strong>{{activity.activity_name}}</strong>
+                    <br>
+                    {{activity.address}}
+                    <br>
                     Notes: {{activity.note}}
                   </p>
                   <!-- Button trigger datetime modal -->
@@ -141,7 +143,6 @@
                 {% endfor %}
               </div>
               <div class="card-footer text-muted">
-                2 days ago
               </div>
             </div>
           </div>

@@ -1,6 +1,8 @@
 """Models for travel planning app."""
 
 from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import argon2
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -218,11 +220,16 @@ def connect_to_db(flask_app, db_uri="postgresql:///travelplanner", echo=True):
 def example_data():
     """Create example data for the test database."""
 
-    kat = User(user_id='kat', fname='Kat', lname='Jiang', email='kat@gmail.com', password='1234')
+    kat = User(user_id='kat', fname='Kat', lname='Jiang', email='kat@gmail.com', password=argon2.hash('1234'))
 
-    brian = User(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password='1234')
+    brian = User(user_id='brian', fname='Brian', lname='Anderson', email='brian@gmail.com', password=argon2.hash('1234'))
 
     db.session.add_all([kat, brian])
+
+    maui = Trip(trip_creator='kat', trip_location='Maui, HI', trip_name="Nina's Wedding", start_date=datetime.strptime("2022-09-02", "%Y-%m-%d"), end_date=datetime.strptime("2022-09-11", "%Y-%m-%d"), latitude=20.798363, longitude=-156.331924, trip_image="https://images.unsplash.com/photo-1483168527879-c66136b56105?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyMDM0Nzc&ixlib=rb-1.2.1&q=80&w=400")
+    db.session.add(maui)
+    kat.trips.append(maui)
+    
     db.session.commit()
 
 if __name__ == "__main__":
