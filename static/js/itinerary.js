@@ -15,105 +15,58 @@ mapboxgl.accessToken = config.mapboxApiKey;
     zoom: 9, // starting zoom
     hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
   });
-  // fetch all trip lng/lats to display
+
+  // fetch all activity lng/lats to display
   const tripId = document.querySelector('#trip_id').value;
   fetch(`/api/itinerary-activities?trip_id=${tripId}`)
     .then(response => response.json())
-    .then(activities_list => {
-      for (const activity of activities_list) {
-        let activityLng = activity.longitude;
-        let activityLat = activity.latitude;
+    .then(data => {
+      const unsortedActivities = data.unsorted_activities;
+      const sortedActivities = data.sorted_activities;
+
+      // make markers for unsorted activities
+      for (const unsortedActivity of unsortedActivities) {
+        let uactivityLng = unsortedActivity.longitude;
+        let uactivityLat = unsortedActivity.latitude;
 
         // create popup for the activity
         const popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(
-          `<h5>${activity.activity_name}</h5>
-          <p>${activity.activity_type}<br>${activity.address}</p>`
+          `<h5>${unsortedActivity.activity_name}</h5>
+          <p>${unsortedActivity.activity_type}<br>${unsortedActivity.address}</p>`
         )
         // create marker and add to map
-        if (activity.datetime == null) {
-          const marker = new mapboxgl.Marker({
-          })
+        const marker = new mapboxgl.Marker({color: '#A0A0A0'})
+        .setLngLat([`${uactivityLng}`, `${uactivityLat}`])
+        .setPopup(popup)
+        .addTo(map)
+      }
+
+      // make markers for sorted activities
+      for (const [index, [date, activity_list]] of Object.entries(Object.entries(sortedActivities))) {
+        for (const activity of activity_list) {
+          let activityLng = activity.longitude;
+          let activityLat = activity.latitude;
+
+          // create popup for the activity
+          const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(
+            `<h5>${activity.activity_name}</h5>
+            <p>${activity.activity_type}<br>${activity.address}</p>`
+          )
+          // create marker and add to map
+          const marker = new mapboxgl.Marker({color: '#F0ABB1'})
           .setLngLat([`${activityLng}`, `${activityLat}`])
           .setPopup(popup)
           .addTo(map)
-        } else {
-          const marker = new mapboxgl.Marker({
-            color: '#F0ABB1',
-          })
-          .setLngLat([`${activityLng}`, `${activityLat}`])
-          .setPopup(popup)
-          .addTo(map)
+          const markerEl = marker.getElement()
+          const numWrap = document.createElement('div');
+          numWrap.classList.add('marker-number')
+          numWrap.innerHTML = `${parseInt(index)+1}`
+          markerEl.append(numWrap)
         }
       }
   });
-  // fetch all trip lng/lats to display
-  // const tripId = document.querySelector('#trip_id').value;
-  // fetch(`/api/itinerary-activities?trip_id=${tripId}`)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log(data)
-  //     const unsortedActivities = data.unsorted_activities;
-  //     const sortedActivities = data.sorted_activities;
-
-  //     for (const unsortedActivity of unsortedActivities) {
-  //       let uactivityLng = unsortedActivity.longitude;
-  //       let uactivityLat = unsortedActivity.latitude;
-
-  //       // create popup for the activity
-  //       const popup = new mapboxgl.Popup({ offset: 25 })
-  //       .setHTML(
-  //         `<h5>${unsortedActivity.activity_name}</h5>
-  //         <p>${unsortedActivity.activity_type}<br>${unsortedActivity.address}</p>`
-  //       )
-  //       // create marker and add to map
-  //       const marker = new mapboxgl.Marker()
-  //       .setLngLat([`${uactivityLng}`, `${uactivityLat}`])
-  //       .setPopup(popup)
-  //       .addTo(map)
-  //     }
-  //     console.log(sortedActivities)
-  //     for (let [i, date] of Object.entries(Object.keys(sortedActivities))) {
-  //       const num = i
-  //       for (const [date, activity_list] of Object.entries(sortedActivities)) {
-  //         for (const activity of activity_list) {
-  //         let activityLng = activity.longitude;
-  //         let activityLat = activity.latitude;
-  //         const geojson = {'features': [
-  //           {
-  //             type: 'Feature',
-  //             geometry: {
-  //               type: 'Point',
-  //               coordinates: [activityLng, activityLat]
-  //             },
-  //             properties: {
-  //               'marker-color': '#F0ABB1',
-  //               'marker-symbol': `${num}`,
-  //             }
-  //           }]};
-  //         // add markers to map
-  //           for (const feature of geojson.features) {
-  //             // create a HTML element for each feature
-  //             const el = document.createElement('div');
-  //             el.className = 'marker';
-
-  //             // make a marker for each feature and add it to the map
-  //             new mapboxgl.Marker(el)
-  //             .setLngLat(feature.geometry.coordinates)
-  //             .setPopup(
-  //               new mapboxgl.Popup({ offset: 25 }) // add popups
-  //               .setHTML(
-  //                 `<h5>${activity.activity_name}</h5>
-  //                 <p>${activity.activity_type}<br>${activity.address}</p>`
-  //               )
-  //             )
-  //             .addTo(map);
-  //           }
-  //         }
-  //       }
-  //     }
-  // });
-
 
 // -------- ADD DATETIME TO ACTIVITY -------- //
 

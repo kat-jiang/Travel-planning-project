@@ -13,15 +13,15 @@
     .page-activities #map { position: relative; width: 100%; }
   </style>
 
+<!-- Mapbox geocoding scripts -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="/static/css/mapbox-input.css" type="text/css">
+
 {% endblock %}
 
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
-
-<!-- Mapbox geocoding scripts -->
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
-<link rel="stylesheet" href="/static/css/mapbox-input.css" type="text/css">
 
 <!-- User id -->
 <input type="hidden" id="user_id" value="{{user.user_id}}">
@@ -101,19 +101,6 @@
 
 <!-- JS scripts-->
 <script src="/static/js/userpage.js" type="module"></script>
-
-{% if g.jasmine_tests %}
-<!-- stuff for testing -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.9.0/jasmine.min.css"
-/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.9.0/jasmine.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.9.0/jasmine-html.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.9.0/boot.min.js"></script>
-<script src="/static/js/test_userpage.js"></script>
-<!-- end of stuff for testing -->
-{% endif %}
 
 
 {% endblock %}

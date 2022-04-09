@@ -44,7 +44,7 @@ const createMapMarkers = (results) => {
       <p>Rating: ${rating}</p>`
     )
     // create marker and add to map
-    const marker = new mapboxgl.Marker()
+    const marker = new mapboxgl.Marker({color: '#A0A0A0'})
     .setLngLat([`${longitude}`, `${latitude}`])
     .setPopup(popup)
     .addTo(map)

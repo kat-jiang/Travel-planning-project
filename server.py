@@ -17,11 +17,6 @@ app.secret_key = 'SECRET_KEY'
 YELP_API_KEY = os.environ['YELP_KEY']
 UNSPLASH_API_KEY = os.environ['UNSPLASH_KEY']
 
-JS_TESTING_MODE = False
-
-@app.before_request
-def add_tests():
-    g.jasmine_tests = JS_TESTING_MODE
 
 # ----- ROUTES FOR HOME/LOGIN ----- #
 
@@ -710,49 +705,36 @@ def get_trip_locations():
 
     return jsonify(trips)
 
-# @app.route('/api/itinerary-activities')
-# def get_activity_locations():
-#     """Return list of activity long/lats"""
-
-#     trip_id = request.args.get('trip_id')
-#     trip = crud.get_trip_by_id(trip_id)
-#     trip_dates = crud.create_days(trip.start_date, trip.end_date)
-#     # activities = crud.get_activites_by_trip_id(trip_id)
-
-#     unsorted_activities = crud.get_null_datetime_activities(trip_id)
-
-#     dated_activities = crud.get_datetime_activities(trip_id)
-
-#     itin_dict = {}
-#     for date in trip_dates:
-#         activity_list = []
-#         for activity in dated_activities:
-#             if activity.datetime.date() == date.date():
-#                 activity_list.append(activity.to_dict())
-#         itin_dict[date.strftime("%m-%d-%Y")] = activity_list
-
-#     unsorted_activities_list = []
-#     for activity in unsorted_activities:
-#         unsorted_activities_list.append(activity.to_dict())
-
-#     return jsonify({'unsorted_activities': unsorted_activities_list, 'sorted_activities': itin_dict})
 @app.route('/api/itinerary-activities')
 def get_activity_locations():
     """Return list of activity long/lats"""
 
     trip_id = request.args.get('trip_id')
-    activities = crud.get_activites_by_trip_id(trip_id)
+    trip = crud.get_trip_by_id(trip_id)
+    trip_dates = crud.create_days(trip.start_date, trip.end_date)
+    # activities = crud.get_activites_by_trip_id(trip_id)
 
-    activities_list = []
-    for activity in activities:
-        activities_list.append(activity.to_dict())
+    unsorted_activities = crud.get_null_datetime_activities(trip_id)
 
-    return jsonify(activities_list)
+    dated_activities = crud.get_datetime_activities(trip_id)
+
+    itin_dict = {}
+    for date in trip_dates:
+        activity_list = []
+        for activity in dated_activities:
+            if activity.datetime.date() == date.date():
+                activity_list.append(activity.to_dict())
+        itin_dict[date.strftime("%m-%d-%Y")] = activity_list
+
+    unsorted_activities_list = []
+    for activity in unsorted_activities:
+        unsorted_activities_list.append(activity.to_dict())
+
+    return jsonify({'unsorted_activities': unsorted_activities_list, 'sorted_activities': itin_dict})
+
+
 
 if __name__ == "__main__":
-    import sys
-    if sys.argv[-1] == "jstest":
-        JS_TESTING_MODE = True
     # DebugToolbarExtension(app)
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

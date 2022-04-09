@@ -107,7 +107,7 @@ def get_null_datetime_activities(trip_id):
     return Activity.query.filter_by(trip_id=trip_id, datetime= None).all()
 
 def get_datetime_activities(trip_id):
-    """Return all activities where datetime is null"""
+    """Return all activities with datetime"""
 
     return Activity.query.filter(Activity.trip_id==trip_id, Activity.datetime != None).all()
 
