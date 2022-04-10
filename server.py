@@ -1,6 +1,6 @@
 """Server for travel planning app."""
 
-from flask import (Flask, render_template, request, flash, session, redirect, jsonify, g)
+from flask import (Flask, render_template, request, flash, session, redirect, jsonify)
 from jinja2 import StrictUndefined
 import os
 import requests
@@ -358,7 +358,7 @@ def display_trip_itinerary(trip_id):
 
     #format datetime to work in input datetime
     start_date =trip.start_date.strftime("%Y-%m-%dT00:00")
-    end_date =trip.end_date.strftime("%Y-%m-%dT00:00")
+    end_date =trip.end_date.strftime("%Y-%m-%dT23:59")
 
     unsorted_activities = crud.get_null_datetime_activities(trip_id)
 
