@@ -1,0 +1,32 @@
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  /* font-family: 'Open Sans', sans-serif; */
+}
+
+.form--rounded .row {
+  border: 1px solid #ced4da;
+  border-radius: 50px;
+}
+
+.form--rounded .row > * {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.form--rounded .form-floating > .form-control {
+  border-radius: 0;
+  border-width: 0;
+}
+
+.col--btn {
+  display: flex;
+  align-items: center;
+}
+
+.col--btn .btn-secondary {
+  border-radius: 50px;
+}
