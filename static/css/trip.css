@@ -1,0 +1,36 @@
+.trip-info {
+  height: 250px;
+  /* background-color: var(--primary-color); */
+  color: var(--base-color);
+  border: 0;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+}
+
+.trip-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.btn-trip {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border: 2px solid var(--primary-color);
+  text-align: center;
+  padding: 15px 35px;
+}
+.btn-trip:hover,
+.btn-trip:active,
+.btn-trip:focus {
+  background-color: #c8785a;
+  border: 2px solid #c8785a;
+  box-shadow: none;
+}
+

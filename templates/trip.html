@@ -8,6 +8,8 @@
     <!-- CSS only -->
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,13 +64,13 @@
         <h3>{{trip.start_date.strftime("%m-%d-%Y")}} to {{trip.end_date.strftime("%m-%d-%Y")}}</h3>
       </div>
       <!-- Row to navigate trip planning-->
-      <div class="row trip-nav">
-        <div class="d-grid gap-2 d-md-block">
-          <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary">Itinerary</a>
-          <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary">Explore Activities</a>
-          <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary">Task List</a>
-          <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary">Polls</a>
-          <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary">Invite Friends</a>
+      <div class="row">
+        <div class="gap-2 trip-nav">
+          <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary btn-trip"><i class="bi bi-calendar-event"></i> Itinerary</a>
+          <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary btn-trip"><i class="bi bi-send"></i> Explore Activities</a>
+          <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary btn-trip"><i class="bi bi-pen"></i> Task List</a>
+          <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary btn-trip"><i class="bi bi-clipboard2-check"></i> Polls</a>
+          <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary btn-trip"> <i class="bi bi-person-circle"></i> Invite Friends</a>
         </div>
       </div>
     </div>

@@ -1,0 +1,18 @@
+.swiper {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-wrapper {
+  align-items: stretch;
+}
+
+.swiper-slide {
+  height: auto;
+  justify-content: center;
+}
+
+.card {
+  height: 100%;
+}
