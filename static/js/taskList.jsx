@@ -5,9 +5,6 @@ function TaskItem(props) {
   // make completed a state and not prop
   const [completed, setCompleted] = React.useState(props.completed);
 
-  let completeness = "not complete";
-  if (completed) {completeness = "completed"};
-
   // function to update db for task completed, and update state
   function taskCompleted() {
     fetch("/task-complete", {
@@ -38,13 +35,21 @@ function TaskItem(props) {
     });
   }
 
+  let taskClass = ""
+  if (completed) {taskClass = "task-complete"}
+
   return (
-    <li>
-        <div>{props.taskItem}</div>
-        <button onClick={taskCompleted}
-        >{completeness}</button>
-        <button onClick={deleteTask}
-        >Delete</button>
+    <li className={`task-item ${taskClass}`} >
+      <div className="item-name" onClick={taskCompleted}>
+        {completed ?
+          <i class="bi bi-check2-circle"></i>
+          :<i class="bi bi-circle"></i>
+        }
+        <span>{props.taskItem}</span>
+      </div>
+      <div onClick={deleteTask}>
+        <i className="bi bi-x-lg"></i>
+      </div>
     </li>
   );
 }
@@ -96,7 +101,7 @@ function TaskListContainer() {
     sortedTaskList.push(
     <div className = "col-md-4" key={user.user_id}>
       <h3>{user.user_id}</h3>
-      <ul>
+      <ul className="task-list">
         {userTaskList}
       </ul>
     </div>
@@ -132,7 +137,7 @@ function TaskListContainer() {
   return (
     <React.Fragment>
       <AddNewTaskForm addTask={addTask} users={users} />
-      <h2>Task List</h2>
+      <h2 className="titles">Task List</h2>
       <div className="grid row">{sortedTaskList}</div>
     </React.Fragment>
   );
@@ -176,25 +181,27 @@ function AddNewTaskForm(props) {
   // return form, make sure to add event handlers to update state
   return (
     <React.Fragment>
-      <h2>Add A New Task</h2>
+      <h2 className="titles">Add A New Task</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="taskInput">Create a new task: </label>
+        <label htmlFor="taskInput" hidden>Create a new task: </label>
         <input
           id="taskInput"
           type="text"
+          className="form-input"
+          placeholder="Add a new task"
           value={task}
           onChange={(event) => setTask(event.target.value)}
           required></input>
-        <label htmlFor="nameInput">Assign to: </label>
+        <label htmlFor="nameInput" hidden>Assign to: </label>
         <select
-          className="form-select"
+          className="form-select form-input"
           defaultValue=""
           onChange={(event) => setAssignedUser(event.target.value)}
           required>
           <option value="" disabled>Assign to:</option>
           {userList}
         </select>
-        <button onClick={addNewTask}> Add </button>
+        <button className="btn-add" onClick={addNewTask}> Add </button>
       </form>
     </React.Fragment>
   );

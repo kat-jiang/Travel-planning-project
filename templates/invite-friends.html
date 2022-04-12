@@ -8,7 +8,7 @@
   <!-- Row to display users in trip-->
   <div class="row">
     <p>
-      <h3>People in this trip</h3>
+      <h2>Friends in this trip</h2>
       <ul>
         {% for user in trip_users %}
 
@@ -18,7 +18,7 @@
       </ul>
     </p>
     <p>
-      <h3>Add friends to this trip</h3>
+      <h2>Add friends to this trip</h2>
       <form action="/add-friend" method="POST">
         <input type="hidden" name="trip-id" value="{{trip.trip_id}}">
         <select class="form-select" name="user-id">

@@ -8,11 +8,6 @@ body {
   --base-color-light: #8d8d8d;
 }
 
-/* .navbar-light {
-  padding: 0;
-  background-color: var(--primary-color);
-} */
-
 .navbar-light {
   padding: 0;
   background-color: rgba(255,255,255,0.75);
@@ -41,4 +36,13 @@ body {
 
 #app-logo{
   display: inline-block;
+}
+
+h2 {
+  font-size: 24px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

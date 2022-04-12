@@ -198,6 +198,7 @@ function PollContainer() {
       <div className="row">
         <CreatePollForm addPoll={addPoll} />
       </div>
+      <h2>Polls</h2>
       {polls_list}
     </React.Fragment>
   );
