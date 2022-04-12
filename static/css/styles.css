@@ -3,7 +3,10 @@ body {
   color: #4F4F4F;
   --primary-color: #e29578;
   --primary-color-dark: #de8261;
+  --primary-color-light: #f8bca6;
   --second-color: #81b29a;
+  --second-color-light: #a7cfbc;
+  --second-color-dark: #5c9479;
   --base-color: #4F4F4F;
   --base-color-light: #8d8d8d;
 }

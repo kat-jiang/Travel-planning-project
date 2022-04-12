@@ -36,9 +36,9 @@ function PollOptions(props) {
         label: 'Votes',
         data: data_list,
         backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
+          '#a7cfbc',
+          '#81b29a',
+          '#5c9479',
         ],
         hoverOffset: 4
       }]
@@ -107,7 +107,7 @@ function PollOptions(props) {
     if (option.voters.includes(currentUser)) {
       options_list.push(
       <li
-      className="list-group-item"
+      className="list-group-item voted"
       key={option.option_id}
       value={option.option_id}
       >{option.option_name} - Your Vote! </li>
@@ -123,7 +123,7 @@ function PollOptions(props) {
     } else {
       options_list.push(
         <li
-        className="list-group-item"
+        className="list-group-item btn-vote"
         key={option.option_id}
         value={option.option_id}
         onClick={(event) => addVote(event.target.value)}
@@ -142,9 +142,9 @@ function PollOptions(props) {
           <ul className="list-group list-group-flush">
             {options_list}
           </ul>
-          <button id={`remove-${props.pollId}`}
+          <button className="btn-remove"id={`remove-${props.pollId}`}
             onClick={removePoll}
-          >Remove Poll</button>
+          ><i className="bi bi-trash-fill"></i> Remove Poll</button>
         </div>
       </div>
       <div className="col-md-3">
@@ -238,30 +238,44 @@ function CreatePollForm(props) {
   function handleSubmit (event) {
     event.preventDefault();
   }
+  const pollOptions = [];
+  for (const opt of options) {
+    pollOptions.push(
+      <span className="option-name badge rounded-pill">{opt}</span>
+    )
+  }
 
   // return form, make sure to add event handlers to update state
   return (
     <React.Fragment>
       <h2>Create a Poll</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="titleInput">Poll Title: </label>
+        <label htmlFor="titleInput" hidden>Poll Title: </label>
         <input
           id="titleInput"
+          className="form-input"
+          placeholder="Poll title - Ask a question..."
           type="text"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           required></input>
-        <label htmlFor="optionInput">Option </label>
+        <label htmlFor="optionInput" hidden>Option </label>
         <input
           id="optionInput"
+          className="form-input"
+          placeholder="Poll option"
           type="text"
           value={option}
           onChange={(event) => setOption(event.target.value)}
           ></input>
-        <button onClick={addOption}> Add option </button>
-        <div>{options}</div>
+        <button className="btn-add" onClick={addOption}> Add option </button>
       </form>
-      <button onClick={createPoll}> Create Poll </button>
+      <div className="poll-row">
+        <div className="poll-options">
+          {pollOptions}
+        </div>
+        <button className="btn-create"onClick={createPoll}> Create Poll </button>
+      </div>
 
     </React.Fragment>
   );
