@@ -6,35 +6,6 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 
-
-<!-- Mapbox map style -->
-<style>
-  .map-wrapper { padding: 20px; }
-  #map { position: relative; width: 100%; height: 350px; }
-  .page-activities #map { position: relative; width: 100%; }
-  .marker {
-  background-size: cover;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  cursor: pointer;
-  }
-  .marker-number {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 18px;
-  text-align: center;
-  height: 18px;
-  background-color: #F0ABB1;
-  color: white;
-  display: block;
-  padding: 0 5px;
-  border-radius: 10px;
-  font-weight: bold;
-  }
-</style>
-
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
 <!-- CSS styles-->
@@ -52,6 +23,7 @@
 <!-- display map container -->
 <div class="container">
   <div class="row">
+    <h3 class="titles">Trip Map</h3>
     <div class="map-wrapper">
       <div id="map"></div>
     </div>
@@ -61,19 +33,19 @@
 <!-- Display itinerary sorted by date and time -->
 <div class="container carousel">
   <!-- Button to toggle off canvas for unsorted activities -->
-  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-    See Activity List
+  <button class="btn btn-itinerary btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    << See Activity List
   </button>
   <!-- Button trigger add own activity modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
+  <button type="button" class="btn btn-itinerary btn-toggle" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
 
-  <h3>Itinerary</h3>
+  <h3 class="titles">Itinerary</h3>
     <!-- Swiper -->
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
         {% for date in sorted_activities %}
           <div class="swiper-slide">
-            <div class="card">
+            <div class="card itinerary-dates">
               <div class="card-header">
                 {{date}}
               </div>
@@ -83,14 +55,18 @@
                   <p class="card-text">
                     <strong>{{activity.activity_name}}</strong>
                     <br>
+                    {{activity.activity_type}}
+                    <br>
                     {{activity.address}}
                     <br>
-                    Notes: {{activity.note}}
+                    {% if activity.note %}
+                      Notes: {{activity.note}}
+                    {% endif %}
                   </p>
                   <!-- Button trigger datetime modal -->
-                  <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
+                  <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-itinerary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
                   <!-- Button to remove activity -->
-                  <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
+                  <button type="button" class="btn btn-itinerary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
                 {% endfor %}
               </div>
               <div class="card-footer text-muted">
@@ -114,7 +90,7 @@
     </div>
     <div class="offcanvas-body">
       {% for activity in activities %}
-      <div class="card border-dark mb-3" style="padding: 0;max-width: 18rem;">
+      <div class="card" style="margin-bottom: 10px;">
         <div class="card-header">{{activity.activity_name}}</div>
         <div class="card-body text-dark">
           <p class="card-title">{{activity.activity_type}}</p>
@@ -125,9 +101,9 @@
         </div>
         <div class="card-footer">
           <!-- Button trigger datetime modal -->
-          <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-primary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Add date/time</button>
+          <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-itinerary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Add date/time</button>
           <!-- Button to remove activity -->
-          <button type="button" class="btn btn-primary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
+          <button type="button" class="btn btn-itinerary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
         </div>
       </div>
       {% endfor %}
@@ -157,8 +133,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-primary add-datetime" value="Save changes"></button>
+          <button type="button" class="btn btn-itinerary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-itinerary add-datetime" value="Save changes"></button>
         </div>
       </form>
     </div>
@@ -202,8 +178,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="add-activity">Save changes</button>
+          <button type="button" class="btn btn-itinerary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-itinerary" id="add-activity">Save changes</button>
         </div>
       </form>
     </div>

@@ -55,7 +55,7 @@ mapboxgl.accessToken = config.mapboxApiKey;
             <p>${activity.activity_type}<br>${activity.address}</p>`
           )
           // create marker and add to map
-          const marker = new mapboxgl.Marker({color: '#F0ABB1'})
+          const marker = new mapboxgl.Marker({color: '#81b29a'})
           .setLngLat([`${activityLng}`, `${activityLat}`])
           .setPopup(popup)
           .addTo(map)
