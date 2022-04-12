@@ -24,12 +24,12 @@ mapboxgl.accessToken = config.mapboxApiKey;
         let tripLat = trip.latitude;
 
         // add popup and marker to the map
-        new mapboxgl.Marker()
+        new mapboxgl.Marker({color:"#81b29a"})
         .setLngLat([`${tripLng}`, `${tripLat}`])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
-              `<h5>${trip.trip_name}</h5><p>${trip.trip_location}</p>`
+              `<h5><strong>${trip.trip_name}</strong></h5><p>${trip.trip_location}</p>`
             )
         )
         .addTo(map);
@@ -66,6 +66,20 @@ mapboxgl.accessToken = config.mapboxApiKey;
     longitude.value = '';
     });
 
+  // -------- Swiper -------- //
+  const swiper = new Swiper(".mySwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    allowTouchMove: false,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+    },
+  });
 
 // -------- ADD TRIP TO DB -------- //
 
@@ -93,7 +107,7 @@ const addTrip = (evt) => {
   .then(response => response.json())
   .then(userTrip => {
     // add popup and marker to the map
-    new mapboxgl.Marker()
+    new mapboxgl.Marker({color:"#81b29a"})
     .setLngLat([`${userTrip.longitude}`, `${userTrip.latitude}`])
     .setPopup(
       new mapboxgl.Popup({ offset: 25 }) // add popups
@@ -106,23 +120,27 @@ const addTrip = (evt) => {
     const startdateObject = formatDate(userTrip.start_date)
     const enddateObject = formatDate(userTrip.end_date)
 
-    document.querySelector('#get-trips').insertAdjacentHTML('beforeend',
+    // document.querySelector('.swiper-wrapper').insertAdjacentHTML('beforeend',
+    swiper.prependSlide(
     `
-    <div class="card col-md-3" id="trip-${userTrip.trip_id}" style="width: 18rem;">
-      <a href="/trip/${userTrip.trip_id}">
-        <img src="${userTrip.trip_image}" class="card-img-top">
-        <div class="card-body">
-          <p class="card-text">
-            <h4>${userTrip.trip_name}</h4>
-            <h4>${userTrip.trip_location}</h4>
-            ${startdateObject} to ${enddateObject}
-          </p>
-        </div>
-      </a>
-      <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
+    <div class="swiper-slide" style="width: 318.667px; margin-right: 30px;">
+      <div class="card trip-card" id="trip-${userTrip.trip_id}">
+        <a href="/trip/${userTrip.trip_id}">
+          <img src="${userTrip.trip_image}" class="card-img-top">
+          <div class="card-body">
+            <p class="card-text">
+              <h4>${userTrip.trip_name}</h4>
+              <h4>${userTrip.trip_location}</h4>
+              ${startdateObject} to ${enddateObject}
+            </p>
+          </div>
+        </a>
+        <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
+      </div>
     </div>
     `
     );
+    swiper.slideTo(0);
   })
 }
 
@@ -144,8 +162,12 @@ const deleteTrip = (trip_id) => {
   })
     .then(response => response.text())
     .then(response => {
-      document.querySelector(`#trip-${trip_id}`).remove();
-      // alert(response);
+      const slides = document.querySelectorAll(".swiper .swiper-slide")
+      for (let i=0; i < slides.length; i++) {
+        if (slides[i].firstElementChild.id == `trip-${trip_id}`) {
+          swiper.removeSlide(i);
+        }
+      }
     });
 }
 // -------- REMOVE TRIP FROM DB -------- //
@@ -171,7 +193,6 @@ let results = document.querySelector('#get-trips');
 
 results.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('delete')) {
-    console.log(evt.target);
     if (confirm('Are you sure you want to delete this trip?')) {
       const trip_id = evt.target.getAttribute('trip-id');
       deleteTrip(trip_id);
@@ -180,8 +201,6 @@ results.addEventListener('click', (evt) => {
     if (confirm('Are you sure you want to remove this trip?')) {
       const trip_id = evt.target.getAttribute('trip-id');
       const user_id = document.querySelector('#user_id').value;
-      console.log(trip_id)
-      console.log(user_id)
       removeTrip(trip_id, user_id);
     };
   }

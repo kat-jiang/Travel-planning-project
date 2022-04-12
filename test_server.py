@@ -12,7 +12,7 @@ class TravelPlannerTest(unittest.TestCase):
     def test_homepage(self):
         """Test homepage"""
         result = self.client.get("/")
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
 
 
 class TravelPlannerTestDatabase(unittest.TestCase):
@@ -42,7 +42,7 @@ class TravelPlannerTestDatabase(unittest.TestCase):
                                 follow_redirects=True)
         self.assertIn(b"Ready to plan your next trip?", result.data)
         self.assertIn(b"Maui", result.data)
-        self.assertNotIn(b"Plan Trips with your Friends!", result.data)
+        self.assertNotIn(b"Login", result.data)
 
     def test_trip_page(self):
         """ Test the trip page """
@@ -62,7 +62,7 @@ class TravelPlannerTestDatabase(unittest.TestCase):
         self.assertNotIn(b"Maui", result.data)
         self.assertNotIn(b"Itinerary", result.data)
         self.assertNotIn(b"Explore Activities", result.data)
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
 
     def test_trip_invite_page(self):
         """ Test the trip invite page """
@@ -82,7 +82,7 @@ class TravelPlannerTestDatabase(unittest.TestCase):
         self.assertNotIn(b"People in this trip", result.data)
         self.assertNotIn(b"kat", result.data)
         self.assertNotIn(b"Add friends to this trip", result.data)
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
 
     def test_trip_invite_friend(self):
         """ Test the trip invite friend feature """
@@ -118,7 +118,7 @@ class TravelPlannerTestDatabase(unittest.TestCase):
         self.assertNotIn(b"Top Rated Activities", result.data)
         self.assertNotIn(b"Top Rated Restaurants", result.data)
         self.assertNotIn(b"Search", result.data)
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
 
     def test_trip_itinerary_page(self):
         """ Test the trip itinerary page """
@@ -136,12 +136,12 @@ class TravelPlannerTestDatabase(unittest.TestCase):
         result = self.client.get("/trip/1/invite", follow_redirects=True)
         self.assertNotIn(b"Activities List", result.data)
         self.assertNotIn(b"Itinerary", result.data)
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
 
     def test_logout(self):
         """ Test the logout feature """
         result = self.client.get("/logout", follow_redirects=True)
-        self.assertIn(b"Plan Trips with your Friends!", result.data)
+        self.assertIn(b"Login", result.data)
         self.assertNotIn(b"Ready to plan your next trip?", result.data)
 
     def tearDown(self):

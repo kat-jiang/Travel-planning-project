@@ -6,16 +6,12 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 
-<!-- Mapbox map style -->
-  <style>
-    .map-wrapper { padding: 20px; }
-    #map { position: relative; width: 100%; height: 400px; }
-    .page-activities #map { position: relative; width: 100%; }
-  </style>
-
 <!-- Mapbox geocoding scripts -->
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="/static/css/mapbox-input.css" type="text/css">
+
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
 
 <!-- CSS styles-->
 <link href="/static/css/user-page.css" rel="stylesheet">
@@ -31,7 +27,7 @@
 
 <!-- form to add trip to db -->
 <div class="container">
-  <h1>Ready to plan your next trip?</h1>
+  <h1 class="title">Ready to plan your next trip?</h1>
   <form id="add-trip" class="form-floating form--rounded">
     <div class="row">
       <div class="col-12 col-md-3">
@@ -78,29 +74,42 @@
 </div>
 <!-- display user trips -->
 <div class="container">
-  <h2>Your Trips</h2>
-  <div id="get-trips" class="d-flex flex-wrap">
-    {% for trip in trips %}
-    <div class="card col-md-3" id="trip-{{trip.trip_id}}" style="width: 18rem;">
-      <a href="/trip/{{trip.trip_id}}">
-        <img src="{{trip.trip_image}}" class="card-img-top">
-        <div class="card-body">
-          <p class="card-text">
-            <h4>{{ trip.trip_name }}</h4>
-            <h4>{{ trip.trip_location }}</h4>
-            {{ trip.start_date.strftime("%m-%d-%Y") }} to {{ trip.end_date.strftime("%m-%d-%Y") }}
-          </p>
+  <h2 class="title">Your Trips</h2>
+  <!-- Swiper -->
+  <div id="get-trips">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for trip in trips %}
+        <div class="swiper-slide">
+          <div class="card trip-card" id="trip-{{trip.trip_id}}">
+            <a href="/trip/{{trip.trip_id}}" class="trip-info">
+              <img src="{{trip.trip_image}}" class="card-img-top">
+              <div class="card-body">
+                <p class="card-text">
+                  <h3 class="trip-name">{{ trip.trip_name }}</h3>
+                  <strong>{{ trip.trip_location }}</strong><br>
+                  {{ trip.start_date.strftime("%m-%d-%Y") }} to {{ trip.end_date.strftime("%m-%d-%Y") }}
+                </p>
+              </div>
+            </a>
+            {% if trip.trip_creator == user.user_id %}
+              <button class="btn btn-secondary delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
+            {% else %}
+              <button class="btn btn-secondary remove" trip-id="{{trip.trip_id}}">Remove Trip</button>
+            {% endif %}
+          </div>
         </div>
-      </a>
-      {% if trip.trip_creator == user.user_id %}
-        <button class="btn btn-secondary delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
-      {% else %}
-        <button class="btn btn-secondary remove" trip-id="{{trip.trip_id}}">Remove Trip</button>
-      {% endif %}
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
     </div>
-    {% endfor %}
   </div>
 </div>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 <!-- JS scripts-->
 <script src="/static/js/userpage.js" type="module"></script>
