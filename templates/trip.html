@@ -38,7 +38,7 @@
         <div class="justify-content-between d-flex w-100">
           <a class="navbar-brand" href="/">
             <img id="app-logo" src="/static/img/dragonfly-logo.svg" width=30px>
-            <span id="app-title">Travel Bugs</span>
+            <span id="app-title">TravelBugs</span>
           </a>
           <a class="navbar-brand" href="/logout">Logout</a>
         </div>
@@ -61,7 +61,8 @@
       <div class="row trip-info">
         <h1>{{trip.trip_name}}</h1>
         <h2>{{trip.trip_location}}</h2>
-        <h3>{{trip.start_date.strftime("%m-%d-%Y")}} to {{trip.end_date.strftime("%m-%d-%Y")}}</h3>
+        <h2>{{trip.start_date.strftime("%m-%d-%Y")}} to {{trip.end_date.strftime("%m-%d-%Y")}}</h2>
+        <hr class="solid">
       </div>
       <!-- Row to navigate trip planning-->
       <div class="row">

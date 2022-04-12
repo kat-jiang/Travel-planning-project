@@ -57,8 +57,8 @@
   font-weight: 600;
 }
 .col--btn .btn-secondary:hover {
-  background-color: #c8785a;
-  border-color: #c8785a;
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
 }
 
 .swiper {

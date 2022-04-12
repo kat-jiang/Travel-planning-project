@@ -2,8 +2,10 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: #4F4F4F;
   --primary-color: #e29578;
+  --primary-color-dark: #de8261;
   --second-color: #81b29a;
   --base-color: #4F4F4F;
+  --base-color-light: #8d8d8d;
 }
 
 /* .navbar-light {
