@@ -66,7 +66,8 @@ mapboxgl.accessToken = config.mapboxApiKey;
     longitude.value = '';
     });
 
-  // -------- Swiper -------- //
+  // -------- SWIPER INITIALIZATION-------- //
+
   const swiper = new Swiper(".mySwiper", {
     slidesPerView: 3,
     spaceBetween: 30,

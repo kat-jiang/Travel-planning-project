@@ -85,17 +85,17 @@
             <a href="/trip/{{trip.trip_id}}" class="trip-info">
               <img src="{{trip.trip_image}}" class="card-img-top">
               <div class="card-body">
-                <p class="card-text">
+                <div class="card-text">
                   <h3 class="trip-name">{{ trip.trip_name }}</h3>
-                  <strong>{{ trip.trip_location }}</strong><br>
+                  {{ trip.trip_location }}<br>
                   {{ trip.start_date.strftime("%m-%d-%Y") }} to {{ trip.end_date.strftime("%m-%d-%Y") }}
-                </p>
+                </div>
               </div>
             </a>
             {% if trip.trip_creator == user.user_id %}
-              <button class="btn btn-secondary delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
+              <button class="btn btn-secondary btn-delete delete" trip-id="{{trip.trip_id}}">Delete Trip</button>
             {% else %}
-              <button class="btn btn-secondary remove" trip-id="{{trip.trip_id}}">Remove Trip</button>
+              <button class="btn btn-secondary btn-delete remove" trip-id="{{trip.trip_id}}">Remove Trip</button>
             {% endif %}
           </div>
         </div>

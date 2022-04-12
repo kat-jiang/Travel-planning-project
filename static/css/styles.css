@@ -3,6 +3,7 @@ body {
   color: #4F4F4F;
   --primary-color: #e29578;
   --second-color: #81b29a;
+  --base-color: #4F4F4F;
 }
 
 /* .navbar-light {
