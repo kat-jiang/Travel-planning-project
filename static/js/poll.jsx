@@ -110,7 +110,7 @@ function PollOptions(props) {
       className="list-group-item voted"
       key={option.option_id}
       value={option.option_id}
-      >{option.option_name} - Your Vote! </li>
+      >{option.option_name} - Your Vote! - </li>
       )
     } else if (votedUsers.includes(currentUser)) {
       options_list.push(

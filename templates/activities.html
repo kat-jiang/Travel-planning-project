@@ -24,9 +24,9 @@
   <div class="flex-row d-flex">
     <button class="btn-search" id="activities">Top Rated Activities</button>
     <button class="btn-search" id="restaurants">Top Rated Restaurants</button>
-    <form action='/api/search', method="POST">
+    <form action='/api/search' class="search-form", method="POST">
       <input type="text" class="form-input" name="search-yelp" id="search-yelp" required>
-      <button class="btn-search" type="submit" id="search" value="Search">Search</button>
+      <button class="btn-search" type="submit" id="search" value="Search"><i class="bi bi-search"></i> Search</button>
     </form>
   </div>
   <!-- Row to display results-->

@@ -58,7 +58,7 @@ const createMapMarkers = (results) => {
     // create popup for the activity
     const popup = new mapboxgl.Popup({ offset: 25 })
     .setHTML(
-      `<h5>${name}</h5>
+      `<h5 class="popup-title">${name}</h5>
       <p class="star-rating">${stars}</p>`
     )
     // create marker and add to map
