@@ -36,8 +36,6 @@
   <button class="btn btn-itinerary btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
     << See Activity List
   </button>
-  <!-- Button trigger add own activity modal -->
-  <button type="button" class="btn btn-itinerary btn-toggle" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
 
   <h2 class="titles">Itinerary</h2>
     <!-- Swiper -->
@@ -51,25 +49,26 @@
               </div>
               <div class="card-body">
                 {% for activity in sorted_activities[date] %}
-                  <h5 class="card-title">{{activity.datetime.strftime("%I:%M %p")}}</h5>
-                  <p class="card-text">
-                    <strong>{{activity.activity_name}}</strong>
-                    <br>
-                    {{activity.activity_type}}
-                    <br>
-                    {{activity.address}}
-                    <br>
-                    {% if activity.note %}
-                      Notes: {{activity.note}}
-                    {% endif %}
-                  </p>
-                  <!-- Button trigger datetime modal -->
-                  <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-itinerary modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
-                  <!-- Button to remove activity -->
-                  <button type="button" class="btn btn-itinerary remove" data-activity-id="{{activity.activity_id}}">Remove</button>
+                  <div class="time-card">
+                    <h5 class="card-title">{{activity.datetime.strftime("%I:%M %p")}}</h5>
+                    <p class="card-text">
+                      <strong>{{activity.activity_name}}</strong>
+                      <br>
+                      Category: {{activity.activity_type}}
+                      <br>
+                      {{activity.address}}
+                      <br>
+                      {% if activity.note %}
+                        Notes: {{activity.note}}
+                      {% endif %}
+                    </p>
+                    <!-- Button trigger datetime modal -->
+                    <button type="button" data-activity-id="{{activity.activity_id}}" class="btn btn-itinerary-action modal-btn" data-bs-toggle="modal" data-bs-target="#add-datetime-modal">Edit</button>
+                    <!-- Button to remove activity -->
+                    <button type="button" class="btn btn-itinerary-action remove" data-activity-id="{{activity.activity_id}}">Remove</button>
+                  </div>
+                  <hr class="solid">
                 {% endfor %}
-              </div>
-              <div class="card-footer text-muted">
               </div>
             </div>
           </div>
@@ -89,11 +88,15 @@
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
+      <!-- Button trigger add own activity modal -->
+      <div class="btn-container">
+        <button type="button" class="btn btn-itinerary btn-toggle" data-bs-toggle="modal" data-bs-target="#add-own-activity-modal">Add your own Activity</button>
+      </div>
       {% for activity in activities %}
       <div class="card" style="margin-bottom: 10px;">
         <div class="card-header">{{activity.activity_name}}</div>
         <div class="card-body text-dark">
-          <p class="card-title">{{activity.activity_type}}</p>
+          <p class="card-title">Category: {{activity.activity_type}}</p>
           <p class="card-text">
             {{activity.address}} <br>
             {{activity.phone}}
@@ -196,7 +199,7 @@
 <!-- Initialize Swiper -->
 <script>
   const swiper = new Swiper(".mySwiper", {
-    slidesPerView: 4,
+    slidesPerView: 3,
     spaceBetween: 30,
     allowTouchMove: false,
     pagination: {
