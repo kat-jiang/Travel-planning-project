@@ -47,7 +47,7 @@ function TaskItem(props) {
         }
         <span>{props.taskItem}</span>
       </div>
-      <div onClick={deleteTask}>
+      <div className="btn-delete" onClick={deleteTask}>
         <i className="bi bi-x-lg"></i>
       </div>
     </li>

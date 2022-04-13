@@ -133,7 +133,7 @@ function PollOptions(props) {
   }
 
   return (
-    <div className="row">
+    <div className="row row-poll">
       <div className="col-md-6">
         <div className="card">
           <div className="card-header">
@@ -270,7 +270,7 @@ function CreatePollForm(props) {
           ></input>
         <button className="btn-add" onClick={addOption}> Add option </button>
       </form>
-      <div className="poll-row">
+      <div className="poll-option-row">
         <div className="poll-options">
           {pollOptions}
         </div>

@@ -6,12 +6,8 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
 
-  <!-- Mapbox map style -->
-  <style>
-    .map-wrapper { padding: 40px; }
-    #map { position: relative; width: 100%; height: 500px; }
-    .page-activities #map { position: relative; width: 100%; }
-  </style>
+  <!-- CSS styles-->
+  <link href="/static/css/activities.css" rel="stylesheet">
 
 {% endblock %}
 
@@ -25,12 +21,12 @@
 
 <div class="container page-activities">
   <!-- Row to fetch yelp recommended-->
-  <div class="row">
-    <button id="activities">Top Rated Activities</button>
-    <button id="restaurants">Top Rated Restaurants</button>
+  <div class="flex-row d-flex">
+    <button class="btn-search" id="activities">Top Rated Activities</button>
+    <button class="btn-search" id="restaurants">Top Rated Restaurants</button>
     <form action='/api/search', method="POST">
-      <input type="text" name="search-yelp" id="search-yelp" required>
-      <input type="submit" id="search" value="Search">
+      <input type="text" class="form-input" name="search-yelp" id="search-yelp" required>
+      <button class="btn-search" type="submit" id="search" value="Search">Search</button>
     </form>
   </div>
   <!-- Row to display results-->

@@ -13,6 +13,12 @@ form {
   padding-left: 20px;
 }
 
+.form-input:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
 .btn-add,
 .btn-create {
   width: 100px;
@@ -37,7 +43,7 @@ form {
   background-color: var(--primary-color-dark);
   border-color: var(--primary-color-dark);
 }
-.poll-row {
+.poll-option-row {
   gap: 10px;
   display: flex;
 }
@@ -50,6 +56,11 @@ form {
   background-color: #F2F2F2;
   padding: 5px;
   gap: 10px;
+}
+
+.row-poll {
+  align-items: center;
+  padding-bottom: 20px;
 }
 
 .option-name {
@@ -93,13 +104,18 @@ form {
 }
 
 .btn-remove {
-  border: 2px solid var(--primary-color);
-  background-color: var(--primary-color);
-  color: white;
+  /* border: 2px solid var(--primary-color); */
+  border: none;
+  background-color: white;
+  color: var(--primary-color);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 4px;
   text-transform: uppercase;
   text-align: center;
   padding: 5px;
+}
+
+.col-md-3 {
+  max-width: 250px;
 }

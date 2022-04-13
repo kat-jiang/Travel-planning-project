@@ -19,6 +19,23 @@ const map = new mapboxgl.Map({
   hash: true, // sync `center`, `zoom`, `pitch`, and `bearing` with URL
 });
 
+// -------- GET STAR RATINGS -------- //
+
+function getStarRatings(rating) {
+  const numRating = parseFloat(rating)
+  let output = [];
+
+  for (let i=numRating; i>=1; i--) {
+    output.push('<i class="bi bi-star-fill"></i>')
+  }
+  if (numRating % 1 == 0.5) {
+    output.push('<i class="bi bi-star-half"></i>')
+  }
+  for (let i = (5-numRating); i>=1; i--) {
+    output.push('<i class="bi bi-star"></i>')
+  }
+  return output.join('');
+}
 
 // -------- CREATE MARKERS FOR MAP -------- //
 
@@ -37,11 +54,12 @@ const createMapMarkers = (results) => {
     const latitude =  result.coordinates.latitude;
     const yelpId = result.id;
 
+    const stars = getStarRatings(rating)
     // create popup for the activity
     const popup = new mapboxgl.Popup({ offset: 25 })
     .setHTML(
       `<h5>${name}</h5>
-      <p>Rating: ${rating}</p>`
+      <p class="star-rating">${stars}</p>`
     )
     // create marker and add to map
     const marker = new mapboxgl.Marker({color: '#A0A0A0'})
@@ -87,19 +105,20 @@ function display_search_cards(results) {
     for (const category of result.categories) {
       categories += `${category.title} `
     }
-
+    const stars = getStarRatings(rating);
     // make a card for each result
     const cardHtml =
     `
-    <div class="card mb-3" id="card-${id}" style="max-width: 540px;">
+    <div class="card mb-3 activity-card" id="card-${id}" style="max-width: 540px;">
       <div class="row g-0">
-        <div class="col-md-4 d-flex aline-items-center">
+        <div class="col-md-4 d-flex">
           <img src="${imageUrl}" class="img-fluid rounded-start">
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">${name}<br>Rating: ${rating}</h5>
-            <h6>Categories: ${categories}</h6>
+            <h5 class="card-title">${name}</h5>
+            <div class="star-rating">${stars}</div>
+            <p class="card-text">Categories: ${categories}</p>
             <p class="card-text">${address}<br>${displayPhone}</p>
             <p class="card-text">
               <button class="btn btn-primary add-to-itinerary" value="${id}">Add to itinerary</button>

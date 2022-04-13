@@ -14,6 +14,12 @@ form {
   padding-left: 20px;
 }
 
+.form-input:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
 .btn-add {
   width: 100px;
   border-radius: 50px;
@@ -62,6 +68,7 @@ h3 {
 
 .task-item:hover {
   background-color: #f1f1f1;
+  border-radius: 50px;
 }
 
 .task-complete {
@@ -72,4 +79,8 @@ h3 {
   display: flex;
   gap: 10px;
   justify-content: space-between;
+}
+
+.btn-delete:hover {
+  color: var(--second-color);
 }
