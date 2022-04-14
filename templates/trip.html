@@ -64,16 +64,16 @@
         <h1>{{trip.trip_name}}</h1>
         <h2>{{trip.trip_location}}</h2>
         <h2>{{trip.start_date.strftime("%m-%d-%Y")}} to {{trip.end_date.strftime("%m-%d-%Y")}}</h2>
-        <hr class="solid">
+        <hr class="solid"></hr>
       </div>
       <!-- Row to navigate trip planning-->
       <div class="row">
         <div class="gap-2 trip-nav">
-          <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary btn-trip"><i class="bi bi-calendar-event"></i> Itinerary</a>
-          <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary btn-trip"><i class="bi bi-send"></i> Explore Activities</a>
-          <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary btn-trip"><i class="bi bi-pen"></i> Task List</a>
-          <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary btn-trip"><i class="bi bi-clipboard2-check"></i> Polls</a>
-          <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary btn-trip"> <i class="bi bi-person-circle"></i> Invite Friends</a>
+          <a href='/trip/{{trip.trip_id}}/itinerary' class="btn btn-primary btn-trip" id="btn-itin"><i class="bi bi-calendar-event"></i> Itinerary</a>
+          <a href='/trip/{{trip.trip_id}}/activities' class="btn btn-primary btn-trip" id="btn-act"><i class="bi bi-send"></i> Explore Activities</a>
+          <a href='/trip/{{trip.trip_id}}/task-list' class="btn btn-primary btn-trip" id="btn-task"><i class="bi bi-pen"></i> Task List</a>
+          <a href='/trip/{{trip.trip_id}}/polls' class="btn btn-primary btn-trip" id="btn-poll"><i class="bi bi-clipboard2-check"></i> Polls</a>
+          <a href='/trip/{{trip.trip_id}}/invite' class="btn btn-primary btn-trip" id="btn-invite"> <i class="bi bi-person-circle"></i> Invite Friends</a>
         </div>
       </div>
     </div>

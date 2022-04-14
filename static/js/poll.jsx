@@ -36,9 +36,12 @@ function PollOptions(props) {
         label: 'Votes',
         data: data_list,
         backgroundColor: [
-          '#a7cfbc',
-          '#81b29a',
-          '#5c9479',
+          '#40916c',
+          '#b7e4c7',
+          '#52b788',
+          '#95d5b2',
+          '#74c69d',
+          '#d8f3dc',
         ],
         hoverOffset: 4
       }]
@@ -133,6 +136,7 @@ function PollOptions(props) {
   }
 
   return (
+    <React.Fragment>
     <div className="row row-poll">
       <div className="col-md-6">
         <div className="card">
@@ -152,6 +156,8 @@ function PollOptions(props) {
         </canvas>
       </div>
     </div>
+    <hr class="solid"></hr>
+    </React.Fragment>
   );
 }
 

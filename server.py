@@ -149,7 +149,7 @@ def add_trip():
 
     results = data.get('results', [])
 
-    image = results[0].get('urls', {}).get('regular')
+    image = results[0].get('urls', {}).get('small')
 
     #create trip and add to db
     new_trip = crud.create_trip(trip_creator=user_id,

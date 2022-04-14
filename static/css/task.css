@@ -1,3 +1,7 @@
+#btn-task {
+  background-color: #d57451;
+  border: 2px solid #d57451;
+}
 
 form {
   display: flex;

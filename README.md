@@ -1,5 +1,6 @@
-# Travel-planning-project
-Traveling with a group of friends is very fun, but can be difficult to coordinate. My travel app will take the stress out of planning a group trip by allowing multiple users to interact and collaborate on planning their trip. Once a trip has been decided on, users can start by creating a new trip and adding in their trip buddies. The app will generate a list of top rated activities and restaurants for users to explore and add to their itinerary. Users also have the option of using the search bar to find their own activities. Once activities are added to the itinerary, users can edit the date and times to their liking. If users have trouble deciding on an activity or time, a poll can be made and all users can vote on their choice. In addition, users have the option to assign tasks to other users to keep each other organized. 
+# TravelBugs
+Plan. Collaborate. Travel. Repeat.
+Traveling with a group of friends is very fun, but can be difficult to coordinate. TravelBugs will take the stress out of planning a group trip by allowing multiple users to interact and collaborate on planning their trip. Users can create a trip, invite their friends and start building the itinerary together. Users can explore the local area for activities, assign tasks to each other and create polls if they have trouble deciding on an activity.
 ## Table of Contents
 * 🤖 [Technologies](#technologies-used)
 * ⭐ [Features](#features)
@@ -8,11 +9,12 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 * 😸 [About Me](#about-me)
 ## Technologies Used
 * Backend: Python, Flask, SQL, PostgreSQL, SQLAlchemy
-* Frontend: Javascript, React, HTML, Bootstrap, AJAX, JSON, Jinja2
-* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API
+* Frontend: Javascript, React JS, HTML, CSS, Bootstrap, AJAX, JSON, Jinja2
+* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js, Swiper API
 ## Features
 * To begin users must log in or create an account
 * User's homepage displays a list all their trips with markers on the map
+* Users can delete a trip if they are the creator or remove if a trip from their list if they can no longer attend
 * Users can create a new trip with the location and dates
 * Users can click into their trips to start planning
 * Users can add friends to the trip

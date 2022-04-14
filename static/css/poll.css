@@ -1,3 +1,9 @@
+#btn-poll {
+  background-color: #d57451;
+  border: 2px solid #d57451;
+  /* color: #cbdfbd; */
+}
+
 form {
   display: flex;
   gap: 10px;
@@ -59,6 +65,7 @@ form {
 }
 
 .row-poll {
+  padding-top: 20px;
   align-items: center;
   padding-bottom: 20px;
 }
@@ -99,7 +106,7 @@ form {
 }
 
 .voted {
-  color: var(--primary-color-dark);
+  color: var(--primary-color);
   font-weight: 600;
 }
 
@@ -114,6 +121,10 @@ form {
   text-transform: uppercase;
   text-align: center;
   padding: 5px;
+}
+
+.btn-remove:hover {
+  color: var(--base-color-light);
 }
 
 .col-md-3 {
