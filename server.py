@@ -149,7 +149,7 @@ def add_trip():
 
     results = data.get('results', [])
 
-    image = results[0].get('urls', {}).get('small')
+    image = results[0].get('urls', {}).get('regular')
 
     #create trip and add to db
     new_trip = crud.create_trip(trip_creator=user_id,
@@ -228,7 +228,8 @@ def display_trip_info(trip_id):
     if session.get('user') not in [user.user_id for user in trip.users]:
         return redirect('/')
 
-    return render_template('trip.html', trip=trip)
+    return redirect(f'/trip/{trip_id}/itinerary')
+    # return render_template('trip.html', trip=trip)
 
 # ----- ROUTES FOR TRIP INVITE ----- #
 

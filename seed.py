@@ -44,7 +44,8 @@ def load_trips_and_add_users():
 
     joshua_tree = Trip(trip_creator='brian',trip_location='Joshua Tree, CA', trip_name="Joshua Tree National Park Trip", start_date=datetime.strptime("2022-10-10", "%Y-%m-%d"), end_date=datetime.strptime("2022-10-14", "%Y-%m-%d"), latitude=33.8734, longitude=-115.9010, trip_image="https://images.unsplash.com/photo-1600680386586-9b4795bee256?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzMzNDU&ixlib=rb-1.2.1&q=80&w=400")
 
-    chicago = Trip(trip_creator='kat', trip_location='Chicago, IL', trip_name="Chicago Weekend", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177, trip_image="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzQzOTg&ixlib=rb-1.2.1&q=80&w=400")
+    chicago = Trip(trip_creator='kat', trip_location='Chicago, IL', trip_name="Chicago Weekend", start_date=datetime.strptime("2022-07-01", "%Y-%m-%d"), end_date=datetime.strptime("2022-07-04", "%Y-%m-%d"), latitude=41.881832, longitude=-87.623177, trip_image="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDk4ODEyODA&ixlib=rb-1.2.1&q=80&w=1080")
+    # trip_image="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMTY5Nzl8MHwxfGFsbHx8fHx8fHx8fDE2NDkyNzQzOTg&ixlib=rb-1.2.1&q=80&w=400"
 
     db.session.add_all([maui, seattle, joshua_tree, chicago])
     db.session.commit()

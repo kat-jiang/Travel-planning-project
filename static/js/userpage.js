@@ -126,17 +126,17 @@ const addTrip = (evt) => {
     `
     <div class="swiper-slide" style="width: 318.667px; margin-right: 30px;">
       <div class="card trip-card" id="trip-${userTrip.trip_id}">
-        <a href="/trip/${userTrip.trip_id}">
+        <a href="/trip/${userTrip.trip_id}" class="trip-info">
           <img src="${userTrip.trip_image}" class="card-img-top">
           <div class="card-body">
-            <p class="card-text">
-              <h4>${userTrip.trip_name}</h4>
-              <h4>${userTrip.trip_location}</h4>
+            <div class="card-text">
+              <h3 class="trip-name">${userTrip.trip_name}</h3>
+              ${userTrip.trip_location}<br>
               ${startdateObject} to ${enddateObject}
-            </p>
+            </div>
           </div>
         </a>
-        <button class="btn btn-secondary delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
+        <button class="btn btn-secondary btn-delete delete" trip-id="${userTrip.trip_id}">Delete Trip</button>
       </div>
     </div>
     `

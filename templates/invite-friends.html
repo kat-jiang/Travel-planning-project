@@ -1,5 +1,12 @@
 {% extends 'trip.html' %}
 
+{% block head %}
+
+<!-- CSS styles-->
+<link href="/static/css/invite.css" rel="stylesheet">
+
+{% endblock %}
+
 {% block title %}Trip Invite{% endblock %}
 
 {% block body %}
@@ -12,7 +19,7 @@
       <ul>
         {% for user in trip_users %}
 
-        <li>@{{user.user_id}}: {{user.fname}} {{user.lname}}</li>
+        <li><i class="bi bi-person-circle"></i> <strong>{{user.user_id}}</strong> - {{user.fname}} {{user.lname}}</li>
 
         {% endfor %}
       </ul>
@@ -30,7 +37,7 @@
             {% endif %}
           {% endfor %}
         </select>
-        <input type="submit">
+        <button class="btn-add" type="submit">Add</button>
       </form>
     </p>
   </div>

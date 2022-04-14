@@ -34,7 +34,7 @@ body {
 }
 
 .navbar-light .navbar-brand:hover {
-  color: var(--primary-color);
+  color: var(--primary-color-dark);
 }
 
 #app-logo{
