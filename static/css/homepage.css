@@ -69,6 +69,13 @@ form {
   padding-left: 20px;
 }
 
+.form-input:focus,
+.form-input:active {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
 .btn {
   background-color: var(--primary-color);
   width: 100%;
