@@ -32,8 +32,8 @@ mapboxgl.accessToken = config.mapboxApiKey;
         // create popup for the activity
         const popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(
-          `<h5>${unsortedActivity.activity_name}</h5>
-          <p>${unsortedActivity.activity_type}<br>${unsortedActivity.address}</p>`
+          `<h5 class="popup-title">${unsortedActivity.activity_name}</h5>
+          <p class="popup-text">${unsortedActivity.activity_type}<br>${unsortedActivity.address}</p>`
         )
         // create marker and add to map
         const marker = new mapboxgl.Marker({color: '#A0A0A0'})
@@ -51,8 +51,8 @@ mapboxgl.accessToken = config.mapboxApiKey;
           // create popup for the activity
           const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(
-            `<h5>${activity.activity_name}</h5>
-            <p>${activity.activity_type}<br>${activity.address}</p>`
+            `<h5 class="popup-title">${activity.activity_name}</h5>
+            <p class="popup-text">${activity.activity_type}<br>${activity.address}</p>`
           )
           // create marker and add to map
           const marker = new mapboxgl.Marker({color: '#e29578'})
