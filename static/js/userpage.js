@@ -113,7 +113,7 @@ const addTrip = (evt) => {
     .setPopup(
       new mapboxgl.Popup({ offset: 25 }) // add popups
         .setHTML(
-          `<h5>${userTrip.trip_name}</h5><p>${userTrip.trip_location}</p>`
+          `<h5><strong>${userTrip.trip_name}</strong></h5><p>${userTrip.trip_location}</p>`
         )
     )
     .addTo(map);
