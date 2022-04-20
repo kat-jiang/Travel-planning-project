@@ -12,30 +12,38 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 * Frontend: Javascript, React JS, HTML, CSS, Bootstrap, AJAX, JSON, Jinja2
 * APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js
 ## Features
-🎥 [See a full video walk-through](https://www.youtube.com/watch?v=9KIX7lISdeE)<br/>
+🎥 [See a full video walk-through](https://www.youtube.com/watch?v=9KIX7lISdeE)
+<br/><br/>
 **Login**
 * To begin, users can create an account or login
 * Passwords are first hashed using Argon2 and then saved to the database for added security
+<br/>
 **User Homepage**
 * User's homepage displays a list all their trips with markers on the map
 * Users can create a new trip with the location and dates. I added the mapbox geocoding API to autocomplete the city names as the user types and save the coordinates in my database.
 * Users can delete a trip if they are the creator or remove if a trip from their list if they can no longer attend
 * To start planning, users can click on the trip
+<br/>
 **Trips**
+<br/>
 **Friend-Invite**
 * Users can add friends to the trip
+<br/>
 **Explore Activities**
 * Users can see top rated restaurants and activities from Yelp's Fusion API
 * Users can search for their own activities
 * A map displays a marker and popup for searched activities
 * Activities can be added to the intinerary
+<br/>
 **Itinerary**
 * The intinerary page displays the trip itinerary sorted by date and time and list of added activities
 * Users also have the option to add their own custom activities
 * To add an activity to the itinerary, user can add a date and time
 * A custom marker is added to the map to correspond to the day for each activity in the itinerary
+<br/>
 **Trip Tasks**
 * Users can assign tasks to each other to remind themselves of things to do pre-trip
+<br/>
 **Trip Polls**
 * If users have trouble deciding on activities, they can create a poll for other users to vote on
 ## Future Improvements
