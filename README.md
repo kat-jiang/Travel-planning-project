@@ -1,5 +1,5 @@
-# TravelBugs
-Plan. Collaborate. Travel. Repeat.<br/>
+# Travelbugs ![Logo](travel-project/static/img/dragonfly-logo.svg)
+Plan. Collaborate. Travel. Repeat.<br/><br/>
 Traveling with a group of friends is very fun, but can be difficult to coordinate. TravelBugs will take the stress out of planning a group trip by allowing multiple users to interact and collaborate on planning their trip. Users can create a trip, invite their friends and start building the itinerary together. Users can explore the local area for activities, assign tasks to each other and create polls if they have trouble deciding on an activity.
 ## Table of Contents
 * 🤖 [Technologies](#technologies-used)
@@ -10,21 +10,36 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 ## Technologies Used
 * Backend: Python, Flask, SQL, PostgreSQL, SQLAlchemy
 * Frontend: Javascript, React JS, HTML, CSS, Bootstrap, AJAX, JSON, Jinja2
-* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js, Swiper API
+* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js
 ## Features
-* To begin users must log in or create an account
+🎥 [See a full video walk-through](https://www.youtube.com/watch?v=9KIX7lISdeE)<br/>
+**Login**
+* To begin, users can create an account or login
+* Passwords are first hashed using Argon2 and then saved to the database for added security
+**User Homepage**
 * User's homepage displays a list all their trips with markers on the map
+* Users can create a new trip with the location and dates. I added the mapbox geocoding API to autocomplete the city names as the user types and save the coordinates in my database.
 * Users can delete a trip if they are the creator or remove if a trip from their list if they can no longer attend
-* Users can create a new trip with the location and dates
-* Users can click into their trips to start planning
+* To start planning, users can click on the trip
+**Trips**
+**Friend-Invite**
 * Users can add friends to the trip
-* Users can see top rated restaurants and activities in the area
+**Explore Activities**
+* Users can see top rated restaurants and activities from Yelp's Fusion API
 * Users can search for their own activities
+* A map displays a marker and popup for searched activities
 * Activities can be added to the intinerary
-* The intinerary page displays the trip itinerary and activities that have been added but not given a date/time
+**Itinerary**
+* The intinerary page displays the trip itinerary sorted by date and time and list of added activities
+* Users also have the option to add their own custom activities
+* To add an activity to the itinerary, user can add a date and time
+* A custom marker is added to the map to correspond to the day for each activity in the itinerary
+**Trip Tasks**
 * Users can assign tasks to each other to remind themselves of things to do pre-trip
+**Trip Polls**
 * If users have trouble deciding on activities, they can create a poll for other users to vote on
 ## Future Improvements
+* Add a profile page so users can share their trip itineraries
 ## Set Up
 To run this project, first clone or fork this repo:
 ```
@@ -51,7 +66,7 @@ source secrets.sh
 ```
 Set up the database:
 ```
-python3 model.py
+python3 seed.py
 ```
 Run the app:
 ```
