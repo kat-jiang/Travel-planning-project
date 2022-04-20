@@ -1,4 +1,4 @@
-# Travelbugs <img src="static/img/dragonfly-logo.svg" width="48">
+# Travelbugs <img src="static/img/dragonfly-logo.svg" width="30">
 Plan. Collaborate. Travel. Repeat.
 
 Traveling with a group of friends is very fun, but can be difficult to coordinate. TravelBugs will take the stress out of planning a group trip by allowing multiple users to interact and collaborate on planning their trip. Users can create a trip, invite their friends and start building the itinerary together. Users can explore the local area for activities, assign tasks to each other and create polls if they have trouble deciding on an activity.
