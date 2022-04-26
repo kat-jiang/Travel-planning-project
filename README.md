@@ -18,41 +18,40 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 ### Login
 * To begin, users can create an account or login
 * Passwords are first hashed using Argon2 and then saved to the database for added security
-![Travelbugs Login](/travel-project/static/screenshots/login-page.png)
+![Travelbugs Login](/static/screenshots/login-page.png)
 
 ### User Homepage
 * User's homepage displays a list all their trips with markers on the map
 * Users can create a new trip with the location and dates. I added the mapbox geocoding API to autocomplete the city names as the user types and save the coordinates in my database.
 * Users can delete a trip if they are the creator or remove if a trip from their list if they can no longer attend
 * To start planning, users can click on the trip
-![Travelbugs Homepage](/travel-project/static/screenshots/homepage.png)
+![Travelbugs Homepage](/static/screenshots/homepage.png)
 
 ### Trip Page - Friend-Invite
 * Users can add friends to the trip
-![Travelbugs Trip Invite](/travel-project/static/screenshots/trip-invite.png)
+![Travelbugs Trip Invite](/static/screenshots/trip-invite.png)
 
 ### Trip Page - Explore Activities
 * Users can see top rated restaurants and activities from Yelp's Fusion API
 * Users can search for their own activities
 * A map displays a marker and popup for searched activities
 * Activities can be added to the intinerary
-![Travelbugs Trip Explore Activities](/travel-project/static/screenshots/trip-activities.png)
+![Travelbugs Trip Explore Activities](/static/screenshots/trip-activities.png)
 
 ### Trip Page - Itinerary
 * The intinerary page displays the trip itinerary sorted by date and time and list of added activities
 * Users also have the option to add their own custom activities
 * To add an activity to the itinerary, user can add a date and time
 * A custom marker is added to the map to correspond to the day for each activity in the itinerary
-![Travelbugs Trip Itinerary](/travel-project/static/screenshots/trip-itinerary.png)
-![Travelbugs Trip Add datetime](/travel-project/static/screenshots/trip-itinerary-add-datetime.png)
+![Travelbugs Trip Itinerary](/static/screenshots/trip-itinerary.png)
 
 ### Trip Page - Tasks
 * Users can assign tasks to each other to remind themselves of things to do pre-trip
-![Travelbugs Trip Tasks](/travel-project/static/screenshots/trip-tasks.png)
+![Travelbugs Trip Tasks](/static/screenshots/trip-tasks.png)
 
 ### Trip Page - Polls
 * If users have trouble deciding on activities, they can create a poll for other users to vote on
-![Travelbugs Trip Polls](/travel-project/static/screenshots/trip-polls.png)
+![Travelbugs Trip Polls](/static/screenshots/trip-polls.png)
 
 ## Future Improvements
 * Add a profile page so users can share their trip itineraries
