@@ -8,6 +8,8 @@ from passlib.hash import argon2
 from model import connect_to_db, db
 import crud
 from datetime import datetime
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 app = Flask(__name__)
@@ -262,6 +264,39 @@ def add_friend_to_trip():
     db.session.commit()
 
     return redirect(f'/trip/{trip_id}/invite')
+
+@app.route('/invite-via-email')
+def send_email_invite():
+    """Sends email to invite friend to site"""
+    #retrieve user and trip id from form
+    email = request.args.get("email")
+    trip_id = request.args.get("trip-id-email")
+    user_id = session.get('user')
+    #retrieve trip/user info from db
+    trip = crud.get_trip_by_id(trip_id)
+    user = crud.get_user_by_id(user_id)
+    #check if email already in database
+    friend = crud.get_user_by_email(email)
+
+    if friend:
+        flash("Your friend already has an account")
+
+    message = Mail(
+    from_email='travelbugsdemo@gmail.com',
+    to_emails=email,
+    subject=f'{user.fname} invites you to join Travelbugs',
+    html_content= f'Hi! <br> Your friend {user.fname} is planning a trip: <br><br> {trip.trip_name} <br> {trip.trip_location} <br> {trip.start_date.date()} to {trip.end_date.date()} <br><br> {user.fname} invites you to join Travelbugs so you guys can plan the trip together! <br> Click this <a href="http://3.91.159.152/">link</a> to be directed to Travelbugs, where you can create an account and start planning! <br> See you there!')
+
+    sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+    response = sg.send(message)
+    print(response.status_code)
+    print(response.body)
+    print(response.headers)
+
+    flash("Email has been sent")
+
+    return redirect(f'/trip/{trip_id}/invite')
+
 
 # ----- ROUTES FOR TRIP ACTIVITY ----- #
 

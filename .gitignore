@@ -1,4 +1,4 @@
 __pycache__
 env
 secrets.sh
-.pytest_cache
+.pytest_cachesendgrid.env

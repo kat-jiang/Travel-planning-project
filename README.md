@@ -11,7 +11,7 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 ## Technologies Used
 * Backend: Python, Flask, SQL, PostgreSQL, SQLAlchemy
 * Frontend: Javascript, React JS, HTML, CSS, Bootstrap, AJAX, JSON, Jinja2
-* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js
+* APIs: Mapbox API (Mapbox GL JS, Mapbox Geocoding API), Yelp Fusion API, Unsplash Image API, Chart.js, Twilio's Sendgrid API
 ## Features
 🎥 [See a full video walk-through](https://www.youtube.com/watch?v=9KIX7lISdeE)
 
@@ -28,8 +28,10 @@ Traveling with a group of friends is very fun, but can be difficult to coordinat
 ![Travelbugs Homepage](/static/screenshots/homepage.png)
 
 ### Trip Page - Friend-Invite
-* Users can add friends to the trip
+* Users can add friends to the trip via the select menu
+* Users can send an email invite to their friend's email to invite them to Travelbugs
 ![Travelbugs Trip Invite](/static/screenshots/trip-invite.png)
+![Travelbugs Trip Invite](/static/screenshots/trip-invite-email-demo.png)
 
 ### Trip Page - Explore Activities
 * Users can see top rated restaurants and activities from Yelp's Fusion API
@@ -70,15 +72,26 @@ Install the dependencies:
 ```
 pip install -r requirements.txt
 ```
-Sign up to obtain keys for the Mapbox API, Yelp API, and Unsplash Images API
+Sign up to obtain keys for the Mapbox API, Yelp API, Unsplash Images API and SendGrid API
 
-Save your API keys in a file called `secrets.sh` using this format:
+Save your Mapbox API key in a file called `config.js` using this format:
+```
+export const config = {
+  'mapboxApiKey' : 'YOUR_KEY_GOES_HERE'
+}
+```
+Save your Yelp and Unsplash API keys in a file called `secrets.sh` using this format:
 ```
 export APP_KEY="YOUR_KEY_GOES_HERE"
 ```
-Source your keys from your `secrets.sh` file into your virtual environment:
+Save your SendGrid API key in a file called `sendgrid.env` using this format:
+```
+export SENDGRID_API_KEY="YOUR_KEY_GOES_HERE"
+```
+Source your keys into your virtual environment:
 ```
 source secrets.sh
+source sendgrid.env
 ```
 Set up the database:
 ```

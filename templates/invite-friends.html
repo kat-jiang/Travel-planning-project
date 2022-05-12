@@ -40,6 +40,14 @@
         <button class="btn-add" type="submit">Add</button>
       </form>
     </p>
+    <p>
+      <h2>Invite friends via email</h2>
+      <form action="/invite-via-email">
+        <input type="hidden" name="trip-id-email" value="{{trip.trip_id}}">
+        <input type="email" class="form-email" id="email" name="email" placeholder="email@gmail.com" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required>
+        <button class="btn-add" type="submit">Invite</button>
+      </form>
+    </p>
   </div>
 
 </div>
