@@ -3,9 +3,10 @@
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import argon2
 from datetime import datetime
+import os
 
 db = SQLAlchemy()
-
+DB_URI = os.environ['DB_URI']
 
 class User(db.Model):
     """A user."""
@@ -137,7 +138,7 @@ class Activity(db.Model):
 
     # -- relationship to Trip --
     # trip = db.relationship("Trip", backref="activities")
-    
+
     def to_dict(self):
         """return data as dictionary"""
         activity_dict = {'activity_id': self.activity_id,
@@ -222,7 +223,7 @@ class Vote(db.Model):
 
 
 
-def connect_to_db(flask_app, db_uri="postgresql:///travelplanner", echo=True):
+def connect_to_db(flask_app, db_uri=DB_URI, echo=True):
     """Connect to db"""
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
