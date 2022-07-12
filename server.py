@@ -41,7 +41,7 @@ def register():
     fname = request.form.get("fname")
     lname = request.form.get("lname")
     email = request.form.get("email")
-    user_id = request.form.get("username").lower()
+    user_id = request.form.get("username")
     password = request.form.get("password").rstrip()
 
     #check db if user already exists
@@ -77,7 +77,7 @@ def register():
 def login():
     """Process user login."""
     #retrieves information from log-in form
-    user_id = request.form.get("username").lower()
+    user_id = request.form.get("username")
     password = request.form.get("password")
 
     # query db for user_id
