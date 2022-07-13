@@ -14,6 +14,7 @@ from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.secret_key = 'SECRET_KEY'
 YELP_API_KEY = os.environ['YELP_KEY']
